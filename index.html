@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Groww · Visual Assets</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="stylesheet" href="fonts/rounded/groww-huge-rounded.css">
+<link rel="stylesheet" href="fonts/standard/groww-huge-standard.css">
+<style>
+  @font-face {
+    font-family: 'Sohne';
+    src: url('fonts/mint-ds/Sohne-Kraftig.otf') format('opentype');
+    font-weight: 500;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'GrowwSans';
+    src: url('fonts/mint-ds/GrowwSans-Regular.otf') format('opentype');
+    font-weight: 400;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'GrowwSans';
+    src: url('fonts/mint-ds/GrowwSans-Medium.otf') format('opentype');
+    font-weight: 500;
+    font-display: swap;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* ── Colour tokens — Groww Invest light mode ── */
+  :root {
+    --backgroundPrimary:              #FFFFFF;
+    --backgroundSurfaceZ1:            #FFFFFF;
+    --backgroundSurfaceZ2:            #F7F7F7;
+    --backgroundSecondary:            #F7F7F7;
+    --backgroundTertiary:             #EFF0F1;
+    --backgroundAccent:               #04B488;
+    --backgroundNegative:             #ED5533;
+    --backgroundPositive:             #04B488;
+    --backgroundWarning:              #E7A71E;
+    --backgroundAccentSubtle:         #E9FAF3;
+    --backgroundNegativeSubtle:       #FFF1ED;
+    --backgroundPositiveSubtle:       #E9FAF3;
+    --backgroundWarningSubtle:        #FFF7DE;
+    --backgroundDisabled:             #F7F7F7;
+    --backgroundTransparent:          transparent;
+    --borderPrimary:                  #E7E8E9;
+    --borderAccent:                   #04B488;
+    --borderNegative:                 #ED5533;
+    --borderDisabled:                 #EFF0F1;
+    --borderNeutral:                  #353839;
+    --contentPrimary:                 #353839;
+    --contentSecondary:               #7F8283;
+    --contentTertiary:                #898C8E;
+    --contentDisabled:                #BABBBC;
+    --contentAccent:                  #04B488;
+    --contentPositive:                #04B488;
+    --contentNegative:                #ED5533;
+    --contentWarning:                 #E7A71E;
+    --contentOnColour:                #FFFFFF;
+    --contentOnAccentSubtle:          #00825C;
+    --contentOnPositiveSubtle:        #00825C;
+    --contentOnNegativeSubtle:        #D23A15;
+    --contentOnWarningSubtle:         #A16B00;
+  }
+</style>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body data-section="icons">
+
+<header class="topbar">
+  <div class="brand-wrap">
+    <button class="brand brand-btn" id="brand-btn" aria-haspopup="listbox" aria-expanded="false">
+      <span class="brand-mark" id="brand-mark" style="background:transparent;border-radius:0">
+        <svg width="28" height="28" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24.5943 39.4589C35.342 36.9217 41.9978 26.1522 39.4606 15.405C36.9233 4.65784 26.1533 -1.99773 15.4057 0.539424C4.65804 3.07658 -1.99782 13.8461 0.539447 24.5933C3.07671 35.3404 13.8467 41.996 24.5943 39.4589Z" fill="#5367FF"/><path d="M39.4606 15.405C39.0987 13.8684 38.567 12.4172 37.8925 11.0593L37.888 11.0637L25.2955 22.7043C24.5093 23.4324 23.339 23.5574 22.4143 23.0169L17.0628 19.8812C16.1962 19.3765 15.1107 19.4524 14.3245 20.0733C11.01 22.6953 2.52268 29.409 2.40207 29.5072C6.58766 37.2706 15.5978 41.5851 24.5943 39.4589C35.342 36.9217 41.9978 26.1522 39.4606 15.405Z" fill="#00F3BB"/></svg>
+      </span>
+      <div>
+        <div class="brand-title" id="brand-title">Groww · Visual Assets</div>
+        <div class="brand-sub" id="counter">loading…</div>
+      </div>
+      <svg class="brand-chevron" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+        <path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <div class="brand-dropdown hidden" id="brand-dropdown" role="listbox">
+      <button class="brand-opt" data-brand="groww" role="option">
+        <span class="brand-opt-dot" style="background:#00b386"></span>
+        <span class="brand-opt-label">Groww Visual Assets</span>
+        <svg class="brand-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 7l3 3 6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="brand-opt" data-brand="wealth" role="option">
+        <span class="brand-opt-dot" style="background:#4F8EF7"></span>
+        <span class="brand-opt-label">Wealth Visual Assets</span>
+        <svg class="brand-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 7l3 3 6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="brand-opt" data-brand="prime" role="option">
+        <span class="brand-opt-dot" style="background:#A855F7"></span>
+        <span class="brand-opt-label">Prime Visual Assets</span>
+        <svg class="brand-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 7l3 3 6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <nav class="sections" role="tablist" aria-label="Asset sections">
+    <button class="section-tab" data-section="icons" role="tab" aria-selected="true">
+      Icons<span class="section-count" id="count-icons">—</span>
+    </button>
+    <button class="section-tab" data-section="illustrations" role="tab" aria-selected="false">
+      Illustrations<span class="section-count" id="count-illustrations">—</span>
+    </button>
+    <button class="section-tab" data-section="animation" role="tab" aria-selected="false">
+      Animation<span class="section-count" id="count-animation">—</span>
+    </button>
+  </nav>
+
+  <div class="search">
+    <input id="search" type="search" placeholder="Search…" autocomplete="off" spellcheck="false">
+    <kbd>/</kbd>
+  </div>
+
+  <div class="actions" data-only-section="icons">
+    <button id="select-toggle" class="btn btn-ghost" aria-pressed="false">Select</button>
+    <button id="download-all" class="btn">Download all</button>
+  </div>
+</header>
+
+<!-- ========================================================== ICONS ===== -->
+<section class="panel" id="panel-icons" data-section="icons">
+  <div class="subbar" data-only-section="icons">
+    <div class="variant" role="radiogroup" aria-label="Icon variant">
+      <button class="variant-btn" data-variant="rounded" role="radio" aria-checked="false">Rounded</button>
+      <button class="variant-btn" data-variant="standard" role="radio" aria-checked="true">Standard</button>
+    </div>
+  </div>
+
+  <!-- Sub-view switcher: Groww Huge (with Huge All in dropdown) -->
+  <div class="icon-subview-wrap" id="icon-subview-bar">
+    <button class="icon-subview-trigger" id="icon-subview-dropdown-btn" aria-haspopup="listbox" aria-expanded="false" aria-label="Switch icon set">
+      <span class="icon-subview-label" id="icon-subview-label">
+        Groww Huge <span class="icon-subview-count">—</span>
+      </span>
+      <svg class="subview-chevron" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+        <path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <div class="icon-subview-dropdown hidden" id="icon-subview-dropdown" role="listbox">
+      <button class="icon-subview-pill" data-subview="new-huge" role="option" aria-selected="false">
+        <span class="pill-check" aria-hidden="true">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <span class="pill-label">Huge All</span>
+        <span class="icon-subview-count">—</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Main icons view -->
+  <div id="view-main">
+    <nav class="filters" id="filters" aria-label="Categories"></nav>
+    <main id="grid" class="grid" aria-live="polite"></main>
+    <div id="empty" class="empty hidden">
+      <div class="empty-icon">∅</div>
+      <div>No icons match that.</div>
+    </div>
+  </div>
+
+  <!-- New Huge sub-view -->
+  <div id="view-new-huge" class="hidden">
+    <nav class="filters" id="nh-filters" aria-label="Categories"></nav>
+    <main id="nh-grid" class="grid" aria-live="polite"></main>
+    <div id="nh-empty" class="empty hidden">
+      <div class="empty-icon">∅</div>
+      <div>No icons match that.</div>
+    </div>
+    <div id="nh-empty-state" class="empty-state hidden">
+      <div class="empty-state-art" aria-hidden="true">
+        <svg width="84" height="84" viewBox="0 0 84 84" fill="none">
+          <rect x="6" y="6" width="72" height="72" rx="14" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 6" opacity=".4"/>
+          <path d="M28 42h28M42 28v28" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity=".55"/>
+        </svg>
+      </div>
+      <h2>New Huge is empty.</h2>
+      <p>Drop SVGs into <code>site/icons/new-huge/</code> and run <code>npm run manifest</code> to populate this section.</p>
+      <div class="empty-meta mono">data/new-huge.json</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================== ILLUSTRATIONS ===== -->
+<section class="panel hidden" id="panel-illustrations" data-section="illustrations">
+  <nav class="illu-cats" id="illu-cats" aria-label="Illustration categories">
+    <button class="chip" data-illu-cat="hero" aria-pressed="true">Heros<span class="count" id="illu-count-hero">0</span></button>
+    <button class="chip" data-illu-cat="spot-hero" aria-pressed="false">Spot Heros<span class="count" id="illu-count-spot-hero">0</span></button>
+    <button class="chip" data-illu-cat="illustrated-icons" aria-pressed="false">Illustrated Icons<span class="count" id="illu-count-illustrated-icons">0</span></button>
+    <button class="illu-mode-global-btn" id="illu-mode-global" aria-pressed="false">
+      <svg class="mode-icon-sun" viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="3"/><path d="M8 1.5v1.5M8 13v1.5M14.5 8H13M3 8H1.5M12.6 3.4l-1.06 1.06M4.46 11.54L3.4 12.6M12.6 12.6l-1.06-1.06M4.46 4.46L3.4 3.4"/></svg>
+      <svg class="mode-icon-moon" viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.5 9.5A5.5 5.5 0 1 1 6.5 2.5a4.5 4.5 0 0 0 7 7z"/></svg>
+      <span id="illu-mode-label">Light</span>
+    </button>
+  </nav>
+  <main id="illu-grid" class="grid grid-illu" aria-live="polite"><!-- illustrations render here --></main>
+  <div id="illu-empty" class="empty-state">
+    <div class="empty-state-art" aria-hidden="true">
+      <svg width="84" height="84" viewBox="0 0 84 84" fill="none">
+        <rect x="6" y="6" width="72" height="72" rx="14" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 6" opacity=".4"/>
+        <circle cx="30" cy="34" r="6" stroke="currentColor" stroke-width="1.5" opacity=".55"/>
+        <path d="M14 64 L34 44 L48 56 L60 46 L70 56" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity=".55"/>
+      </svg>
+    </div>
+    <h2>Illustrations are coming.</h2>
+    <p>This is where larger artwork lives — empty states, marketing scenes, onboarding spots. Drop SVGs or PNGs into <code>data/illustrations/</code> and they'll show up here.</p>
+    <div class="empty-meta mono">data/illustrations.json</div>
+  </div>
+</section>
+
+<!-- ======================================================= ANIMATION ===== -->
+<section class="panel hidden" id="panel-animation" data-section="animation">
+  <main id="anim-grid" class="grid grid-anim" aria-live="polite"><!-- animations render here --></main>
+  <div id="anim-empty" class="empty-state">
+    <div class="empty-state-art" aria-hidden="true">
+      <svg width="84" height="84" viewBox="0 0 84 84" fill="none">
+        <circle cx="42" cy="42" r="32" stroke="currentColor" stroke-width="1.5" opacity=".35"/>
+        <path d="M36 30 L56 42 L36 54 Z" fill="currentColor" opacity=".75"/>
+        <path d="M14 42 H22 M62 42 H70 M42 14 V22 M42 62 V70" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity=".5"/>
+      </svg>
+    </div>
+    <h2>Animation is coming.</h2>
+    <p>Lottie files, motion specs, and looping micro-interactions will live here. Drop <code>.json</code> Lotties into <code>data/animations/</code> and they'll preview right on the card.</p>
+    <div class="empty-meta mono">data/animations.json</div>
+  </div>
+</section>
+
+<!-- Detail drawer for single-icon download / inspect -->
+<aside id="drawer" class="drawer hidden" aria-hidden="true">
+  <button class="drawer-close" id="drawer-close" aria-label="Close">×</button>
+  <div class="drawer-preview">
+    <div id="drawer-icon-large" class="icon-xl"></div>
+  </div>
+  <div class="drawer-meta">
+    <h2 id="drawer-name"></h2>
+    <div class="drawer-tags">
+      <span class="tag" id="drawer-category"></span>
+      <span class="tag" id="drawer-source"></span>
+      <span class="tag mono" id="drawer-unicode"></span>
+      <span class="tag tag-single hidden" id="drawer-single-variant" title="This icon has only one variant in Figma — toggling Rounded/Standard has no effect for it.">Single variant</span>
+    </div>
+
+    <div class="drawer-section">
+      <div class="section-label">Copy</div>
+      <div class="row">
+        <button class="btn btn-soft" data-copy="className">Class name</button>
+        <button class="btn btn-soft" data-copy="svg">SVG markup</button>
+        <button class="btn btn-soft" data-copy="unicode">Unicode</button>
+      </div>
+    </div>
+
+    <div class="drawer-section" id="drawer-kw-section">
+      <button class="section-label kw-toggle" id="kw-toggle" aria-expanded="false" aria-controls="drawer-keywords">
+        Search keywords
+        <svg class="kw-chevron" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+          <path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <div class="drawer-keywords hidden" id="drawer-keywords"></div>
+    </div>
+
+    <div class="drawer-section">
+      <div class="section-label">Download this icon</div>
+      <div class="row">
+        <button class="btn" data-dl="svg">.svg</button>
+        <button class="btn" data-dl="json">.json</button>
+        <button class="btn" data-dl="png">.png</button>
+      </div>
+    </div>
+
+    <div class="drawer-section">
+      <div class="section-label">Get the full font <span class="variant-pill" id="drawer-variant-pill">Standard</span></div>
+      <div class="row" id="font-links">
+        <!-- populated by JS based on active variant -->
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- Floating selection bar -->
+<div id="selbar" class="selbar hidden" role="region" aria-label="Selection">
+  <div class="selbar-count"><span id="sel-count">0</span> selected</div>
+  <div class="selbar-actions">
+    <button class="btn btn-soft" id="sel-all">Select all</button>
+    <button class="btn btn-ghost" id="sel-clear">Clear</button>
+    <span class="sep">•</span>
+    <span class="sel-label">Download as</span>
+    <button class="btn btn-soft" data-bulk="svg">SVGs</button>
+    <button class="btn btn-soft" data-bulk="json">JSON</button>
+    <button class="btn btn-soft" data-bulk="font">Font set</button>
+    <button class="btn" data-bulk="all">Everything</button>
+  </div>
+</div>
+
+<!-- Bulk-format picker for "Download all" -->
+<dialog id="all-dialog" class="all-dialog">
+  <div class="all-dialog-inner">
+    <h3>Download the entire library</h3>
+    <p>Pick what to bundle into the zip — 452 icons.</p>
+    <fieldset class="dialog-fieldset">
+      <legend>Variants</legend>
+      <label><input type="checkbox" name="all-variant" value="rounded" checked> Rounded</label>
+      <label><input type="checkbox" name="all-variant" value="standard" checked> Standard</label>
+    </fieldset>
+    <fieldset class="dialog-fieldset">
+      <legend>Formats</legend>
+      <label><input type="checkbox" name="all-format" value="svg" checked> Individual SVGs</label>
+      <label><input type="checkbox" name="all-format" value="json" checked> manifest.json</label>
+      <label><input type="checkbox" name="all-format" value="font" checked> Font files (TTF/OTF/WOFF/WOFF2)</label>
+      <label><input type="checkbox" name="all-format" value="css"> CSS files</label>
+    </fieldset>
+    <div class="dialog-actions">
+      <button class="btn btn-ghost" id="all-cancel">Cancel</button>
+      <button class="btn" id="all-go">Download zip</button>
+    </div>
+  </div>
+</dialog>
+
+<!-- Illustration viewer — large light/dark side-by-side preview + downloads -->
+<div id="illu-viewer" class="illu-viewer hidden" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="illu-viewer-name">
+  <button class="illu-viewer-close" id="illu-viewer-close" aria-label="Close viewer">×</button>
+  <div class="illu-viewer-inner" role="document">
+    <div class="illu-viewer-head">
+      <div>
+        <div class="illu-viewer-eyebrow">Hero illustration</div>
+        <h2 id="illu-viewer-name"></h2>
+      </div>
+      <div class="illu-viewer-tags" id="illu-viewer-tags"></div>
+    </div>
+    <div class="illu-viewer-stage">
+      <figure class="illu-viewer-figure illu-viewer-figure-light">
+        <div class="illu-viewer-canvas">
+          <img id="illu-viewer-img-light" alt="">
+          <button class="illu-viewer-copy-pill" data-illu-viewer-copy="light" title="Copy light-mode SVG markup">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span>Copy SVG</span>
+          </button>
+        </div>
+        <figcaption>Light</figcaption>
+      </figure>
+      <figure class="illu-viewer-figure illu-viewer-figure-dark">
+        <div class="illu-viewer-canvas">
+          <img id="illu-viewer-img-dark" alt="">
+          <button class="illu-viewer-copy-pill" data-illu-viewer-copy="dark" title="Copy dark-mode SVG markup">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span>Copy SVG</span>
+          </button>
+        </div>
+        <figcaption>Dark</figcaption>
+      </figure>
+    </div>
+    <div class="illu-viewer-foot">
+      <span class="illu-viewer-fmt-label">Download both modes</span>
+      <button class="btn btn-soft" data-illu-viewer-dl="svg">SVG</button>
+      <button class="btn btn-soft" data-illu-viewer-dl="webp">WEBP</button>
+      <button class="btn btn-soft" data-illu-viewer-dl="png">PNG</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast hidden"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/7.0.0/fuse.min.js"></script>
+<!-- dotLottie player — handles both .json (Lottie) and .lottie (dotLottie) -->
+<script type="module" src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs"></script>
+<!-- Rive web runtime — handles .riv files -->
+<script src="https://unpkg.com/@rive-app/canvas@2.21.6/rive.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
