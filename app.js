@@ -923,7 +923,7 @@
     els.animGrid.innerHTML = list.map((a, idx) => {
       const type = animType(a.src);
       return `
-        <div class="card card-anim" title="${a.name}">
+        <div class="card card-anim" data-anim-name="${a.name}" title="${a.name}" tabindex="0" role="button" aria-label="Open ${a.name}">
           <div class="anim-preview-wrap">
             ${animPreviewHtml(a, idx)}
           </div>
@@ -936,6 +936,279 @@
       `;
     }).join('');
     initRiveCanvases();
+  }
+
+  // ---------- animation viewer (Rive lightbox) --------------------------
+  // Mirrors the illustration viewer: a modal that plays the .riv large with
+  // transport controls (play/pause, restart, scrubber, loop, speed) and a
+  // best-effort "detected metadata" panel inspected from the live instance.
+  const animViewer = {
+    root:    $('#anim-viewer'),
+    close:   $('#anim-viewer-close'),
+    name:    $('#anim-viewer-name'),
+    eyebrow: $('#anim-viewer-eyebrow'),
+    sub:     $('#anim-viewer-sub'),
+    tags:    $('#anim-viewer-tags'),
+    stage:   $('#anim-viewer-stage'),
+    canvas:  $('#anim-viewer-canvas'),
+    meta:    $('#anim-viewer-meta'),
+    play:    $('#anim-play'),
+    restart: $('#anim-restart'),
+    loop:    $('#anim-loop'),
+    speed:   $('#anim-speed'),
+    scrub:   $('#anim-scrub'),
+    time:    $('#anim-time'),
+    dl:      $('#anim-viewer-dl'),
+  };
+  let viewerRive = null;
+  let viewerRaf = 0;
+  const vstate = { playing: true, loop: true, speed: 1, duration: 0, progress: 0, startTs: 0 };
+
+  function fmtTime(sec) {
+    if (!sec || !isFinite(sec)) return '0:00';
+    const s = Math.floor(sec % 60), m = Math.floor(sec / 60);
+    return `${m}:${String(s).padStart(2, '0')}`;
+  }
+
+  function setMetaStatus(msg) {
+    if (animViewer.meta) animViewer.meta.innerHTML = `<div class="anim-meta-status">${msg}</div>`;
+  }
+
+  function getViewerDuration(r) {
+    try {
+      const d = r.durations;
+      if (Array.isArray(d)) {
+        const valid = d.filter(x => typeof x === 'number' && x > 0 && isFinite(x));
+        if (valid.length) return Math.max(...valid);
+      }
+    } catch (_) {}
+    return 0;
+  }
+
+  function inspectViewerRive(r) {
+    const meta = { artboards: [], stateMachines: [], animations: [], inputs: [], viewModels: [] };
+    try {
+      const arts = r.contents?.artboards;
+      if (Array.isArray(arts)) meta.artboards = arts.map(a => a.name).filter(Boolean);
+    } catch (_) {}
+    try { meta.stateMachines = (r.stateMachineNames || []).slice(); } catch (_) {}
+    try { meta.animations = (r.animationNames || []).slice(); } catch (_) {}
+    try {
+      for (const sm of (r.stateMachineNames || [])) {
+        let inputs = [];
+        try { inputs = r.stateMachineInputs(sm) || []; } catch (_) {}
+        for (const inp of inputs) meta.inputs.push({ name: inp.name, sm });
+      }
+    } catch (_) {}
+    // View models exist only on newer runtimes — guarded, silently empty otherwise.
+    try {
+      const count = r.viewModelCount ?? 0;
+      for (let i = 0; i < count; i++) {
+        const vm = r.viewModelByIndex?.(i);
+        if (vm?.name) meta.viewModels.push(vm.name);
+      }
+    } catch (_) {}
+    return meta;
+  }
+
+  function metaCard(label, items, fmt) {
+    const n = items.length;
+    if (!n) {
+      return `<details class="anim-meta-card"><summary>${label}<span class="anim-meta-count">0</span></summary>` +
+             `<div class="anim-meta-empty">None detected</div></details>`;
+    }
+    const lis = items.map(it => `<li>${fmt ? fmt(it) : it}</li>`).join('');
+    return `<details class="anim-meta-card" open><summary>${label}<span class="anim-meta-count">${n}</span></summary>` +
+           `<ul class="anim-meta-list">${lis}</ul></details>`;
+  }
+
+  function renderViewerMeta(meta) {
+    if (!animViewer.meta) return;
+    const total = meta.artboards.length + meta.stateMachines.length +
+      meta.animations.length + meta.inputs.length + meta.viewModels.length;
+    if (!total) { setMetaStatus('No metadata detected for this file.'); return; }
+    animViewer.meta.innerHTML =
+      metaCard('Artboards', meta.artboards) +
+      metaCard('State Machines', meta.stateMachines) +
+      metaCard('Animations / Timelines', meta.animations) +
+      metaCard('View Models', meta.viewModels) +
+      metaCard('Inputs', meta.inputs, i => `${i.name}<span class="anim-meta-hint">${i.sm}</span>`);
+  }
+
+  function applyViewerSpeed() {
+    if (!viewerRive) return;
+    try {
+      const anims = viewerRive.animator?.animations;
+      if (Array.isArray(anims)) anims.forEach(a => { if (typeof a?.speed !== 'undefined') a.speed = vstate.speed; });
+    } catch (_) {}
+  }
+
+  function scrubViewer(value) {
+    if (!viewerRive || !vstate.duration) return;
+    const t = value * vstate.duration;
+    try {
+      const sms = viewerRive.stateMachineNames, anims = viewerRive.animationNames;
+      if (sms?.length) viewerRive.scrub(sms[0], t);
+      else if (anims?.length) viewerRive.scrub(anims[0], t);
+    } catch (_) {}
+  }
+
+  function stopViewerRaf() { if (viewerRaf) { cancelAnimationFrame(viewerRaf); viewerRaf = 0; } }
+
+  function startViewerRaf() {
+    stopViewerRaf();
+    vstate.startTs = performance.now();
+    const tick = (now) => {
+      if (vstate.playing && vstate.duration > 0) {
+        const dt = (now - vstate.startTs) / 1000;
+        let p = vstate.progress + (dt * vstate.speed) / vstate.duration;
+        if (vstate.loop) { p = p % 1; }
+        else if (p >= 1) { p = 1; vstate.playing = false; try { viewerRive.pause(); } catch (_) {} syncPlayBtn(); }
+        vstate.progress = p;
+        animViewer.scrub.value = String(p);
+        animViewer.time.textContent = `${fmtTime(p * vstate.duration)} / ${fmtTime(vstate.duration)}`;
+      }
+      vstate.startTs = now;
+      viewerRaf = requestAnimationFrame(tick);
+    };
+    viewerRaf = requestAnimationFrame(tick);
+  }
+
+  function syncPlayBtn() { animViewer.play?.classList.toggle('is-playing', vstate.playing); }
+
+  function cleanupViewerRive() {
+    stopViewerRaf();
+    if (viewerRive) { try { viewerRive.cleanup(); } catch (_) {} viewerRive = null; }
+    animViewer.stage?.querySelector('.anim-fallback')?.remove();
+  }
+
+  function startViewerRive(item) {
+    cleanupViewerRive();
+    setMetaStatus('Inspecting…');
+    if (animViewer.canvas) animViewer.canvas.style.display = '';
+    if (typeof rive === 'undefined') { setMetaStatus('Rive runtime unavailable.'); return; }
+    try {
+      viewerRive = new rive.Rive({
+        src: item.src,
+        canvas: animViewer.canvas,
+        autoplay: true,
+        onLoad() {
+          try { viewerRive.resizeDrawingSurfaceToCanvas(); } catch (_) {}
+          vstate.duration = getViewerDuration(viewerRive);
+          vstate.progress = 0; vstate.playing = true;
+          const hasTimeline = vstate.duration > 0;
+          animViewer.scrub.disabled = !hasTimeline;
+          animViewer.time.textContent = hasTimeline
+            ? `0:00 / ${fmtTime(vstate.duration)}` : '—';
+          syncPlayBtn();
+          applyViewerSpeed();
+          startViewerRaf();
+          renderViewerMeta(inspectViewerRive(viewerRive));
+        },
+        onLoadError() { setMetaStatus('Could not load this animation.'); },
+      });
+    } catch (_) { setMetaStatus('Could not load this animation.'); }
+  }
+
+  function startViewerLottie(item) {
+    cleanupViewerRive();
+    if (animViewer.canvas) animViewer.canvas.style.display = 'none';
+    let fb = animViewer.stage.querySelector('.anim-fallback');
+    if (!fb) {
+      fb = document.createElement('dotlottie-player');
+      fb.className = 'anim-fallback anim-viewer-canvas';
+      animViewer.stage.appendChild(fb);
+    }
+    fb.setAttribute('src', item.src);
+    fb.setAttribute('autoplay', '');
+    fb.setAttribute('loop', '');
+    fb.setAttribute('background', 'transparent');
+    animViewer.scrub.disabled = true;
+    animViewer.time.textContent = '—';
+    setMetaStatus('Detailed metadata inspection is available for Rive (.riv) files.');
+  }
+
+  function openAnimViewer(item) {
+    if (!animViewer.root) return;
+    const type = animType(item.src);
+    animViewer.name.textContent = item.name;
+    animViewer.eyebrow.textContent = `${animTypeLabel(type)} animation`;
+    animViewer.sub.textContent = item.src.split('/').pop();
+    animViewer.tags.innerHTML = (item.tags || []).map(t => `<span class="tag">${t}</span>`).join('');
+    animViewer.dl.href = item.src;
+    animViewer.dl.setAttribute('download', item.name);
+
+    // Reset transport UI to defaults.
+    vstate.playing = true; vstate.loop = true; vstate.speed = 1; vstate.progress = 0; vstate.duration = 0;
+    animViewer.loop.setAttribute('aria-pressed', 'true');
+    animViewer.speed.value = '1';
+    animViewer.scrub.value = '0';
+    syncPlayBtn();
+
+    animViewer.root.classList.remove('hidden');
+    animViewer.root.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+
+    if (type === 'rive') startViewerRive(item);
+    else startViewerLottie(item);
+  }
+
+  function closeAnimViewer() {
+    if (!animViewer.root) return;
+    cleanupViewerRive();
+    animViewer.root.classList.add('hidden');
+    animViewer.root.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  // Open the viewer from a card click (but let the corner download link work).
+  els.animGrid?.addEventListener('click', e => {
+    if (e.target.closest('.anim-dl')) return;
+    const card = e.target.closest('.card-anim');
+    if (!card) return;
+    const item = animations.find(a => a.name === card.dataset.animName);
+    if (item) openAnimViewer(item);
+  });
+  els.animGrid?.addEventListener('keydown', e => {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    const card = e.target.closest('.card-anim');
+    if (!card) return;
+    e.preventDefault();
+    const item = animations.find(a => a.name === card.dataset.animName);
+    if (item) openAnimViewer(item);
+  });
+
+  if (animViewer.root) {
+    animViewer.close.addEventListener('click', closeAnimViewer);
+    animViewer.root.addEventListener('click', e => { if (e.target === animViewer.root) closeAnimViewer(); });
+
+    animViewer.play.addEventListener('click', () => {
+      if (!viewerRive) return;
+      vstate.playing = !vstate.playing;
+      try { vstate.playing ? viewerRive.play() : viewerRive.pause(); } catch (_) {}
+      vstate.startTs = performance.now();
+      syncPlayBtn();
+    });
+    animViewer.restart.addEventListener('click', () => {
+      if (!viewerRive) return;
+      try { viewerRive.reset({ autoplay: true }); } catch (_) { try { viewerRive.play(); } catch (_) {} }
+      vstate.progress = 0; vstate.playing = true; vstate.startTs = performance.now();
+      applyViewerSpeed(); syncPlayBtn();
+    });
+    animViewer.loop.addEventListener('click', () => {
+      vstate.loop = !vstate.loop;
+      animViewer.loop.setAttribute('aria-pressed', String(vstate.loop));
+    });
+    animViewer.speed.addEventListener('change', () => {
+      vstate.speed = parseFloat(animViewer.speed.value) || 1;
+      applyViewerSpeed();
+    });
+    animViewer.scrub.addEventListener('input', () => {
+      const v = parseFloat(animViewer.scrub.value);
+      vstate.progress = v; vstate.startTs = performance.now();
+      animViewer.time.textContent = `${fmtTime(v * vstate.duration)} / ${fmtTime(vstate.duration)}`;
+      scrubViewer(v);
+    });
   }
 
   // ---------- variant ----------------------------------------------------
@@ -1507,7 +1780,8 @@ ${chosen.map(c => '  ' + c.name).join('\n')}
       if (e.key === '/' && document.activeElement !== els.search) {
         e.preventDefault(); els.search.focus();
       } else if (e.key === 'Escape') {
-        if (illuViewer.root && !illuViewer.root.classList.contains('hidden')) closeIlluViewer();
+        if (animViewer.root && !animViewer.root.classList.contains('hidden')) closeAnimViewer();
+        else if (illuViewer.root && !illuViewer.root.classList.contains('hidden')) closeIlluViewer();
         else if (!els.drawer.classList.contains('hidden')) closeDrawer();
         else if (els.allDialog.open) els.allDialog.close();
         else if (selectMode) els.selectToggle.click();
