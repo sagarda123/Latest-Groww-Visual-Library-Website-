@@ -227,8 +227,8 @@
       </svg>
     </div>
     <h2>Animation is coming.</h2>
-    <p>Lottie files, motion specs, and looping micro-interactions will live here. Drop <code>.json</code> Lotties into <code>data/animations/</code> and they'll preview right on the card.</p>
-    <div class="empty-meta mono">data/animations.json</div>
+    <p>Rive (<code>.riv</code>) and Lottie animations live here. Drop files into <code>animations/</code> and list them in <code>animations.json</code> — they'll preview right on the card and open in a full player.</p>
+    <div class="empty-meta mono">animations.json</div>
   </div>
 </section>
 
@@ -361,6 +361,58 @@
       <button class="btn btn-soft" data-illu-viewer-dl="svg">SVG</button>
       <button class="btn btn-soft" data-illu-viewer-dl="webp">WEBP</button>
       <button class="btn btn-soft" data-illu-viewer-dl="png">PNG</button>
+    </div>
+  </div>
+</div>
+
+<!-- Animation viewer — large Rive stage + playback controls + detected metadata -->
+<div id="anim-viewer" class="anim-viewer hidden" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="anim-viewer-name">
+  <button class="anim-viewer-close" id="anim-viewer-close" aria-label="Close viewer">×</button>
+  <div class="anim-viewer-inner" role="document">
+    <div class="anim-viewer-head">
+      <div>
+        <div class="anim-viewer-eyebrow" id="anim-viewer-eyebrow">Rive animation</div>
+        <h2 id="anim-viewer-name"></h2>
+        <div class="anim-viewer-sub" id="anim-viewer-sub"></div>
+      </div>
+      <div class="anim-viewer-tags" id="anim-viewer-tags"></div>
+    </div>
+
+    <div class="anim-viewer-body">
+      <div class="anim-viewer-stage-col">
+        <div class="anim-viewer-stage" id="anim-viewer-stage">
+          <canvas id="anim-viewer-canvas" class="anim-viewer-canvas"></canvas>
+        </div>
+        <div class="anim-viewer-controls">
+          <button class="anim-ctrl-btn anim-play-btn is-playing" id="anim-play" aria-label="Play / pause">
+            <svg class="ic-play" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+            <svg class="ic-pause" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
+          </button>
+          <button class="anim-ctrl-btn" id="anim-restart" aria-label="Restart">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9 9 0 0 0-6.4 2.6L3 8"/><path d="M3 3v5h5"/></svg>
+          </button>
+          <span class="anim-time mono" id="anim-time">0:00 / 0:00</span>
+          <input type="range" id="anim-scrub" class="anim-scrub" min="0" max="1" step="0.001" value="0" aria-label="Seek">
+          <button class="anim-ctrl-btn anim-loop-btn" id="anim-loop" aria-pressed="true" aria-label="Toggle loop" title="Loop">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+          </button>
+          <select id="anim-speed" class="anim-speed" aria-label="Playback speed">
+            <option value="0.5">0.5×</option>
+            <option value="1" selected>1×</option>
+            <option value="1.5">1.5×</option>
+            <option value="2">2×</option>
+          </select>
+        </div>
+      </div>
+
+      <aside class="anim-viewer-meta" id="anim-viewer-meta" aria-live="polite">
+        <div class="anim-meta-status" id="anim-meta-status">Inspecting…</div>
+      </aside>
+    </div>
+
+    <div class="anim-viewer-foot">
+      <span class="anim-viewer-fmt-label">Download source</span>
+      <a class="btn btn-soft" id="anim-viewer-dl" download>.riv</a>
     </div>
   </div>
 </div>
