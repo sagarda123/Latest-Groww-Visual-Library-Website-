@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Naming conventions · Rive Animations</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="stylesheet" href="fonts/standard/groww-huge-standard.css">
+<style>
+  @font-face{font-family:'Sohne';src:url('fonts/mint-ds/Sohne-Kraftig.otf') format('opentype');font-weight:500;font-display:swap;}
+  @font-face{font-family:'GrowwSans';src:url('fonts/mint-ds/GrowwSans-Regular.otf') format('opentype');font-weight:400;font-display:swap;}
+  @font-face{font-family:'GrowwSans';src:url('fonts/mint-ds/GrowwSans-Medium.otf') format('opentype');font-weight:500;font-display:swap;}
+</style>
+<link rel="stylesheet" href="styles.css">
+<script>(function(){try{var t=localStorage.getItem('rive-theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme: dark)').matches))document.documentElement.classList.add('dark');}catch(e){}})();</script>
+<style>
+  /* segment colours (raw palette, per original) */
+  :root{--violet:#8b5cf6;--amber:#f59e0b;--sky:#0ea5e9;--rose:#f43f5e;--emerald:#10b981;--fuchsia:#d946ef;--orange:#f97316;--cyan:#06b6d4;--indigo:#6366f1;--red:#ef4444;--teal:#14b8a6;--lime:#84cc16;}
+  .cv-wrap{min-height:100vh;background:var(--backgroundPrimary);}
+  .cv-header{position:sticky;top:0;z-index:30;border-bottom:1px solid var(--borderPrimary);background:color-mix(in srgb,var(--backgroundPrimary) 90%,transparent);backdrop-filter:blur(8px);}
+  .cv-header-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:14px 24px;}
+  .cv-back{display:inline-flex;align-items:center;gap:8px;color:var(--contentSecondary);font-weight:500;font-size:13px;}
+  .cv-back:hover{color:var(--contentPrimary);}
+  .cv-body{max-width:1200px;margin:0 auto;display:flex;gap:48px;padding:0 24px;}
+  .cv-toc{display:none;}
+  @media(min-width:1024px){.cv-toc{display:block;width:256px;flex-shrink:0;}.cv-toc-sticky{position:sticky;top:96px;padding:48px 0;}}
+  .cv-toc ol{list-style:none;display:flex;flex-direction:column;gap:2px;}
+  .cv-toc a{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;color:var(--contentSecondary);font-size:13px;}
+  .cv-toc a:hover{background:var(--backgroundSecondary);color:var(--contentPrimary);}
+  .cv-toc a.active{background:var(--backgroundSecondary);color:var(--contentPrimary);}
+  .cv-toc-ico{height:24px;width:24px;border-radius:6px;display:grid;place-items:center;background:var(--backgroundSecondary);color:var(--contentTertiary);flex-shrink:0;}
+  .cv-toc a.active .cv-toc-ico{background:var(--backgroundAccentSubtle);color:var(--contentAccent);}
+  .cv-main{flex:1;min-width:0;padding:48px 0 96px;}
+  .cv-section{scroll-margin-top:96px;}
+  .cv-section + .cv-section{margin-top:96px;}
+  .cv-eyebrow{color:var(--contentAccent);}
+  .cv-lead{color:var(--contentSecondary);margin-top:8px;max-width:680px;}
+  .cv-pageh{margin-bottom:64px;}
+  .cv-jump{margin-top:20px;display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:999px;background:var(--backgroundAccent);color:var(--contentOnColour);font-weight:500;}
+  .cv-card{border:1px solid var(--borderPrimary);border-radius:16px;background:var(--backgroundSurfaceZ1);padding:20px;}
+  .cv-card + .cv-card,.cv-grid > .cv-card{margin-top:0;}
+  .cv-grid{display:grid;gap:16px;margin-top:20px;}
+  .cv-grid > *{min-width:0;}
+  .cv-grid-2{grid-template-columns:1fr;}
+  @media(min-width:720px){.cv-grid-2{grid-template-columns:1fr 1fr;}}
+  .cv-grid-3{grid-template-columns:1fr;}
+  @media(min-width:720px){.cv-grid-3{grid-template-columns:repeat(3,1fr);}}
+  .cv-sub{margin-top:32px;margin-bottom:8px;color:var(--contentPrimary);}
+  .cv-mono{font-family:'GrowwSans',ui-monospace,monospace;font-variant-ligatures:none;}
+  .cv-anatomy{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-end;border:1px solid var(--borderPrimary);border-radius:12px;background:var(--backgroundSurfaceZ2);padding:16px;margin-top:16px;}
+  .cv-part{display:flex;flex-direction:column;gap:4px;align-items:flex-start;}
+  .cv-chip{font-family:ui-monospace,monospace;font-size:13px;padding:4px 10px;border-radius:8px;background:var(--backgroundSecondary);color:var(--contentPrimary);border:1px solid var(--borderPrimary);}
+  .cv-chip.opt{opacity:.6;}
+  .cv-part-label{font-size:10px;color:var(--contentTertiary);text-transform:uppercase;letter-spacing:.08em;}
+  .cv-req{font-size:9px;padding:1px 6px;border-radius:999px;background:var(--backgroundAccentSubtle);color:var(--contentOnAccentSubtle);text-transform:uppercase;}
+  .cv-req.optional{background:var(--backgroundSecondary);color:var(--contentTertiary);}
+  .cv-ex{display:flex;flex-direction:column;gap:4px;border:1px solid var(--borderPrimary);border-radius:12px;padding:14px;background:var(--backgroundSurfaceZ1);transition:border-color .15s;}
+  .cv-ex:hover{border-color:var(--borderAccent);}
+  .cv-ex code{font-family:ui-monospace,monospace;font-size:13px;color:var(--contentPrimary);overflow-wrap:anywhere;}
+  .cv-ex .meaning{font-size:12px;color:var(--contentSecondary);overflow-wrap:anywhere;}
+  .cv-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
+  .cv-token{font-family:ui-monospace,monospace;font-size:12px;padding:4px 10px;border-radius:999px;background:var(--backgroundSecondary);color:var(--contentSecondary);border:1px solid var(--borderPrimary);cursor:pointer;}
+  .cv-token:hover{background:var(--backgroundTertiary);color:var(--contentPrimary);}
+  .cv-callout{display:flex;gap:12px;border-radius:12px;padding:16px;margin-top:20px;border:1px solid var(--borderPrimary);background:var(--backgroundSurfaceZ2);}
+  .cv-callout.info{background:var(--backgroundAccentSubtle);border-color:var(--borderAccent);color:var(--contentOnAccentSubtle);}
+  .cv-callout.warn{background:var(--backgroundWarningSubtle);border-color:var(--backgroundWarning);color:var(--contentOnWarningSubtle);}
+  .cv-callout.green{background:var(--backgroundPositiveSubtle);border-color:var(--borderAccent);color:var(--contentOnPositiveSubtle);}
+  .cv-do{display:flex;gap:8px;align-items:baseline;padding:6px 0;font-size:13px;}
+  .cv-do .bad{color:var(--contentNegative);text-decoration:line-through;}
+  .cv-do .good{color:var(--contentPrimary);}
+  .cv-do .x{color:var(--contentNegative);} .cv-do .ok{color:var(--contentAccent);}
+  .cv-table-wrap{max-width:100%;min-width:0;overflow-x:auto;border:2px solid var(--borderAccent);border-radius:16px;margin-top:20px;}
+  table.cv-table{border-collapse:collapse;min-width:900px;width:100%;font-size:13px;}
+  .cv-table th,.cv-table td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--borderPrimary);}
+  .cv-table th{color:var(--contentTertiary);text-transform:uppercase;font-size:10px;letter-spacing:.08em;}
+  .cv-table td code{font-family:ui-monospace,monospace;color:var(--contentPrimary);}
+  .cv-table tr:last-child td{border-bottom:0;}
+  .cv-footer{border-top:1px solid var(--borderPrimary);margin-top:64px;padding:24px;}
+  .cv-glyph{height:28px;width:28px;border-radius:6px;display:grid;place-items:center;font-family:'Sohne';font-weight:500;font-size:12px;background:var(--backgroundSecondary);color:var(--contentSecondary);}
+</style>
+</head>
+<body>
+<div class="cv-wrap">
+
+<header class="cv-header">
+  <div class="cv-header-inner">
+    <a class="cv-back" href="index.html"><span class="mds-iconview mds-iconview--small"><i class="gh-standard-arrow-left-01"></i></span> Back to repository</a>
+    <button id="cv-theme" class="rv-icon-btn" aria-label="Toggle theme" title="Toggle theme"><span class="mds-iconview mds-iconview--small"><i class="gh-standard-moon-02" id="cv-theme-ico"></i></span></button>
+  </div>
+</header>
+
+<div class="cv-body">
+  <aside class="cv-toc"><div class="cv-toc-sticky">
+    <div class="heading-eyebrow" style="color:var(--contentTertiary);margin-bottom:12px;padding-left:10px">Contents</div>
+    <ol id="cv-toc-list">
+      <li><a href="#files"><span class="cv-toc-ico"><span class="mds-iconview mds-iconview--xsmall"><i class="gh-standard-file-validation"></i></span></span>File naming</a></li>
+      <li><a href="#prefixes"><span class="cv-toc-ico"><span class="mds-iconview mds-iconview--xsmall"><i class="gh-standard-tag-01"></i></span></span>In-file naming prefixes</a></li>
+      <li><a href="#artboards"><span class="cv-toc-ico"><span class="mds-iconview mds-iconview--xsmall"><i class="gh-standard-grid-02"></i></span></span>Artboards &amp; Components</a></li>
+      <li><a href="#vm-sm"><span class="cv-toc-ico"><span class="mds-iconview mds-iconview--xsmall"><i class="gh-standard-share-08"></i></span></span>View models &amp; SMs</a></li>
+      <li><a href="#instances"><span class="cv-toc-ico"><span class="mds-iconview mds-iconview--xsmall"><i class="gh-standard-puzzle"></i></span></span>Instances</a></li>
+      <li><a href="#properties"><span class="cv-toc-ico"><span class="mds-iconview mds-iconview--xsmall"><i class="gh-standard-paint-brush-02"></i></span></span>VM properties</a></li>
+      <li><a href="#events-listeners"><span class="cv-toc-ico"><span class="mds-iconview mds-iconview--xsmall"><i class="gh-standard-energy"></i></span></span>Events &amp; hit areas</a></li>
+      <li><a href="#timelines"><span class="cv-toc-ico"><span class="mds-iconview mds-iconview--xsmall"><i class="gh-standard-play-circle"></i></span></span>Timelines</a></li>
+      <li><a href="#fonts"><span class="cv-toc-ico"><span class="mds-iconview mds-iconview--xsmall"><i class="gh-standard-text-font"></i></span></span>Fonts</a></li>
+      <li><a href="#cheat-sheet"><span class="cv-toc-ico"><span class="mds-iconview mds-iconview--xsmall"><i class="gh-standard-tick-02"></i></span></span>Cheat sheet</a></li>
+    </ol>
+  </div></aside>
+
+  <main class="cv-main">
+    <div class="cv-pageh">
+      <div class="heading-eyebrow cv-eyebrow">Motion Design System</div>
+      <h1 class="display-large" style="margin-top:8px;color:var(--contentPrimary)">Naming conventions</h1>
+      <p class="body-large cv-lead">How to name every object in a Rive file.</p>
+      <a class="cv-jump" href="#cheat-sheet">Jump to cheat sheet</a>
+    </div>
+
+    <!-- 01 FILES -->
+    <section class="cv-section" id="files">
+      <div class="heading-eyebrow cv-eyebrow">01 — Files</div>
+      <h2 class="heading-large" style="color:var(--contentPrimary)">File naming</h2>
+      <p class="body-base cv-lead">Every .riv file name is an address — snake_case, broad to narrow. Sequence numbers use an s-prefix, versions use a v-prefix — making both unambiguous.</p>
+      <div class="cv-anatomy">
+        <div class="cv-part"><span class="cv-chip">mds_rive</span><span class="cv-part-label">MDS prefix</span><span class="cv-req">required</span></div>
+        <div class="cv-part"><span class="cv-chip">[type]</span><span class="cv-part-label">Animation type</span><span class="cv-req">required</span></div>
+        <div class="cv-part"><span class="cv-chip opt">[_product?]</span><span class="cv-part-label">Product</span><span class="cv-req optional">optional</span></div>
+        <div class="cv-part"><span class="cv-chip opt">[_feature?]</span><span class="cv-part-label">Feature</span><span class="cv-req optional">optional</span></div>
+        <div class="cv-part"><span class="cv-chip opt">[_s{n}?]</span><span class="cv-part-label">Sequence</span><span class="cv-req optional">optional</span></div>
+        <div class="cv-part"><span class="cv-chip opt">[_v{n}?]</span><span class="cv-part-label">Version</span><span class="cv-req optional">optional</span></div>
+        <div class="cv-part"><span class="cv-chip">.riv</span><span class="cv-part-label">Extension</span><span class="cv-req">required</span></div>
+      </div>
+      <div class="cv-grid cv-grid-3">
+        <div class="cv-card"><div class="body-base-heavy">Animation types</div><div class="cv-chips">
+          <span class="cv-token">ftux</span><span class="cv-token">gtm_story</span><span class="cv-token">spot</span><span class="cv-token">loader</span><span class="cv-token">order_status</span><span class="cv-token">icon</span><span class="cv-token">spot_hero</span><span class="cv-token">hero</span><span class="cv-token">landing_page_hero</span><span class="cv-token">logo</span></div></div>
+        <div class="cv-card"><div class="body-base-heavy">Products</div><div class="cv-chips">
+          <span class="cv-token">stocks</span><span class="cv-token">fno</span><span class="cv-token">charts</span><span class="cv-token">mf</span><span class="cv-token">loans</span></div></div>
+        <div class="cv-card"><div class="body-base-heavy">Sub-products / features</div><div class="cv-chips">
+          <span class="cv-token">mtf</span><span class="cv-token">intraday</span><span class="cv-token">technicals</span></div>
+          <div class="body-small" style="color:var(--contentTertiary);margin-top:10px">Extensible — needs MDS approval</div></div>
+      </div>
+      <h3 class="heading-small cv-sub">Examples</h3>
+      <div class="cv-grid cv-grid-2">
+        <div class="cv-ex"><code>mds_rive_loader_stocks_mtf.riv</code><span class="meaning">Loader for MTF in Stocks</span></div>
+        <div class="cv-ex"><code>mds_rive_gtm_story_stocks_s2.riv</code><span class="meaning">Second file in a GTM story sequence — note s prefix</span></div>
+        <div class="cv-ex"><code>mds_rive_loader_stocks_mtf_v2.riv</code><span class="meaning">Redesigned loader — v1 still live, must coexist</span></div>
+        <div class="cv-ex"><code>mds_rive_ftux_mf.riv</code><span class="meaning">First-time UX for Mutual Funds</span></div>
+        <div class="cv-ex"><code>mds_rive_order_status_fno.riv</code><span class="meaning">Order status for F&amp;O</span></div>
+        <div class="cv-ex"><code>mds_rive_logo.riv</code><span class="meaning">Generic logo — no product context</span></div>
+      </div>
+      <div class="cv-callout info"><span class="mds-iconview mds-iconview--small"><i class="gh-standard-information-circle"></i></span><div><b>Sequence vs version:</b> <code>_s2</code> = file 2 of a multi-file project (all files needed together). <code>_v2</code> = redesigned replacement, only used while the old version is still alive in production.</div></div>
+    </section>
+
+    <!-- 02 PREFIXES -->
+    <section class="cv-section" id="prefixes">
+      <div class="heading-eyebrow cv-eyebrow">02 — Prefix system</div>
+      <h2 class="heading-large" style="color:var(--contentPrimary)">In-file naming: two prefixes</h2>
+      <p class="body-base cv-lead">Everything named inside a Rive file follows one rule. The prefix casing tells you whether the thing is a container or a descriptor — no lookup required.</p>
+      <div class="cv-grid cv-grid-2">
+        <div class="cv-card" style="border-color:var(--violet)"><div class="body-base-heavy" style="color:var(--violet)">PascalCase · RiveX</div><div class="body-small" style="color:var(--contentSecondary);margin-top:4px">Things — containers and entities</div>
+          <div class="cv-chips"><span class="cv-token">RiveXAbLoader</span><span class="cv-token">RiveXCompButton</span><span class="cv-token">RiveXSmLoadingStatus</span><span class="cv-token">RiveXVmButton</span><span class="cv-token">RiveXEnumThemeMode</span></div></div>
+        <div class="cv-card" style="border-color:var(--emerald)"><div class="body-base-heavy" style="color:var(--emerald)">camelCase · riveX</div><div class="body-small" style="color:var(--contentSecondary);margin-top:4px">Descriptors — properties, timelines, events, inputs</div>
+          <div class="cv-chips"><span class="cv-token">riveXBooleanIsLoading</span><span class="cv-token">riveXEventOnComplete</span><span class="cv-token">riveXHitAreaCard</span><span class="cv-token">riveXTimelineOnPress</span><span class="cv-token">riveXImageAvatar</span></div></div>
+      </div>
+      <div class="cv-callout green"><span class="mds-iconview mds-iconview--small"><i class="gh-standard-information-circle"></i></span><div><b>RiveX</b> for containers — canvases, data contracts, behaviour graphs. <b>riveX</b> for descriptors — properties, events, timelines.</div></div>
+    </section>
+
+    <!-- 03 ARTBOARDS -->
+    <section class="cv-section" id="artboards">
+      <div class="heading-eyebrow cv-eyebrow">03 — Canvases</div>
+      <h2 class="heading-large" style="color:var(--contentPrimary)">Artboards &amp; Components</h2>
+      <p class="body-base cv-lead">Artboard naming uses the two-char Ab abbreviation (matching Vm and Sm). RiveXComp names artboards exported as reusable components via the Rive editor.</p>
+      <h3 class="heading-small cv-sub">Artboards — RiveXAb</h3>
+      <div class="cv-anatomy">
+        <div class="cv-part"><span class="cv-chip">RiveXAb</span><span class="cv-part-label">Fixed prefix</span><span class="cv-req">required</span></div>
+        <div class="cv-part"><span class="cv-chip">[AnimationType]</span><span class="cv-part-label">Animation type</span><span class="cv-req">required</span></div>
+        <div class="cv-part"><span class="cv-chip opt">[IconOrIllustration?]</span><span class="cv-part-label">Icon / illustration</span><span class="cv-req optional">optional</span></div>
+      </div>
+      <div class="cv-grid cv-grid-3">
+        <div class="cv-ex"><code>RiveXAbFtux</code><span class="meaning">Only artboard in an FTUX file</span></div>
+        <div class="cv-ex"><code>RiveXAbOrderStatusSuccess</code><span class="meaning">Success artboard in an order-status file</span></div>
+        <div class="cv-ex"><code>RiveXAbIconWallet</code><span class="meaning">Wallet artboard in a multi-icon file</span></div>
+      </div>
+      <h3 class="heading-small cv-sub">Components — RiveXComp</h3>
+      <div class="cv-card"><div class="body-base" style="color:var(--contentSecondary)">Export as Component turns an artboard into a reusable, instance-aware building block. Each component instance gets its own View Model Instance.</div>
+        <div class="cv-anatomy"><div class="cv-part"><span class="cv-chip">RiveXComp</span><span class="cv-part-label">Fixed prefix</span><span class="cv-req">required</span></div><div class="cv-part"><span class="cv-chip">[Name]</span><span class="cv-part-label">Name</span><span class="cv-req">required</span></div></div></div>
+      <div class="cv-grid cv-grid-3">
+        <div class="cv-ex"><code>RiveXCompButton</code><span class="meaning">Reusable button with Idle/Hover/Pressed/Disabled states</span></div>
+        <div class="cv-ex"><code>RiveXCompToast</code><span class="meaning">Notification toast component</span></div>
+        <div class="cv-ex"><code>RiveXCompProgressBar</code><span class="meaning">Data-bound progress indicator</span></div>
+        <div class="cv-ex"><code>RiveXCompAvatar</code><span class="meaning">User avatar with online/offline indicator</span></div>
+        <div class="cv-ex"><code>RiveXCompBadge</code><span class="meaning">Numeric badge for counts</span></div>
+        <div class="cv-ex"><code>RiveXCompSparkline</code><span class="meaning">Inline data-bound chart row</span></div>
+      </div>
+      <div class="cv-grid cv-grid-3">
+        <div class="cv-card"><div class="body-base-heavy">Ab = artboard, Comp = component</div><div class="body-small" style="color:var(--contentSecondary);margin-top:4px">Ab is the canvas. Comp is the exported, instance-aware building block. A Comp always corresponds to an Ab underneath.</div></div>
+        <div class="cv-card"><div class="body-base-heavy">PascalCase, no underscores</div><div class="body-small" style="color:var(--contentSecondary);margin-top:4px">Both RiveXAb and RiveXComp use PascalCase concatenation throughout — no separators between segments.</div></div>
+        <div class="cv-card"><div class="body-base-heavy">Mark instances as Exported</div><div class="body-small" style="color:var(--contentSecondary);margin-top:4px">For a View Model Instance to be visible to runtime developers, it must be marked Exported in the Rive editor.</div></div>
+      </div>
+    </section>
+
+    <!-- 04 VM/SM/ENUMS -->
+    <section class="cv-section" id="vm-sm">
+      <div class="heading-eyebrow cv-eyebrow">04 — Brains</div>
+      <h2 class="heading-large" style="color:var(--contentPrimary)">View models, state machines &amp; enums</h2>
+      <p class="body-base cv-lead">The data and behaviour layer. View Models define the API contract. State Machines drive the animation flow. Enums give you named, type-safe switches.</p>
+      <div class="cv-grid cv-grid-2">
+        <div class="cv-card" style="border-color:var(--violet)"><div style="display:flex;align-items:center;gap:8px"><span class="cv-glyph" style="background:color-mix(in srgb,var(--violet) 18%,transparent);color:var(--violet)">Vm</span><div class="body-base-heavy">View Models</div></div>
+          <div class="body-small" style="color:var(--contentSecondary);margin-top:6px">Data contract — your app reads and writes these · <code>RiveXVm[InteractionType]</code></div>
+          <div class="cv-chips"><span class="cv-token">RiveXVmThemeSwitcher</span><span class="cv-token">RiveXVmButton</span><span class="cv-token">RiveXVmCompletionStatus</span><span class="cv-token">RiveXVmDataVisualInteraction</span></div>
+          <div class="body-small" style="color:var(--contentTertiary);margin-top:8px">Prefer View Models over SM Inputs for all new files.</div></div>
+        <div class="cv-card" style="border-color:var(--sky)"><div style="display:flex;align-items:center;gap:8px"><span class="cv-glyph" style="background:color-mix(in srgb,var(--sky) 18%,transparent);color:var(--sky)">Sm</span><div class="body-base-heavy">State Machines</div></div>
+          <div class="body-small" style="color:var(--contentSecondary);margin-top:6px">Behaviour — drives the animation graph · <code>RiveXSm[InteractionType]</code></div>
+          <div class="cv-chips"><span class="cv-token">RiveXSmLoadingStatus</span><span class="cv-token">RiveXSmMicroInteraction</span><span class="cv-token">RiveXSmProgressiveStatus</span></div>
+          <div class="body-small" style="color:var(--contentTertiary);margin-top:8px">One SM per artboard is the norm; use Layers for parallel concerns.</div></div>
+      </div>
+      <h3 class="heading-small cv-sub">Custom Enums — RiveXEnum</h3>
+      <div class="cv-card"><div class="body-base" style="color:var(--contentSecondary)">Enum types defined in the Rive Data panel are containers — PascalCase.</div>
+        <div class="cv-anatomy"><div class="cv-part"><span class="cv-chip">RiveXEnum</span><span class="cv-part-label">Fixed prefix</span></div><div class="cv-part"><span class="cv-chip">[Name]</span><span class="cv-part-label">Name</span></div></div>
+        <div class="cv-grid cv-grid-3">
+          <div class="cv-ex"><code>RiveXEnumCompletionStatus</code><span class="meaning">Values: Success, Error, Pending</span></div>
+          <div class="cv-ex"><code>RiveXEnumButtonVariant</code><span class="meaning">Values: Primary, Secondary, Ghost, Danger</span></div>
+          <div class="cv-ex"><code>RiveXEnumThemeMode</code><span class="meaning">Values: Light, Dark</span></div>
+        </div></div>
+      <h3 class="heading-small cv-sub">Interaction types vocabulary</h3>
+      <div class="cv-chips"><span class="cv-token">ThemeSwitcher</span><span class="cv-token">Button</span><span class="cv-token">CompletionStatus</span><span class="cv-token">LoadingStatus</span><span class="cv-token">MicroInteraction</span><span class="cv-token">DataBinding</span><span class="cv-token">ProgressiveStatus</span><span class="cv-token">DataVisualInteraction</span><span class="cv-token">FormValidation</span><span class="cv-token">ScrollProgress</span></div>
+    </section>
+
+    <!-- 05 INSTANCES -->
+    <section class="cv-section" id="instances">
+      <div class="heading-eyebrow cv-eyebrow">05 — Presets</div>
+      <h2 class="heading-large" style="color:var(--contentPrimary)">Instances</h2>
+      <p class="body-base cv-lead">Pre-configured presets of View Models, State Machines, and Artboards. The artboard abbreviation is Ab.</p>
+      <div class="cv-anatomy">
+        <div class="cv-part"><span class="cv-chip">riveXInstance</span><span class="cv-part-label">Fixed prefix</span><span class="cv-req">required</span></div>
+        <div class="cv-part"><span class="cv-chip">[Vm|Sm|Ab]</span><span class="cv-part-label">Source type</span><span class="cv-req">required</span></div>
+        <div class="cv-part"><span class="cv-chip">[SourceName]</span><span class="cv-part-label">Source name</span><span class="cv-req">required</span></div>
+        <div class="cv-part"><span class="cv-chip">[Variant]</span><span class="cv-part-label">Variant</span><span class="cv-req">required</span></div>
+      </div>
+      <div class="cv-grid cv-grid-3">
+        <div class="cv-ex"><code>riveXInstanceVmButtonPrimary</code><span class="meaning">Parent RiveXVmButton · Variant Primary</span></div>
+        <div class="cv-ex"><code>riveXInstanceVmButtonSecondary</code><span class="meaning">Parent RiveXVmButton · Variant Secondary</span></div>
+        <div class="cv-ex"><code>riveXInstanceVmThemeSwitcherLight</code><span class="meaning">Parent RiveXVmThemeSwitcher · Variant Light</span></div>
+        <div class="cv-ex"><code>riveXInstanceVmCompletionStatusSuccess</code><span class="meaning">Parent RiveXVmCompletionStatus · Variant Success</span></div>
+        <div class="cv-ex"><code>riveXInstanceSmLoadingStatusActive</code><span class="meaning">Parent RiveXSmLoadingStatus · Variant Active</span></div>
+        <div class="cv-ex"><code>riveXInstanceAbOrderStatusSuccess</code><span class="meaning">Parent RiveXAbOrderStatus · Variant Success</span></div>
+      </div>
+      <div class="cv-callout info"><span class="mds-iconview mds-iconview--small"><i class="gh-standard-information-circle"></i></span><div><b>Exported instances.</b> Mark instances that developers should consume as <b>Exported</b> in the Rive Data panel. Unexported instances are internal test fixtures — the runtime cannot reference them by name.</div></div>
+    </section>
+
+    <!-- 06 PROPERTIES -->
+    <section class="cv-section" id="properties">
+      <div class="heading-eyebrow cv-eyebrow">06 — Inputs</div>
+      <h2 class="heading-large" style="color:var(--contentPrimary)">View model properties</h2>
+      <p class="body-base cv-lead">Three segments, always in this order. Includes Image, List, and ViewModel types, and the boolean directionality rule.</p>
+      <div class="cv-anatomy">
+        <div class="cv-part"><span class="cv-chip">riveX</span><span class="cv-part-label">Prefix</span><span class="cv-req">required</span></div>
+        <div class="cv-part"><span class="cv-chip">[Type]</span><span class="cv-part-label">Property type</span><span class="cv-req">required</span></div>
+        <div class="cv-part"><span class="cv-chip">[Action]</span><span class="cv-part-label">Action / state</span><span class="cv-req">required</span></div>
+      </div>
+      <div class="cv-grid cv-grid-3">
+        <div class="cv-ex"><code>riveXTriggerOnPress</code><span class="meaning"><b>Trigger</b> — Fire-and-forget — goes from runtime INTO Rive</span></div>
+        <div class="cv-ex"><code>riveXBooleanIsLoading</code><span class="meaning"><b>Boolean</b> — Use Is or Has prefix; true = active state</span></div>
+        <div class="cv-ex"><code>riveXEnumCompletionStatus</code><span class="meaning"><b>Enum</b> — Named switch; use the RiveXEnum type as the type slot</span></div>
+        <div class="cv-ex"><code>riveXNumberScrollProgress</code><span class="meaning"><b>Number</b> — Any numeric value — progress, speed, count</span></div>
+        <div class="cv-ex"><code>riveXStringLabel</code><span class="meaning"><b>String</b> — Text content injected at runtime</span></div>
+        <div class="cv-ex"><code>riveXColorAccent</code><span class="meaning"><b>Color</b> — Dynamic color value — theme, branding</span></div>
+        <div class="cv-ex"><code>riveXImageAvatar</code><span class="meaning"><b>Image</b> — Runtime-swappable image slot</span></div>
+        <div class="cv-ex"><code>riveXListFeedItems</code><span class="meaning"><b>List</b> — Array of nested VM instances — for repeating rows</span></div>
+        <div class="cv-ex"><code>riveXViewModelConfig</code><span class="meaning"><b>ViewModel</b> — Nested View Model — for compound data structures</span></div>
+      </div>
+      <div class="cv-callout warn"><span class="mds-iconview mds-iconview--small"><i class="gh-standard-alert-02"></i></span><div>
+        <b>Breaking change — Boolean directionality rule.</b> Boolean VM property names must be phrased so that <code>true</code> = the active / on state. Use an <code>Is</code> or <code>Has</code> prefix.
+        <div style="margin-top:10px">
+          <div class="cv-do"><span class="x">✗</span><span class="bad">riveXBooleanThemeDark</span> — Ambiguous — is true dark or false dark?</div>
+          <div class="cv-do"><span class="ok">✓</span><span class="good">riveXBooleanIsDark</span> — Clear — true = dark mode is on</div>
+          <div class="cv-do"><span class="x">✗</span><span class="bad">riveXBooleanLoading</span> — No Is/Has prefix — direction unclear</div>
+          <div class="cv-do"><span class="ok">✓</span><span class="good">riveXBooleanIsLoading</span> — Clear — true = currently loading</div>
+          <div class="cv-do"><span class="x">✗</span><span class="bad">riveXBooleanError</span> — Noun, not a boolean state</div>
+          <div class="cv-do"><span class="ok">✓</span><span class="good">riveXBooleanHasError</span> — Clear — true = error is present</div>
+        </div></div></div>
+      <h3 class="heading-small cv-sub">Common actions &amp; states</h3>
+      <div class="cv-chips"><span class="cv-token">IsLoading</span><span class="cv-token">IsDark</span><span class="cv-token">IsDisabled</span><span class="cv-token">HasError</span><span class="cv-token">OnPress</span><span class="cv-token">OnHover</span><span class="cv-token">OnClick</span><span class="cv-token">OnRelease</span><span class="cv-token">CompletionStatusSuccess</span><span class="cv-token">CompletionStatusError</span><span class="cv-token">ScrollProgress</span><span class="cv-token">CurrentPage</span></div>
+    </section>
+
+    <!-- 07 EVENTS -->
+    <section class="cv-section" id="events-listeners">
+      <div class="heading-eyebrow cv-eyebrow">07 — Interaction</div>
+      <h2 class="heading-large" style="color:var(--contentPrimary)">Events &amp; hit areas</h2>
+      <p class="body-base cv-lead">Events are the outbound channel — Rive fires them at the runtime. Hit areas are the invisible shapes that make interactions reliable.</p>
+      <h3 class="heading-small cv-sub">Rive Events — riveXEventOn</h3>
+      <div class="cv-card"><div style="display:flex;align-items:center;gap:8px"><span class="mds-iconview mds-iconview--small rv-accent"><i class="gh-standard-energy"></i></span><div class="body-base-heavy">Events fire FROM Rive → TO the runtime</div></div>
+        <div class="body-small" style="color:var(--contentSecondary);margin-top:6px">Use for: animation complete, form submitted, threshold crossed. The runtime registers a listener and reacts.</div>
+        <div class="cv-anatomy"><div class="cv-part"><span class="cv-chip">riveXEvent</span><span class="cv-part-label">Prefix</span></div><div class="cv-part"><span class="cv-chip">On[Verb]</span><span class="cv-part-label">Trigger</span></div></div>
+        <div class="cv-grid cv-grid-3">
+          <div class="cv-ex"><code>riveXEventOnComplete</code><span class="meaning">Animation or flow has finished</span></div>
+          <div class="cv-ex"><code>riveXEventOnSubmit</code><span class="meaning">User confirmed an action inside Rive</span></div>
+          <div class="cv-ex"><code>riveXEventOnError</code><span class="meaning">An error state was reached</span></div>
+          <div class="cv-ex"><code>riveXEventOnThreshold</code><span class="meaning">A value crossed a defined threshold</span></div>
+          <div class="cv-ex"><code>riveXEventOnLoop</code><span class="meaning">A looping animation restarted</span></div>
+          <div class="cv-ex"><code>riveXEventOnSkip</code><span class="meaning">User skipped an intro animation</span></div>
+        </div></div>
+      <div class="cv-grid cv-grid-2">
+        <div class="cv-card" style="border-color:var(--emerald)"><div class="body-base-heavy" style="color:var(--emerald)">riveXTrigger[Action]</div><div class="body-small" style="color:var(--contentSecondary);margin-top:4px">Runtime → Rive (inbound). Your app fires a trigger to tell Rive to do something.</div><div class="cv-chips"><span class="cv-token">riveXTriggerOnPress</span></div></div>
+        <div class="cv-card" style="border-color:var(--red)"><div class="body-base-heavy" style="color:var(--red)">riveXEventOn[Verb]</div><div class="body-small" style="color:var(--contentSecondary);margin-top:4px">Rive → Runtime (outbound). Rive fires an event to tell your app something happened.</div><div class="cv-chips"><span class="cv-token">riveXEventOnComplete</span></div></div>
+      </div>
+      <h3 class="heading-small cv-sub">Hit Areas — riveXHitArea</h3>
+      <div class="cv-card"><div style="display:flex;align-items:center;gap:8px"><span class="mds-iconview mds-iconview--small rv-accent"><i class="gh-standard-tag-01"></i></span><div class="body-base-heavy">Invisible shapes used as listener targets</div></div>
+        <div class="body-small" style="color:var(--contentSecondary);margin-top:6px">Never attach listeners to visible art. Create a transparent rectangle for the tap region, name it riveXHitArea, and attach the listener there.</div>
+        <div class="cv-anatomy"><div class="cv-part"><span class="cv-chip">riveXHitArea</span><span class="cv-part-label">Prefix</span></div><div class="cv-part"><span class="cv-chip">[Target]</span><span class="cv-part-label">Target</span></div></div>
+        <div class="cv-grid cv-grid-3">
+          <div class="cv-ex"><code>riveXHitAreaButton</code><span class="meaning">Full button tap surface</span></div>
+          <div class="cv-ex"><code>riveXHitAreaCard</code><span class="meaning">Full card tap region</span></div>
+          <div class="cv-ex"><code>riveXHitAreaFullscreen</code><span class="meaning">Entire artboard as a tap target</span></div>
+        </div></div>
+      <div class="cv-callout info"><span class="mds-iconview mds-iconview--small"><i class="gh-standard-information-circle"></i></span><div><b>Invisible ≠ zero opacity on the fill.</b> Set the shape's fill to transparent (or 0% opacity) but keep it in the hierarchy above the art so it receives pointer events. If you set the whole object's opacity to 0, some runtimes won't hit-test it.</div></div>
+    </section>
+
+    <!-- 08 TIMELINES -->
+    <section class="cv-section" id="timelines">
+      <div class="heading-eyebrow cv-eyebrow">08 — Motion</div>
+      <h2 class="heading-large" style="color:var(--contentPrimary)">Timelines</h2>
+      <p class="body-base cv-lead">Distinguishes event-driven timelines (riveXTimelineOn…) from state-driven timelines (riveXTimeline…) to make each animation's purpose scannable in the Animations panel.</p>
+      <div class="cv-grid cv-grid-2">
+        <div class="cv-card" style="border-color:var(--cyan)"><div class="body-base-heavy" style="color:var(--cyan)">State-driven · riveXTimeline[State]</div><div class="body-small" style="color:var(--contentSecondary);margin-top:4px">Loops and states — play continuously or hold a visual state</div>
+          <div class="cv-chips"><span class="cv-token">riveXTimelineIdle</span><span class="cv-token">riveXTimelineSuccess</span><span class="cv-token">riveXTimelineError</span><span class="cv-token">riveXTimelineThemeDark</span><span class="cv-token">riveXTimelineThemeLight</span><span class="cv-token">riveXTimelineStory</span></div></div>
+        <div class="cv-card" style="border-color:var(--amber)"><div class="body-base-heavy" style="color:var(--amber)">Event-driven · riveXTimelineOn[Verb]</div><div class="body-small" style="color:var(--contentSecondary);margin-top:4px">Triggered by user interaction — plays once in response to an action</div>
+          <div class="cv-chips"><span class="cv-token">riveXTimelineOnPress</span><span class="cv-token">riveXTimelineOnHover</span><span class="cv-token">riveXTimelineOnRelease</span><span class="cv-token">riveXTimelineOnComplete</span><span class="cv-token">riveXTimelineOnSkip</span></div></div>
+      </div>
+    </section>
+
+    <!-- 09 FONTS -->
+    <section class="cv-section" id="fonts">
+      <div class="heading-eyebrow cv-eyebrow">09 — Typography</div>
+      <h2 class="heading-large" style="color:var(--contentPrimary)">Fonts</h2>
+      <p class="body-base cv-lead">Two families, lean weights, English names. Font files can be the single biggest line item in a .riv — subset aggressively.</p>
+      <div class="cv-grid cv-grid-2">
+        <div class="cv-card"><div class="body-base-heavy">Groww Sans <span class="body-small" style="color:var(--contentTertiary)">· Primary brand typeface</span></div>
+          <div style="margin-top:10px;display:flex;flex-direction:column;gap:6px">
+            <div class="cv-do"><span class="cv-glyph">Aa</span> Regular → <code>GrowwSansRegular</code></div>
+            <div class="cv-do"><span class="cv-glyph">Aa</span> Medium → <code>GrowwSansMedium</code></div>
+            <div class="cv-do"><span class="cv-glyph">Aa</span> Bold → <code>GrowwSansBold</code></div>
+          </div></div>
+        <div class="cv-card"><div class="body-base-heavy">Söhne <span class="body-small" style="color:var(--contentTertiary)">· Display &amp; editorial</span> <span class="cv-req optional" style="background:var(--backgroundWarningSubtle);color:var(--contentOnWarningSubtle)">Rename on upload</span></div>
+          <div style="margin-top:10px;display:flex;flex-direction:column;gap:6px">
+            <div class="cv-do"><span class="cv-glyph">Aa</span> Söhne Kräftig → Regular → <code>SohneRegular</code></div>
+            <div class="cv-do"><span class="cv-glyph">Aa</span> Söhne Halbfett → Bold → <code>SohneBold</code></div>
+          </div></div>
+      </div>
+      <div class="cv-grid cv-grid-3">
+        <div class="cv-card"><div class="body-base-heavy">One file per weight</div><div class="body-small" style="color:var(--contentSecondary);margin-top:4px">Upload each font weight separately — never bundle multiple weights into one Rive font asset.</div></div>
+        <div class="cv-card"><div class="body-base-heavy">Minimize weights</div><div class="body-small" style="color:var(--contentSecondary);margin-top:4px">Fewer weights = smaller .riv files and faster loads. Include only weights actually rendered in the animation.</div></div>
+        <div class="cv-card"><div class="body-base-heavy">Tick Referenced + Glyphs Used</div><div class="body-small" style="color:var(--contentSecondary);margin-top:4px">In the Rive font upload, enable both options. This embeds only the characters actually used — can cut font size by 80%.</div></div>
+      </div>
+      <div class="cv-callout warn"><span class="mds-iconview mds-iconview--small"><i class="gh-standard-alert-02"></i></span><div><b>Rename Söhne before uploading.</b> German weight names (Kräftig, Halbfett) are unsearchable in English codebases. Rename to Regular / Bold before adding the font to the Rive file.</div></div>
+    </section>
+
+    <!-- 10 CHEAT SHEET -->
+    <section class="cv-section" id="cheat-sheet">
+      <div class="heading-eyebrow cv-eyebrow">10 — Reference</div>
+      <h2 class="heading-large" style="color:var(--contentPrimary)">The whole system on one card</h2>
+      <p class="body-base cv-lead">Every naming pattern at a glance.</p>
+      <div class="cv-table-wrap"><table class="cv-table">
+        <thead><tr><th>Kind</th><th>Prefix</th><th>Casing</th><th>Pattern</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td>File</td><td><code>mds_rive</code></td><td>snake_case</td><td><code>mds_rive_[type]_[product?]_[feature?]_[s{n}?]_[v{n}?].riv</code></td><td><code>mds_rive_loader_stocks_mtf.riv</code></td></tr>
+          <tr><td>Artboard</td><td><code>RiveXAb</code></td><td>PascalCase</td><td><code>RiveXAb[Type][Icon?]</code></td><td><code>RiveXAbOrderStatusSuccess</code></td></tr>
+          <tr><td>Component</td><td><code>RiveXComp</code></td><td>PascalCase</td><td><code>RiveXComp[Name]</code></td><td><code>RiveXCompButton</code></td></tr>
+          <tr><td>View Model</td><td><code>RiveXVm</code></td><td>PascalCase</td><td><code>RiveXVm[InteractionType]</code></td><td><code>RiveXVmCompletionStatus</code></td></tr>
+          <tr><td>Custom Enum type</td><td><code>RiveXEnum</code></td><td>PascalCase</td><td><code>RiveXEnum[Name]</code></td><td><code>RiveXEnumButtonVariant</code></td></tr>
+          <tr><td>State Machine</td><td><code>RiveXSm</code></td><td>PascalCase</td><td><code>RiveXSm[InteractionType]</code></td><td><code>RiveXSmLoadingStatus</code></td></tr>
+          <tr><td>VM Instance</td><td><code>riveXInstanceVm</code></td><td>camelCase</td><td><code>riveXInstanceVm[Source][Variant]</code></td><td><code>riveXInstanceVmButtonPrimary</code></td></tr>
+          <tr><td>SM Instance</td><td><code>riveXInstanceSm</code></td><td>camelCase</td><td><code>riveXInstanceSm[Source][Variant]</code></td><td><code>riveXInstanceSmLoadingStatusActive</code></td></tr>
+          <tr><td>Ab Instance</td><td><code>riveXInstanceAb</code></td><td>camelCase</td><td><code>riveXInstanceAb[Source][Variant]</code></td><td><code>riveXInstanceAbOrderStatusSuccess</code></td></tr>
+          <tr><td>VM Property</td><td><code>riveX</code></td><td>camelCase</td><td><code>riveX[Type][Is|Has|On][Action]</code></td><td><code>riveXBooleanIsLoading</code></td></tr>
+          <tr><td>Rive Event</td><td><code>riveXEventOn</code></td><td>camelCase</td><td><code>riveXEventOn[Verb]</code></td><td><code>riveXEventOnComplete</code></td></tr>
+          <tr><td>Hit Area</td><td><code>riveXHitArea</code></td><td>camelCase</td><td><code>riveXHitArea[Target]</code></td><td><code>riveXHitAreaButton</code></td></tr>
+          <tr><td>Timeline (state)</td><td><code>riveXTimeline</code></td><td>camelCase</td><td><code>riveXTimeline[State]</code></td><td><code>riveXTimelineIdle</code></td></tr>
+          <tr><td>Timeline (event)</td><td><code>riveXTimelineOn</code></td><td>camelCase</td><td><code>riveXTimelineOn[Verb]</code></td><td><code>riveXTimelineOnPress</code></td></tr>
+          <tr><td>Font · Groww Sans</td><td>—</td><td>PascalCase</td><td><code>GrowwSans[Weight]</code></td><td><code>GrowwSansBold</code></td></tr>
+          <tr><td>Font · Söhne</td><td>—</td><td>PascalCase</td><td><code>Sohne[Weight]</code></td><td><code>SohneRegular</code></td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <div class="cv-footer"><a class="cv-back" href="index.html"><span class="mds-iconview mds-iconview--small"><i class="gh-standard-arrow-left-01"></i></span> Back to repository</a></div>
+  </main>
+</div>
+</div>
+
+<div id="rv-toast" class="rv-toast hidden" role="status"></div>
+
+<script>
+  // theme toggle
+  const themeIco = document.getElementById('cv-theme-ico');
+  function syncThemeIco(){ themeIco.className = 'gh-standard-' + (document.documentElement.classList.contains('dark') ? 'sun-01' : 'moon-02'); }
+  syncThemeIco();
+  document.getElementById('cv-theme').onclick = () => {
+    const dark = document.documentElement.classList.toggle('dark');
+    try { localStorage.setItem('rive-theme', dark ? 'dark' : 'light'); } catch(e){}
+    syncThemeIco();
+  };
+  // scroll-spy
+  const ids = ['files','prefixes','artboards','vm-sm','instances','properties','events-listeners','timelines','fonts','cheat-sheet'];
+  const links = new Map(ids.map(id => [id, document.querySelector(`.cv-toc a[href="#${id}"]`)]));
+  let activeId = 'files';
+  const io = new IntersectionObserver((entries) => {
+    const vis = entries.filter(e => e.isIntersecting).sort((a,b)=>b.intersectionRatio-a.intersectionRatio);
+    if (vis[0]) { const id = vis[0].target.id; if (id !== activeId) { links.get(activeId)?.classList.remove('active'); links.get(id)?.classList.add('active'); activeId = id; } }
+  }, { rootMargin: '-20% 0px -55% 0px', threshold: [0.1,0.4,0.7] });
+  ids.forEach(id => { const s = document.getElementById(id); if (s) io.observe(s); });
+  links.get('files')?.classList.add('active');
+  // copy-to-clipboard on mono tokens / examples
+  let tt;
+  function toast(msg){ const t=document.getElementById('rv-toast'); t.textContent=msg; t.className='rv-toast'; requestAnimationFrame(()=>t.classList.add('show')); clearTimeout(tt); tt=setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.classList.add('hidden'),250);},1500); t.classList.remove('hidden'); }
+  document.querySelectorAll('.cv-token, .cv-ex code, .cv-table td code').forEach(elm => {
+    elm.style.cursor = 'copy';
+    elm.addEventListener('click', async () => { try { await navigator.clipboard.writeText(elm.textContent.trim()); toast('Copied'); } catch(e){} });
+  });
+</script>
+</body>
+</html>

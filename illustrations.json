@@ -1,0 +1,2071 @@
+{
+  "_doc": "Hero illustrations exported from Figma file 0gDgPDKldgekcXUajo4MFx (anish's visual 26 → images-1:1/heroes section). Each item has light + dark SVG paths; names match Figma frame names. Category is one of 'hero' | 'spot-hero' | 'spot'.",
+  "items": [
+    {
+      "name": "mds_il_hero_risk_fno",
+      "category": "hero",
+      "light": "illustrations/hero/light/risk_fno.svg",
+      "dark": "illustrations/hero/dark/risk_fno.svg",
+      "tags": [
+        "risk",
+        "fno",
+        "futures",
+        "options",
+        "derivatives",
+        "trading",
+        "volatility",
+        "f&o"
+      ]
+    },
+    {
+      "name": "mds_il_hero_empty_watchlist",
+      "category": "hero",
+      "light": "illustrations/hero/light/empty_watchlist.svg",
+      "dark": "illustrations/hero/dark/empty_watchlist.svg",
+      "tags": [
+        "empty",
+        "watchlist",
+        "stocks",
+        "no stocks",
+        "follow",
+        "track",
+        "portfolio",
+        "blank"
+      ]
+    },
+    {
+      "name": "mds_il_hero_payments_wallet_money",
+      "category": "hero",
+      "light": "illustrations/hero/light/payments_wallet_money.svg",
+      "dark": "illustrations/hero/dark/payments_wallet_money.svg",
+      "tags": [
+        "payments",
+        "wallet",
+        "money",
+        "pay",
+        "transfer",
+        "upi",
+        "send",
+        "receive",
+        "balance"
+      ]
+    },
+    {
+      "name": "mds_il_hero_display_picture_user",
+      "category": "hero",
+      "light": "illustrations/hero/light/display_picture_user.svg",
+      "dark": "illustrations/hero/dark/display_picture_user.svg",
+      "tags": [
+        "user",
+        "profile",
+        "avatar",
+        "photo",
+        "picture",
+        "account",
+        "identity",
+        "dp"
+      ]
+    },
+    {
+      "name": "mds_il_hero_switch_trading_view_stocks",
+      "category": "hero",
+      "light": "illustrations/hero/light/switch_trading_view_stocks.svg",
+      "dark": "illustrations/hero/dark/switch_trading_view_stocks.svg",
+      "tags": [
+        "switch",
+        "trading",
+        "stocks",
+        "view",
+        "tradingview",
+        "chart",
+        "change",
+        "broker"
+      ]
+    },
+    {
+      "name": "mds_il_hero_error_refresh",
+      "category": "hero",
+      "light": "illustrations/hero/light/error_refresh.svg",
+      "dark": "illustrations/hero/dark/error_refresh.svg",
+      "tags": [
+        "error",
+        "refresh",
+        "retry",
+        "reload",
+        "failed",
+        "try again",
+        "oops",
+        "problem"
+      ]
+    },
+    {
+      "name": "mds_il_hero_empty_market_opening",
+      "category": "hero",
+      "light": "illustrations/hero/light/empty_market_opening.svg",
+      "dark": "illustrations/hero/dark/empty_market_opening.svg",
+      "tags": [
+        "empty",
+        "market",
+        "opening",
+        "pre-market",
+        "closed",
+        "wait",
+        "session",
+        "trading hours"
+      ]
+    },
+    {
+      "name": "mds_il_hero_empty_no_gainers_losers",
+      "category": "hero",
+      "light": "illustrations/hero/light/empty_no_gainers_losers.svg",
+      "dark": "illustrations/hero/dark/empty_no_gainers_losers.svg",
+      "tags": [
+        "empty",
+        "gainers",
+        "losers",
+        "no data",
+        "market",
+        "stocks",
+        "movers"
+      ]
+    },
+    {
+      "name": "mds_il_hero_win_trophy",
+      "category": "hero",
+      "light": "illustrations/hero/light/win_trophy.svg",
+      "dark": "illustrations/hero/dark/win_trophy.svg",
+      "tags": [
+        "win",
+        "trophy",
+        "reward",
+        "achievement",
+        "success",
+        "prize",
+        "winner",
+        "celebrate"
+      ]
+    },
+    {
+      "name": "mds_il_hero_empty_no_orders",
+      "category": "hero",
+      "light": "illustrations/hero/light/empty_no_orders.svg",
+      "dark": "illustrations/hero/dark/empty_no_orders.svg",
+      "tags": [
+        "empty",
+        "orders",
+        "no orders",
+        "trade",
+        "blank",
+        "history",
+        "pending"
+      ]
+    },
+    {
+      "name": "mds_il_hero_no_money_switch",
+      "category": "hero",
+      "light": "illustrations/hero/light/no_money_switch.svg",
+      "dark": "illustrations/hero/dark/no_money_switch.svg",
+      "tags": [
+        "money",
+        "switch",
+        "broker",
+        "transfer",
+        "insufficient",
+        "balance",
+        "account",
+        "funds"
+      ]
+    },
+    {
+      "name": "mds_il_hero_target",
+      "category": "hero",
+      "light": "illustrations/hero/light/target.svg",
+      "dark": "illustrations/hero/dark/target.svg",
+      "tags": [
+        "target",
+        "goal",
+        "aim",
+        "objective",
+        "milestone",
+        "plan",
+        "achievement",
+        "invest"
+      ]
+    },
+    {
+      "name": "mds_il_hero_close_positions",
+      "category": "hero",
+      "light": "illustrations/hero/light/close_positions.svg",
+      "dark": "illustrations/hero/dark/close_positions.svg",
+      "tags": [
+        "close",
+        "positions",
+        "exit",
+        "square off",
+        "fno",
+        "trade",
+        "settlement",
+        "sell"
+      ]
+    },
+    {
+      "name": "mds_il_hero_stocks_sip",
+      "category": "hero",
+      "light": "illustrations/hero/light/Stocks_SIP.svg",
+      "dark": "illustrations/hero/dark/Stocks_SIP.svg",
+      "tags": [
+        "stocks",
+        "sip",
+        "investment",
+        "systematic",
+        "recurring",
+        "equity",
+        "monthly"
+      ]
+    },
+    {
+      "name": "mds_il_hero_strategy_empty",
+      "category": "hero",
+      "light": "illustrations/hero/light/strategy_empty.svg",
+      "dark": "illustrations/hero/dark/strategy_empty.svg",
+      "tags": [
+        "strategy",
+        "empty",
+        "plan",
+        "no strategy",
+        "blank",
+        "trading"
+      ]
+    },
+    {
+      "name": "mds_il_hero_link_aadhar",
+      "category": "hero",
+      "light": "illustrations/hero/light/link_aadhar.svg",
+      "dark": "illustrations/hero/dark/link_aadhar.svg",
+      "tags": [
+        "aadhar",
+        "aadhaar",
+        "link",
+        "kyc",
+        "identity",
+        "uid",
+        "verification",
+        "india",
+        "government"
+      ]
+    },
+    {
+      "name": "mds_il_hero_first_deposit_saving",
+      "category": "hero",
+      "light": "illustrations/hero/light/first_deposit_saving.svg",
+      "dark": "illustrations/hero/dark/first_deposit_saving.svg",
+      "tags": [
+        "deposit",
+        "saving",
+        "first",
+        "onboarding",
+        "money",
+        "add funds",
+        "bank",
+        "invest"
+      ]
+    },
+    {
+      "name": "mds_il_hero_earn_cashback_pay_bills",
+      "category": "hero",
+      "light": "illustrations/hero/light/earn_cashback_pay_bills.svg",
+      "dark": "illustrations/hero/dark/earn_cashback_pay_bills.svg",
+      "tags": [
+        "cashback",
+        "bills",
+        "earn",
+        "pay",
+        "offer",
+        "reward",
+        "electricity",
+        "utility"
+      ]
+    },
+    {
+      "name": "mds_il_hero_earn_cashback_pay_bills_2",
+      "category": "hero",
+      "light": "illustrations/hero/light/earn_cashback_pay_bills_2.svg",
+      "dark": "illustrations/hero/dark/earn_cashback_pay_bills_2.svg",
+      "tags": [
+        "cashback",
+        "bills",
+        "earn",
+        "pay",
+        "offer",
+        "reward",
+        "electricity",
+        "utility"
+      ]
+    },
+    {
+      "name": "mds_il_hero_trophy",
+      "category": "hero",
+      "light": "illustrations/hero/light/trophy.svg",
+      "dark": "illustrations/hero/dark/trophy.svg",
+      "tags": [
+        "trophy",
+        "win",
+        "reward",
+        "achievement",
+        "success",
+        "prize",
+        "winner",
+        "celebrate"
+      ]
+    },
+    {
+      "name": "mds_il_hero_charts",
+      "category": "hero",
+      "light": "illustrations/hero/light/charts.svg",
+      "dark": "illustrations/hero/dark/charts.svg",
+      "tags": [
+        "charts",
+        "graph",
+        "data",
+        "stock",
+        "price",
+        "analysis",
+        "candlestick",
+        "trend",
+        "market"
+      ]
+    },
+    {
+      "name": "mds_il_hero_pay_setup_bills",
+      "category": "hero",
+      "light": "illustrations/hero/light/pay_setup_bills.svg",
+      "dark": "illustrations/hero/dark/pay_setup_bills.svg",
+      "tags": [
+        "bills",
+        "setup",
+        "pay",
+        "utility",
+        "electricity",
+        "recurring",
+        "autopay",
+        "mandate"
+      ]
+    },
+    {
+      "name": "mds_il_hero_empty",
+      "category": "hero",
+      "light": "illustrations/hero/light/empty.svg",
+      "dark": "illustrations/hero/dark/empty.svg",
+      "tags": [
+        "empty",
+        "blank",
+        "state",
+        "placeholder",
+        "no data",
+        "coming soon"
+      ]
+    },
+    {
+      "name": "mds_il_hero_import_funds",
+      "category": "hero",
+      "light": "illustrations/hero/light/import_funds.svg",
+      "dark": "illustrations/hero/dark/import_funds.svg",
+      "tags": [
+        "import",
+        "funds",
+        "transfer",
+        "money",
+        "add",
+        "deposit",
+        "bank",
+        "coming soon"
+      ]
+    },
+    {
+      "name": "mds_il_hero_us_stocks",
+      "category": "hero",
+      "light": "illustrations/hero/light/us_stocks.svg",
+      "dark": "illustrations/hero/dark/us_stocks.svg",
+      "tags": [
+        "us stocks",
+        "usa",
+        "international",
+        "global",
+        "nasdaq",
+        "nyse",
+        "foreign",
+        "coming soon"
+      ]
+    },
+    {
+      "name": "mds_il_spot_hero_notification",
+      "category": "spot-hero",
+      "light": "illustrations/spot-hero/light/notification.svg",
+      "dark": "illustrations/spot-hero/dark/notification.svg",
+      "tags": [
+        "notification",
+        "bell",
+        "alert"
+      ]
+    },
+    {
+      "name": "mds_il_spot_hero_calendar",
+      "category": "spot-hero",
+      "light": "illustrations/spot-hero/light/calendar.svg",
+      "dark": "illustrations/spot-hero/dark/calendar.svg",
+      "tags": [
+        "calendar",
+        "date",
+        "schedule"
+      ]
+    },
+    {
+      "name": "mds_il_spot_hero_alarm_clock",
+      "category": "spot-hero",
+      "light": "illustrations/spot-hero/light/alarm_clock.svg",
+      "dark": "illustrations/spot-hero/dark/alarm_clock.svg",
+      "tags": [
+        "alarm",
+        "clock",
+        "time"
+      ]
+    },
+    {
+      "name": "mds_il_spot_hero_maintenance_cone",
+      "category": "spot-hero",
+      "light": "illustrations/spot-hero/light/maintenance_cone.svg",
+      "dark": "illustrations/spot-hero/dark/maintenance_cone.svg",
+      "tags": [
+        "maintenance",
+        "cone",
+        "construction"
+      ]
+    },
+    {
+      "name": "mds_il_spot_hero_maintenance_block",
+      "category": "spot-hero",
+      "light": "illustrations/spot-hero/light/maintenance_block.svg",
+      "dark": "illustrations/spot-hero/dark/maintenance_block.svg",
+      "tags": [
+        "maintenance",
+        "block",
+        "barrier"
+      ]
+    },
+    {
+      "name": "mds_il_spot_hero_document_folder",
+      "category": "spot-hero",
+      "light": "illustrations/spot-hero/light/document_folder.svg",
+      "dark": "illustrations/spot-hero/dark/document_folder.svg",
+      "tags": [
+        "document",
+        "folder",
+        "file"
+      ]
+    },
+    {
+      "name": "mds_il_spot_hero_time_letter_envelope",
+      "category": "spot-hero",
+      "light": "illustrations/spot-hero/light/time_letter_envelope.svg",
+      "dark": "illustrations/spot-hero/dark/time_letter_envelope.svg",
+      "tags": [
+        "letter",
+        "envelope",
+        "time",
+        "mail"
+      ]
+    },
+    {
+      "name": "mds_il_spot_hero_exclaimation_letter_envelope",
+      "category": "spot-hero",
+      "light": "illustrations/spot-hero/light/exclaimation_letter_envelope.svg",
+      "dark": "illustrations/spot-hero/dark/exclaimation_letter_envelope.svg",
+      "tags": [
+        "letter",
+        "envelope",
+        "alert",
+        "mail"
+      ]
+    },
+    {
+      "name": "mds_il_spot_hero_exclamation_document_red",
+      "category": "spot-hero",
+      "light": "illustrations/spot-hero/light/exclamation_document_red.svg",
+      "dark": "illustrations/spot-hero/dark/exclamation_document_red.svg",
+      "tags": [
+        "document",
+        "alert",
+        "error"
+      ]
+    },
+    {
+      "name": "mds_il_spot_hero_tick_correct_document",
+      "category": "spot-hero",
+      "light": "illustrations/spot-hero/light/tick_correct_document.svg",
+      "dark": "illustrations/spot-hero/dark/tick_correct_document.svg",
+      "tags": [
+        "tick",
+        "document",
+        "verified",
+        "success"
+      ]
+    },
+    {
+      "name": "mds_il_spot_hero_document_verification_waiting",
+      "category": "spot-hero",
+      "light": "illustrations/spot-hero/light/document_verification_waiting.svg",
+      "dark": "illustrations/spot-hero/dark/document_verification_waiting.svg",
+      "tags": [
+        "document",
+        "verification",
+        "waiting",
+        "kyc"
+      ]
+    },
+    {
+      "name": "mds_il_spot_hero_gift_referral",
+      "category": "spot-hero",
+      "light": "illustrations/spot-hero/light/gift_referral.svg",
+      "dark": "illustrations/spot-hero/dark/gift_referral.svg",
+      "tags": [
+        "gift",
+        "referral",
+        "reward"
+      ]
+    },
+    {
+      "name": "mds_il_spot_hero_message_referral",
+      "category": "spot-hero",
+      "light": "illustrations/spot-hero/light/message_referral.svg",
+      "dark": "illustrations/spot-hero/dark/message_referral.svg",
+      "tags": [
+        "message",
+        "referral",
+        "share"
+      ]
+    },
+    {
+      "name": "mds_il_spot_hero_win_trophy_spot",
+      "category": "spot-hero",
+      "light": "illustrations/spot-hero/light/win_trophy.svg",
+      "dark": "illustrations/spot-hero/dark/win_trophy.svg",
+      "tags": [
+        "trophy",
+        "win",
+        "reward"
+      ]
+    },
+    {
+      "name": "mds_il_spot_hero_celebrate_happy_balloon",
+      "category": "spot-hero",
+      "light": "illustrations/spot-hero/light/celebrate_happy_balloon.svg",
+      "dark": "illustrations/spot-hero/dark/celebrate_happy_balloon.svg",
+      "tags": [
+        "celebrate",
+        "balloon",
+        "happy"
+      ]
+    },
+    {
+      "name": "mds_il_spot_hero_celebrate_happy_money",
+      "category": "spot-hero",
+      "light": "illustrations/spot-hero/light/celebrate_happy_money.svg",
+      "dark": "illustrations/spot-hero/dark/celebrate_happy_money.svg",
+      "tags": [
+        "celebrate",
+        "money",
+        "happy"
+      ]
+    },
+    {
+      "name": "mds_il_spot_hero_celebrate_happy_confetti",
+      "category": "spot-hero",
+      "light": "illustrations/spot-hero/light/celebrate_happy_confetti.svg",
+      "dark": "illustrations/spot-hero/dark/celebrate_happy_confetti.svg",
+      "tags": [
+        "celebrate",
+        "confetti",
+        "happy"
+      ]
+    },
+    {
+      "name": "mds_il_spot_hero_causes_box_charity",
+      "category": "spot-hero",
+      "light": "illustrations/spot-hero/light/causes_box_charity.svg",
+      "dark": "illustrations/spot-hero/dark/causes_box_charity.svg",
+      "tags": [
+        "charity",
+        "causes",
+        "donate"
+      ]
+    },
+    {
+      "name": "mds_il_spot_hero_critical_time",
+      "category": "spot-hero",
+      "light": "illustrations/spot-hero/light/critical_time.svg",
+      "dark": "illustrations/spot-hero/dark/critical_time.svg",
+      "tags": [
+        "critical",
+        "time",
+        "warning"
+      ]
+    },
+    {
+      "name": "mds_il_spot_hero_critical_fail",
+      "category": "spot-hero",
+      "light": "illustrations/spot-hero/light/critical_fail.svg",
+      "dark": "illustrations/spot-hero/dark/critical_fail.svg",
+      "tags": [
+        "critical",
+        "fail",
+        "error"
+      ]
+    },
+    {
+      "name": "mds_il_spot_hero_bolt",
+      "category": "spot-hero",
+      "light": "illustrations/spot-hero/light/bolt.svg",
+      "dark": "illustrations/spot-hero/dark/bolt.svg",
+      "tags": [
+        "bolt",
+        "lightning",
+        "fast"
+      ]
+    },
+    {
+      "name": "mds_il_spot_hero_bank_fail",
+      "category": "spot-hero",
+      "light": "illustrations/spot-hero/light/bank_fail.svg",
+      "dark": "illustrations/spot-hero/dark/bank_fail.svg",
+      "tags": [
+        "bank",
+        "fail",
+        "error"
+      ]
+    },
+    {
+      "name": "mds_il_spot_hero_location",
+      "category": "spot-hero",
+      "light": "illustrations/spot-hero/light/location.svg",
+      "dark": "illustrations/spot-hero/dark/location.svg",
+      "tags": [
+        "location",
+        "pin",
+        "map"
+      ]
+    },
+    {
+      "name": "mds_il_spot_hero_risk",
+      "category": "spot-hero",
+      "light": "illustrations/spot-hero/light/risk.svg",
+      "dark": "illustrations/spot-hero/dark/risk.svg",
+      "tags": [
+        "risk",
+        "warning"
+      ]
+    },
+    {
+      "name": "mds_il_spot_hero_softblock_calendar",
+      "category": "spot-hero",
+      "light": "illustrations/spot-hero/light/SoftBlock_calendar.svg",
+      "dark": "illustrations/spot-hero/dark/SoftBlock_calendar.svg",
+      "tags": [
+        "calendar",
+        "soft block",
+        "blocked"
+      ]
+    },
+    {
+      "name": "mds_il_spot_hero_add_money_wallet",
+      "category": "spot-hero",
+      "light": "illustrations/spot-hero/light/Add_Money_wallet.svg",
+      "dark": "illustrations/spot-hero/dark/Add_Money_wallet.svg",
+      "tags": [
+        "add money",
+        "wallet",
+        "deposit"
+      ]
+    },
+    {
+      "name": "mds_il_spot_hero_search_folder",
+      "category": "spot-hero",
+      "light": "illustrations/spot-hero/light/search_folder.svg",
+      "dark": "illustrations/spot-hero/dark/search_folder.svg",
+      "tags": [
+        "search",
+        "folder",
+        "find"
+      ]
+    },
+    {
+      "name": "mds_il_spot_hero_biometric_auth_android",
+      "category": "spot-hero",
+      "light": "illustrations/spot-hero/light/biometric_auth_android.svg",
+      "dark": "illustrations/spot-hero/dark/biometric_auth_android.svg",
+      "tags": [
+        "biometric",
+        "auth",
+        "android",
+        "fingerprint"
+      ]
+    },
+    {
+      "name": "mds_il_spot_hero_biometric_auth_ios",
+      "category": "spot-hero",
+      "light": "illustrations/spot-hero/light/biometric_auth_ios.svg",
+      "dark": "illustrations/spot-hero/dark/biometric_auth_ios.svg",
+      "tags": [
+        "biometric",
+        "auth",
+        "ios",
+        "face id"
+      ]
+    },
+    {
+      "name": "mds_il_spot_hero_download_app",
+      "category": "spot-hero",
+      "light": "illustrations/spot-hero/light/download_app.svg",
+      "dark": "illustrations/spot-hero/dark/download_app.svg",
+      "tags": [
+        "download",
+        "app",
+        "install",
+        "mobile",
+        "onboarding",
+        "playstore",
+        "appstore",
+        "store"
+      ]
+    },
+    {
+      "name": "mds_il_spot_hero_bank_verification",
+      "category": "spot-hero",
+      "light": "illustrations/spot-hero/light/bank_verification.svg",
+      "dark": "illustrations/spot-hero/dark/bank_verification.svg",
+      "tags": [
+        "bank",
+        "verification",
+        "kyc",
+        "pennydrop",
+        "account",
+        "validate",
+        "link"
+      ]
+    },
+    {
+      "name": "mds_il_spot_hero_account_closing",
+      "category": "spot-hero",
+      "light": "illustrations/spot-hero/light/account_closing.svg",
+      "dark": "illustrations/spot-hero/dark/account_closing.svg",
+      "tags": [
+        "account",
+        "closing",
+        "close",
+        "demat",
+        "exit",
+        "terminate"
+      ]
+    },
+    {
+      "name": "mds_il_spot_hero_debit_card_delivery",
+      "category": "spot-hero",
+      "light": "illustrations/spot-hero/light/debit_card_delivery.svg",
+      "dark": "illustrations/spot-hero/dark/debit_card_delivery.svg",
+      "tags": [
+        "debit card",
+        "delivery",
+        "shipping",
+        "card",
+        "bank",
+        "dispatch",
+        "courier"
+      ]
+    },
+    {
+      "name": "mds_il_spot_hero_credit_cibil_score_tracker",
+      "category": "spot-hero",
+      "light": "illustrations/spot-hero/light/credit_cibil_score_tracker.svg",
+      "dark": "illustrations/spot-hero/dark/credit_cibil_score_tracker.svg",
+      "tags": [
+        "credit",
+        "cibil",
+        "score",
+        "tracker",
+        "credit score",
+        "loan",
+        "bureau",
+        "report",
+        "rating"
+      ]
+    },
+    {
+      "name": "mds_il_spot_hero_empty_no_sips",
+      "category": "spot-hero",
+      "light": "illustrations/spot-hero/light/empty_no_sips.svg",
+      "dark": "illustrations/spot-hero/dark/empty_no_sips.svg",
+      "tags": [
+        "empty",
+        "sip",
+        "no sips",
+        "mutual fund",
+        "investment",
+        "systematic"
+      ]
+    },
+    {
+      "name": "mds_il_spot_hero_cancelled_sip",
+      "category": "spot-hero",
+      "light": "illustrations/spot-hero/light/cancelled_sip.svg",
+      "dark": "illustrations/spot-hero/dark/cancelled_sip.svg",
+      "tags": [
+        "sip",
+        "cancelled",
+        "stopped",
+        "mutual fund",
+        "paused",
+        "investment"
+      ]
+    },
+    {
+      "name": "mds_il_spot_hero_location_2",
+      "category": "spot-hero",
+      "light": "illustrations/spot-hero/light/location_2.svg",
+      "dark": "illustrations/spot-hero/dark/location_2.svg",
+      "tags": [
+        "location",
+        "pin",
+        "map",
+        "address",
+        "gps",
+        "navigate",
+        "place"
+      ]
+    },
+    {
+      "name": "mds_il_spot_hero_safe_exit",
+      "category": "spot-hero",
+      "light": "illustrations/spot-hero/light/safe_exit.svg",
+      "dark": "illustrations/spot-hero/dark/safe_exit.svg",
+      "tags": [
+        "safe",
+        "exit",
+        "logout",
+        "signout",
+        "security",
+        "quit"
+      ]
+    },
+    {
+      "name": "mds_il_spot_hero_safe_money",
+      "category": "spot-hero",
+      "light": "illustrations/spot-hero/light/safe_money.svg",
+      "dark": "illustrations/spot-hero/dark/safe_money.svg",
+      "tags": [
+        "safe",
+        "money",
+        "secure",
+        "vault",
+        "protection",
+        "savings",
+        "lock"
+      ]
+    },
+    {
+      "name": "mds_il_spot_hero_error",
+      "category": "spot-hero",
+      "light": "illustrations/spot-hero/light/error.svg",
+      "dark": "illustrations/spot-hero/dark/error.svg",
+      "tags": [
+        "error",
+        "warning",
+        "failed",
+        "oops",
+        "critical",
+        "alert",
+        "problem"
+      ]
+    },
+    {
+      "name": "mds_il_spot_hero_freeze_account",
+      "category": "spot-hero",
+      "light": "illustrations/spot-hero/light/freeze_account.svg",
+      "dark": "illustrations/spot-hero/dark/freeze_account.svg",
+      "tags": [
+        "freeze",
+        "account",
+        "block",
+        "locked",
+        "suspended",
+        "demat",
+        "restricted"
+      ]
+    },
+    {
+      "name": "mds_il_spot_hero_view_analysis",
+      "category": "spot-hero",
+      "light": "illustrations/spot-hero/light/view_analysis.svg",
+      "dark": "illustrations/spot-hero/dark/view_analysis.svg",
+      "tags": [
+        "analysis",
+        "view",
+        "insights",
+        "chart",
+        "report",
+        "data",
+        "portfolio",
+        "performance"
+      ]
+    },
+    {
+      "name": "mds_il_spot_hero_terminal_select_option",
+      "category": "spot-hero",
+      "light": "illustrations/spot-hero/light/terminal_select_option.svg",
+      "dark": "illustrations/spot-hero/dark/terminal_select_option.svg",
+      "tags": [
+        "terminal",
+        "select",
+        "option",
+        "trading",
+        "fno",
+        "order",
+        "futures"
+      ]
+    },
+    {
+      "name": "mds_il_spot_hero_empty",
+      "category": "spot-hero",
+      "light": "illustrations/spot-hero/light/empty.svg",
+      "dark": "illustrations/spot-hero/dark/empty.svg",
+      "tags": [
+        "empty",
+        "no data",
+        "blank",
+        "state",
+        "placeholder",
+        "nothing"
+      ]
+    },
+    {
+      "name": "mds_il_spot_hero_delete",
+      "category": "spot-hero",
+      "light": "illustrations/spot-hero/light/delete.svg",
+      "dark": "illustrations/spot-hero/dark/delete.svg",
+      "tags": [
+        "delete",
+        "remove",
+        "trash",
+        "bin",
+        "clear",
+        "discard"
+      ]
+    },
+    {
+      "name": "mds_il_spot_hero_select_ipo",
+      "category": "spot-hero",
+      "light": "illustrations/spot-hero/light/select_ipo.svg",
+      "dark": "illustrations/spot-hero/dark/select_ipo.svg",
+      "tags": [
+        "ipo",
+        "select",
+        "investing",
+        "apply",
+        "bidding",
+        "listing",
+        "stocks",
+        "new issue"
+      ]
+    },
+    {
+      "name": "mds_il_spot_hero_link_upi_payment",
+      "category": "spot-hero",
+      "light": "illustrations/spot-hero/light/link_upi_payment.svg",
+      "dark": "illustrations/spot-hero/dark/link_upi_payment.svg",
+      "tags": [
+        "upi",
+        "link",
+        "payment",
+        "gpay",
+        "phonepe",
+        "bhim",
+        "bank",
+        "mandate"
+      ]
+    },
+    {
+      "name": "mds_il_spot_hero_pledge_money",
+      "category": "spot-hero",
+      "light": "illustrations/spot-hero/light/pledge_money.svg",
+      "dark": "illustrations/spot-hero/dark/pledge_money.svg",
+      "tags": [
+        "pledge",
+        "money",
+        "margin",
+        "collateral",
+        "fno",
+        "stocks",
+        "loan"
+      ]
+    },
+    {
+      "name": "mds_il_spot_hero_ddpi",
+      "category": "spot-hero",
+      "light": "illustrations/spot-hero/light/ddpi.svg",
+      "dark": "illustrations/spot-hero/dark/ddpi.svg",
+      "tags": [
+        "ddpi",
+        "demat",
+        "authorisation",
+        "power of attorney",
+        "poa",
+        "sebi",
+        "trading"
+      ]
+    },
+    {
+      "name": "mds_il_spot_hero_autopay",
+      "category": "spot-hero",
+      "light": "illustrations/spot-hero/light/autopay.svg",
+      "dark": "illustrations/spot-hero/dark/autopay.svg",
+      "tags": [
+        "autopay",
+        "mandate",
+        "automatic",
+        "sip",
+        "recurring",
+        "payment",
+        "nach",
+        "debit"
+      ]
+    },
+    {
+      "name": "mds_il_spot_hero_add_contract",
+      "category": "spot-hero",
+      "light": "illustrations/spot-hero/light/add_contract.svg",
+      "dark": "illustrations/spot-hero/dark/add_contract.svg",
+      "tags": [
+        "contract",
+        "add",
+        "agreement",
+        "document",
+        "sign",
+        "legal",
+        "terms"
+      ]
+    },
+    {
+      "name": "mds_il_spot_hero_pay_rewards",
+      "category": "spot-hero",
+      "light": "illustrations/spot-hero/light/pay_rewards.svg",
+      "dark": "illustrations/spot-hero/dark/pay_rewards.svg",
+      "tags": [
+        "rewards",
+        "pay",
+        "cashback",
+        "points",
+        "coins",
+        "offer",
+        "loyalty"
+      ]
+    },
+    {
+      "name": "mds_il_spot_hero_email_phone_identity_verification",
+      "category": "spot-hero",
+      "light": "illustrations/spot-hero/light/email_phone_identity_verification.svg",
+      "dark": "illustrations/spot-hero/dark/email_phone_identity_verification.svg",
+      "tags": [
+        "email",
+        "phone",
+        "identity",
+        "verification",
+        "kyc",
+        "otp",
+        "mobile",
+        "contact",
+        "confirm",
+        "onboarding"
+      ]
+    },
+    {
+      "name": "mds_il_spot_hero_verify_sign",
+      "category": "spot-hero",
+      "light": "illustrations/spot-hero/light/verify_sign.svg",
+      "dark": "illustrations/spot-hero/dark/verify_sign.svg",
+      "tags": [
+        "verify",
+        "sign",
+        "signature",
+        "esign",
+        "document",
+        "authenticate",
+        "kyc",
+        "digital"
+      ]
+    },
+    {
+      "name": "mds_il_spot_hero_selfie_verification",
+      "category": "spot-hero",
+      "light": "illustrations/spot-hero/light/selfie_verification.svg",
+      "dark": "illustrations/spot-hero/dark/selfie_verification.svg",
+      "tags": [
+        "selfie",
+        "verification",
+        "kyc",
+        "face",
+        "camera",
+        "identity",
+        "photo"
+      ]
+    },
+    {
+      "name": "mds_il_illustrated_icon_mf_high_return",
+      "category": "illustrated-icons",
+      "light": "illustrations/illustrated-icons/light/mf_high_return.svg",
+      "dark": "illustrations/illustrated-icons/dark/mf_high_return.svg",
+      "tags": [
+        "mutual fund",
+        "mf",
+        "high return",
+        "returns",
+        "growth",
+        "invest",
+        "performance",
+        "aggressive"
+      ]
+    },
+    {
+      "name": "mds_il_illustrated_icon_mf_tax_saving",
+      "category": "illustrated-icons",
+      "light": "illustrations/illustrated-icons/light/mf_tax_saving.svg",
+      "dark": "illustrations/illustrated-icons/dark/mf_tax_saving.svg",
+      "tags": [
+        "mutual fund",
+        "mf",
+        "tax saving",
+        "elss",
+        "80c",
+        "tax",
+        "deduction",
+        "save",
+        "income tax"
+      ]
+    },
+    {
+      "name": "mds_il_illustrated_icon_mf_technology",
+      "category": "illustrated-icons",
+      "light": "illustrations/illustrated-icons/light/mf_technology.svg",
+      "dark": "illustrations/illustrated-icons/dark/mf_technology.svg",
+      "tags": [
+        "mutual fund",
+        "mf",
+        "technology",
+        "tech",
+        "it",
+        "sector",
+        "digital",
+        "software"
+      ]
+    },
+    {
+      "name": "mds_il_illustrated_icon_mf_nfo",
+      "category": "illustrated-icons",
+      "light": "illustrations/illustrated-icons/light/mf_nfo.svg",
+      "dark": "illustrations/illustrated-icons/dark/mf_nfo.svg",
+      "tags": [
+        "mutual fund",
+        "mf",
+        "nfo",
+        "new fund offer",
+        "launch",
+        "new",
+        "subscribe"
+      ]
+    },
+    {
+      "name": "mds_il_illustrated_icon_mf_sip_with_500",
+      "category": "illustrated-icons",
+      "light": "illustrations/illustrated-icons/light/mf_sip_with_500.svg",
+      "dark": "illustrations/illustrated-icons/dark/mf_sip_with_500.svg",
+      "tags": [
+        "mutual fund",
+        "mf",
+        "sip",
+        "500",
+        "systematic",
+        "monthly",
+        "invest",
+        "small amount",
+        "recurring"
+      ]
+    },
+    {
+      "name": "mds_il_illustrated_icon_mf_top_companies",
+      "category": "illustrated-icons",
+      "light": "illustrations/illustrated-icons/light/mf_top_companies.svg",
+      "dark": "illustrations/illustrated-icons/dark/mf_top_companies.svg",
+      "tags": [
+        "mutual fund",
+        "mf",
+        "top companies",
+        "blue chip",
+        "large cap",
+        "nifty",
+        "sensex",
+        "index"
+      ]
+    },
+    {
+      "name": "mds_il_illustrated_icon_mf_large_cap",
+      "category": "illustrated-icons",
+      "light": "illustrations/illustrated-icons/light/mf_large_cap.svg",
+      "dark": "illustrations/illustrated-icons/dark/mf_large_cap.svg",
+      "tags": [
+        "mutual fund",
+        "mf",
+        "large cap",
+        "blue chip",
+        "stable",
+        "nifty 50",
+        "top stocks"
+      ]
+    },
+    {
+      "name": "mds_il_illustrated_icon_mf_mid_cap",
+      "category": "illustrated-icons",
+      "light": "illustrations/illustrated-icons/light/mf_mid_cap.svg",
+      "dark": "illustrations/illustrated-icons/dark/mf_mid_cap.svg",
+      "tags": [
+        "mutual fund",
+        "mf",
+        "mid cap",
+        "growth",
+        "medium",
+        "nifty midcap",
+        "stocks"
+      ]
+    },
+    {
+      "name": "mds_il_illustrated_icon_mf_small_cap",
+      "category": "illustrated-icons",
+      "light": "illustrations/illustrated-icons/light/mf_small_cap.svg",
+      "dark": "illustrations/illustrated-icons/dark/mf_small_cap.svg",
+      "tags": [
+        "mutual fund",
+        "mf",
+        "small cap",
+        "growth",
+        "aggressive",
+        "high risk",
+        "stocks"
+      ]
+    },
+    {
+      "name": "mds_il_illustrated_icon_mf_infra",
+      "category": "illustrated-icons",
+      "light": "illustrations/illustrated-icons/light/mf_infra.svg",
+      "dark": "illustrations/illustrated-icons/dark/mf_infra.svg",
+      "tags": [
+        "mutual fund",
+        "mf",
+        "infrastructure",
+        "infra",
+        "sector",
+        "roads",
+        "construction",
+        "govt"
+      ]
+    },
+    {
+      "name": "mds_il_illustrated_icon_mf_pharma",
+      "category": "illustrated-icons",
+      "light": "illustrations/illustrated-icons/light/mf_pharma.svg",
+      "dark": "illustrations/illustrated-icons/dark/mf_pharma.svg",
+      "tags": [
+        "mutual fund",
+        "mf",
+        "pharma",
+        "healthcare",
+        "medicine",
+        "sector",
+        "drugs"
+      ]
+    },
+    {
+      "name": "mds_il_illustrated_icon_mf_better_than_fd",
+      "category": "illustrated-icons",
+      "light": "illustrations/illustrated-icons/light/mf_better_than_fd.svg",
+      "dark": "illustrations/illustrated-icons/dark/mf_better_than_fd.svg",
+      "tags": [
+        "mutual fund",
+        "mf",
+        "better than fd",
+        "fixed deposit",
+        "comparison",
+        "returns",
+        "liquid",
+        "debt"
+      ]
+    },
+    {
+      "name": "mds_il_illustrated_icon_mf_global_funds",
+      "category": "illustrated-icons",
+      "light": "illustrations/illustrated-icons/light/mf_global_funds.svg",
+      "dark": "illustrations/illustrated-icons/dark/mf_global_funds.svg",
+      "tags": [
+        "mutual fund",
+        "mf",
+        "global",
+        "international",
+        "us",
+        "foreign",
+        "world",
+        "overseas"
+      ]
+    },
+    {
+      "name": "mds_il_illustrated_icon_mf_gold_funds",
+      "category": "illustrated-icons",
+      "light": "illustrations/illustrated-icons/light/mf_gold_funds.svg",
+      "dark": "illustrations/illustrated-icons/dark/mf_gold_funds.svg",
+      "tags": [
+        "mutual fund",
+        "mf",
+        "gold",
+        "commodity",
+        "precious metal",
+        "hedge",
+        "etf",
+        "sovereign"
+      ]
+    },
+    {
+      "name": "mds_il_illustrated_icon_mf_liquid_funds",
+      "category": "illustrated-icons",
+      "light": "illustrations/illustrated-icons/light/mf_liquid_funds.svg",
+      "dark": "illustrations/illustrated-icons/dark/mf_liquid_funds.svg",
+      "tags": [
+        "mutual fund",
+        "mf",
+        "liquid",
+        "short term",
+        "cash",
+        "debt",
+        "low risk",
+        "overnight"
+      ]
+    },
+    {
+      "name": "mds_il_illustrated_icon_mf_index_funds",
+      "category": "illustrated-icons",
+      "light": "illustrations/illustrated-icons/light/mf_index_funds.svg",
+      "dark": "illustrations/illustrated-icons/dark/mf_index_funds.svg",
+      "tags": [
+        "mutual fund",
+        "mf",
+        "index",
+        "passive",
+        "nifty",
+        "sensex",
+        "etf",
+        "tracker"
+      ]
+    },
+    {
+      "name": "mds_il_illustrated_icon_mf_sif",
+      "category": "illustrated-icons",
+      "light": "illustrations/illustrated-icons/light/mf_sif.svg",
+      "dark": "illustrations/illustrated-icons/dark/mf_sif.svg",
+      "tags": [
+        "mutual fund",
+        "mf",
+        "sif",
+        "specialised investment fund",
+        "scheme"
+      ]
+    },
+    {
+      "name": "mds_il_illustrated_icon_stocks_ipo",
+      "category": "illustrated-icons",
+      "light": "illustrations/illustrated-icons/light/stocks_ipo.svg",
+      "dark": "illustrations/illustrated-icons/dark/stocks_ipo.svg",
+      "tags": [
+        "stocks",
+        "ipo",
+        "initial public offering",
+        "listing",
+        "apply",
+        "bidding",
+        "new issue",
+        "primary market"
+      ]
+    },
+    {
+      "name": "mds_il_illustrated_icon_stocks_etf",
+      "category": "illustrated-icons",
+      "light": "illustrations/illustrated-icons/light/stocks_etf.svg",
+      "dark": "illustrations/illustrated-icons/dark/stocks_etf.svg",
+      "tags": [
+        "stocks",
+        "etf",
+        "exchange traded fund",
+        "index",
+        "passive",
+        "nifty",
+        "gold etf"
+      ]
+    },
+    {
+      "name": "mds_il_illustrated_icon_stocks_sovereign_gold_bonds",
+      "category": "illustrated-icons",
+      "light": "illustrations/illustrated-icons/light/stocks_sovereign_gold_bonds.svg",
+      "dark": "illustrations/illustrated-icons/dark/stocks_sovereign_gold_bonds.svg",
+      "tags": [
+        "stocks",
+        "sovereign gold bonds",
+        "sgb",
+        "gold",
+        "government",
+        "rbi",
+        "bonds",
+        "invest"
+      ]
+    },
+    {
+      "name": "mds_il_illustrated_icon_stocks_intraday",
+      "category": "illustrated-icons",
+      "light": "illustrations/illustrated-icons/light/stocks_intraday.svg",
+      "dark": "illustrations/illustrated-icons/dark/stocks_intraday.svg",
+      "tags": [
+        "stocks",
+        "intraday",
+        "day trading",
+        "btst",
+        "leverage",
+        "same day"
+      ]
+    },
+    {
+      "name": "mds_il_illustrated_icon_stocks_fno",
+      "category": "illustrated-icons",
+      "light": "illustrations/illustrated-icons/light/stocks_fno.svg",
+      "dark": "illustrations/illustrated-icons/dark/stocks_fno.svg",
+      "tags": [
+        "stocks",
+        "fno",
+        "futures",
+        "options",
+        "derivatives",
+        "f&o",
+        "calls",
+        "puts",
+        "trading",
+        "leverage"
+      ]
+    },
+    {
+      "name": "mds_il_illustrated_icon_stocks_screener",
+      "category": "illustrated-icons",
+      "light": "illustrations/illustrated-icons/light/stocks_screener.svg",
+      "dark": "illustrations/illustrated-icons/dark/stocks_screener.svg",
+      "tags": [
+        "stocks",
+        "screener",
+        "filter",
+        "scan",
+        "discover",
+        "search",
+        "criteria",
+        "fundamental"
+      ]
+    },
+    {
+      "name": "mds_il_illustrated_icon_stocks_transaction",
+      "category": "illustrated-icons",
+      "light": "illustrations/illustrated-icons/light/stocks_transaction.svg",
+      "dark": "illustrations/illustrated-icons/dark/stocks_transaction.svg",
+      "tags": [
+        "stocks",
+        "transaction",
+        "buy",
+        "sell",
+        "order",
+        "trade",
+        "history"
+      ]
+    },
+    {
+      "name": "mds_il_illustrated_icon_stocks_holdings",
+      "category": "illustrated-icons",
+      "light": "illustrations/illustrated-icons/light/stocks_holdings.svg",
+      "dark": "illustrations/illustrated-icons/dark/stocks_holdings.svg",
+      "tags": [
+        "stocks",
+        "holdings",
+        "portfolio",
+        "demat",
+        "positions",
+        "equity",
+        "shares"
+      ]
+    },
+    {
+      "name": "mds_il_illustrated_icon_stocks_cashless_mtf",
+      "category": "illustrated-icons",
+      "light": "illustrations/illustrated-icons/light/stocks_cashless_mtf.svg",
+      "dark": "illustrations/illustrated-icons/dark/stocks_cashless_mtf.svg",
+      "tags": [
+        "stocks",
+        "cashless",
+        "mtf",
+        "margin",
+        "margin trading facility",
+        "leverage",
+        "loan",
+        "buy more"
+      ]
+    },
+    {
+      "name": "mds_il_illustrated_icon_banking_savings_account",
+      "category": "illustrated-icons",
+      "light": "illustrations/illustrated-icons/light/banking_savings_account.svg",
+      "dark": "illustrations/illustrated-icons/dark/banking_savings_account.svg",
+      "tags": [
+        "banking",
+        "savings account",
+        "bank",
+        "account",
+        "interest",
+        "deposit",
+        "savings",
+        "balance",
+        "zero balance"
+      ]
+    },
+    {
+      "name": "mds_il_illustrated_icon_banking_fixed_deposits",
+      "category": "illustrated-icons",
+      "light": "illustrations/illustrated-icons/light/banking_fixed_deposits.svg",
+      "dark": "illustrations/illustrated-icons/dark/banking_fixed_deposits.svg",
+      "tags": [
+        "banking",
+        "fixed deposits",
+        "fd",
+        "bank",
+        "interest",
+        "tenure",
+        "maturity",
+        "deposit",
+        "guaranteed"
+      ]
+    },
+    {
+      "name": "mds_il_illustrated_icon_banking_digital_gold_locker",
+      "category": "illustrated-icons",
+      "light": "illustrations/illustrated-icons/light/banking_digital_gold_locker.svg",
+      "dark": "illustrations/illustrated-icons/dark/banking_digital_gold_locker.svg",
+      "tags": [
+        "banking",
+        "digital gold",
+        "locker",
+        "gold",
+        "safe",
+        "store",
+        "vault",
+        "24k",
+        "commodity"
+      ]
+    },
+    {
+      "name": "mds_il_illustrated_icon_fno_candles",
+      "category": "illustrated-icons",
+      "light": "illustrations/illustrated-icons/light/fno_candles.svg",
+      "dark": "illustrations/illustrated-icons/dark/fno_candles.svg",
+      "tags": [
+        "fno",
+        "candles",
+        "candlestick",
+        "chart",
+        "technical analysis",
+        "trading",
+        "price",
+        "ohlc",
+        "pattern"
+      ]
+    },
+    {
+      "name": "mds_il_illustrated_icon_mf_index",
+      "category": "illustrated-icons",
+      "light": "illustrations/illustrated-icons/light/mf_index.svg",
+      "dark": "illustrations/illustrated-icons/dark/mf_index.svg",
+      "tags": [
+        "mutual fund",
+        "index",
+        "nifty",
+        "sensex",
+        "passive",
+        "fund"
+      ]
+    },
+    {
+      "name": "mds_il_illustrated_icon_mf_flexi_cap",
+      "category": "illustrated-icons",
+      "light": "illustrations/illustrated-icons/light/mf_flexi_cap.svg",
+      "dark": "illustrations/illustrated-icons/dark/mf_flexi_cap.svg",
+      "tags": [
+        "mutual fund",
+        "flexi cap",
+        "multi cap",
+        "flexible",
+        "equity",
+        "fund"
+      ]
+    },
+    {
+      "name": "mds_il_illustrated_icon_mf_rising_star",
+      "category": "illustrated-icons",
+      "light": "illustrations/illustrated-icons/light/mf_rising_star.svg",
+      "dark": "illustrations/illustrated-icons/dark/mf_rising_star.svg",
+      "tags": [
+        "mutual fund",
+        "rising star",
+        "new fund",
+        "top performer",
+        "star",
+        "fund"
+      ]
+    },
+    {
+      "name": "mds_il_illustrated_icon_mf_5_star_fund",
+      "category": "illustrated-icons",
+      "light": "illustrations/illustrated-icons/light/mf_5_star_fund.svg",
+      "dark": "illustrations/illustrated-icons/dark/mf_5_star_fund.svg",
+      "tags": [
+        "mutual fund",
+        "5 star",
+        "rating",
+        "top rated",
+        "best fund"
+      ]
+    },
+    {
+      "name": "mds_il_illustrated_icon_mf_psu",
+      "category": "illustrated-icons",
+      "light": "illustrations/illustrated-icons/light/mf_psu.svg",
+      "dark": "illustrations/illustrated-icons/dark/mf_psu.svg",
+      "tags": [
+        "mutual fund",
+        "psu",
+        "public sector",
+        "government",
+        "fund"
+      ]
+    },
+    {
+      "name": "mds_il_illustrated_icon_mf_liquid_fund",
+      "category": "illustrated-icons",
+      "light": "illustrations/illustrated-icons/light/mf_liquid_fund.svg",
+      "dark": "illustrations/illustrated-icons/dark/mf_liquid_fund.svg",
+      "tags": [
+        "mutual fund",
+        "liquid",
+        "cash",
+        "short term",
+        "fund"
+      ]
+    },
+    {
+      "name": "mds_il_illustrated_icon_mf_debt_funds",
+      "category": "illustrated-icons",
+      "light": "illustrations/illustrated-icons/light/mf_debt_funds.svg",
+      "dark": "illustrations/illustrated-icons/dark/mf_debt_funds.svg",
+      "tags": [
+        "mutual fund",
+        "debt",
+        "bond",
+        "fixed income",
+        "fund"
+      ]
+    },
+    {
+      "name": "mds_il_illustrated_icon_mf_popular_sector",
+      "category": "illustrated-icons",
+      "light": "illustrations/illustrated-icons/light/mf_popular_sector.svg",
+      "dark": "illustrations/illustrated-icons/dark/mf_popular_sector.svg",
+      "tags": [
+        "mutual fund",
+        "sector",
+        "thematic",
+        "popular",
+        "fund"
+      ]
+    },
+    {
+      "name": "mds_il_illustrated_icon_mf_manufacturing",
+      "category": "illustrated-icons",
+      "light": "illustrations/illustrated-icons/light/mf_manufacturing.svg",
+      "dark": "illustrations/illustrated-icons/dark/mf_manufacturing.svg",
+      "tags": [
+        "mutual fund",
+        "manufacturing",
+        "industry",
+        "sector",
+        "fund"
+      ]
+    },
+    {
+      "name": "mds_il_illustrated_icon_mf_infrastructure",
+      "category": "illustrated-icons",
+      "light": "illustrations/illustrated-icons/light/mf_infrastructure.svg",
+      "dark": "illustrations/illustrated-icons/dark/mf_infrastructure.svg",
+      "tags": [
+        "mutual fund",
+        "infrastructure",
+        "roads",
+        "bridges",
+        "sector",
+        "fund"
+      ]
+    },
+    {
+      "name": "mds_il_illustrated_icon_mf_consumption",
+      "category": "illustrated-icons",
+      "light": "illustrations/illustrated-icons/light/mf_consumption.svg",
+      "dark": "illustrations/illustrated-icons/dark/mf_consumption.svg",
+      "tags": [
+        "mutual fund",
+        "consumption",
+        "fmcg",
+        "consumer",
+        "sector",
+        "fund"
+      ]
+    },
+    {
+      "name": "mds_il_illustrated_icon_mf_high_momentum",
+      "category": "illustrated-icons",
+      "light": "illustrations/illustrated-icons/light/mf_high_momentum.svg",
+      "dark": "illustrations/illustrated-icons/dark/mf_high_momentum.svg",
+      "tags": [
+        "mutual fund",
+        "momentum",
+        "high growth",
+        "returns",
+        "fund"
+      ]
+    },
+    {
+      "name": "mds_il_illustrated_icon_mf_overnight",
+      "category": "illustrated-icons",
+      "light": "illustrations/illustrated-icons/light/mf_overnight.svg",
+      "dark": "illustrations/illustrated-icons/dark/mf_overnight.svg",
+      "tags": [
+        "mutual fund",
+        "overnight",
+        "ultra short",
+        "liquid",
+        "fund"
+      ]
+    },
+    {
+      "name": "mds_il_hero_download_app",
+      "category": "hero",
+      "light": "illustrations/hero/light/download_app.svg",
+      "dark": "illustrations/hero/dark/download_app.svg",
+      "tags": [
+        "download",
+        "app",
+        "onboarding",
+        "store"
+      ]
+    },
+    {
+      "name": "mds_il_hero_bank_verification",
+      "category": "hero",
+      "light": "illustrations/hero/light/bank_verification.svg",
+      "dark": "illustrations/hero/dark/bank_verification.svg",
+      "tags": [
+        "bank",
+        "verification",
+        "kyc",
+        "account"
+      ]
+    },
+    {
+      "name": "mds_il_hero_account_closing",
+      "category": "hero",
+      "light": "illustrations/hero/light/account_closing.svg",
+      "dark": "illustrations/hero/dark/account_closing.svg",
+      "tags": [
+        "account",
+        "closing",
+        "demat",
+        "exit"
+      ]
+    },
+    {
+      "name": "mds_il_hero_debit_card_delivery",
+      "category": "hero",
+      "light": "illustrations/hero/light/debit_card_delivery.svg",
+      "dark": "illustrations/hero/dark/debit_card_delivery.svg",
+      "tags": [
+        "debit",
+        "card",
+        "delivery",
+        "physical"
+      ]
+    },
+    {
+      "name": "mds_il_hero_credit_cibil_score_tracker",
+      "category": "hero",
+      "light": "illustrations/hero/light/credit_cibil_score_tracker.svg",
+      "dark": "illustrations/hero/dark/credit_cibil_score_tracker.svg",
+      "tags": [
+        "credit",
+        "cibil",
+        "score",
+        "tracker",
+        "loan"
+      ]
+    },
+    {
+      "name": "mds_il_hero_empty_no_sips",
+      "category": "hero",
+      "light": "illustrations/hero/light/empty_no_sips.svg",
+      "dark": "illustrations/hero/dark/empty_no_sips.svg",
+      "tags": [
+        "empty",
+        "sip",
+        "mutual fund",
+        "no data"
+      ]
+    },
+    {
+      "name": "mds_il_hero_cancelled_sip",
+      "category": "hero",
+      "light": "illustrations/hero/light/cancelled_sip.svg",
+      "dark": "illustrations/hero/dark/cancelled_sip.svg",
+      "tags": [
+        "cancelled",
+        "sip",
+        "mutual fund",
+        "stopped"
+      ]
+    },
+    {
+      "name": "mds_il_hero_location",
+      "category": "hero",
+      "light": "illustrations/hero/light/location.svg",
+      "dark": "illustrations/hero/dark/location.svg",
+      "tags": [
+        "location",
+        "map",
+        "address",
+        "gps"
+      ]
+    },
+    {
+      "name": "mds_il_hero_safe_exit",
+      "category": "hero",
+      "light": "illustrations/hero/light/safe_exit.svg",
+      "dark": "illustrations/hero/dark/safe_exit.svg",
+      "tags": [
+        "safe",
+        "exit",
+        "close",
+        "leave"
+      ]
+    },
+    {
+      "name": "mds_il_hero_safe_money",
+      "category": "hero",
+      "light": "illustrations/hero/light/safe_money.svg",
+      "dark": "illustrations/hero/dark/safe_money.svg",
+      "tags": [
+        "safe",
+        "money",
+        "secure",
+        "funds"
+      ]
+    },
+    {
+      "name": "mds_il_hero_error",
+      "category": "hero",
+      "light": "illustrations/hero/light/error.svg",
+      "dark": "illustrations/hero/dark/error.svg",
+      "tags": [
+        "error",
+        "failed",
+        "oops",
+        "something went wrong"
+      ]
+    },
+    {
+      "name": "mds_il_hero_freeze_account",
+      "category": "hero",
+      "light": "illustrations/hero/light/freeze_account.svg",
+      "dark": "illustrations/hero/dark/freeze_account.svg",
+      "tags": [
+        "freeze",
+        "account",
+        "blocked",
+        "suspended"
+      ]
+    },
+    {
+      "name": "mds_il_hero_view_analysis",
+      "category": "hero",
+      "light": "illustrations/hero/light/view_analysis.svg",
+      "dark": "illustrations/hero/dark/view_analysis.svg",
+      "tags": [
+        "analysis",
+        "chart",
+        "view",
+        "insights"
+      ]
+    },
+    {
+      "name": "mds_il_hero_terminal_select_option",
+      "category": "hero",
+      "light": "illustrations/hero/light/terminal_select_option.svg",
+      "dark": "illustrations/hero/dark/terminal_select_option.svg",
+      "tags": [
+        "terminal",
+        "select",
+        "option",
+        "trade"
+      ]
+    },
+    {
+      "name": "mds_il_hero_delete",
+      "category": "hero",
+      "light": "illustrations/hero/light/delete.svg",
+      "dark": "illustrations/hero/dark/delete.svg",
+      "tags": [
+        "delete",
+        "remove",
+        "trash",
+        "clear"
+      ]
+    },
+    {
+      "name": "mds_il_hero_select_ipo",
+      "category": "hero",
+      "light": "illustrations/hero/light/select_ipo.svg",
+      "dark": "illustrations/hero/dark/select_ipo.svg",
+      "tags": [
+        "ipo",
+        "select",
+        "apply",
+        "listing"
+      ]
+    },
+    {
+      "name": "mds_il_hero_link_upi_payment",
+      "category": "hero",
+      "light": "illustrations/hero/light/link_upi_payment.svg",
+      "dark": "illustrations/hero/dark/link_upi_payment.svg",
+      "tags": [
+        "upi",
+        "link",
+        "payment",
+        "bank"
+      ]
+    },
+    {
+      "name": "mds_il_hero_pledge_money",
+      "category": "hero",
+      "light": "illustrations/hero/light/pledge_money.svg",
+      "dark": "illustrations/hero/dark/pledge_money.svg",
+      "tags": [
+        "pledge",
+        "money",
+        "margin",
+        "collateral"
+      ]
+    },
+    {
+      "name": "mds_il_hero_ddpi",
+      "category": "hero",
+      "light": "illustrations/hero/light/ddpi.svg",
+      "dark": "illustrations/hero/dark/ddpi.svg",
+      "tags": [
+        "ddpi",
+        "demat",
+        "power of attorney",
+        "poa"
+      ]
+    },
+    {
+      "name": "mds_il_hero_autopay",
+      "category": "hero",
+      "light": "illustrations/hero/light/autopay.svg",
+      "dark": "illustrations/hero/dark/autopay.svg",
+      "tags": [
+        "autopay",
+        "mandate",
+        "sip",
+        "recurring"
+      ]
+    },
+    {
+      "name": "mds_il_hero_add_contract",
+      "category": "hero",
+      "light": "illustrations/hero/light/add_contract.svg",
+      "dark": "illustrations/hero/dark/add_contract.svg",
+      "tags": [
+        "contract",
+        "add",
+        "agreement",
+        "sign"
+      ]
+    },
+    {
+      "name": "mds_il_hero_pay_rewards",
+      "category": "hero",
+      "light": "illustrations/hero/light/pay_rewards.svg",
+      "dark": "illustrations/hero/dark/pay_rewards.svg",
+      "tags": [
+        "pay",
+        "rewards",
+        "cashback",
+        "offer"
+      ]
+    },
+    {
+      "name": "mds_il_hero_email_phone_identity_verification",
+      "category": "hero",
+      "light": "illustrations/hero/light/email_phone_identity_verification.svg",
+      "dark": "illustrations/hero/dark/email_phone_identity_verification.svg",
+      "tags": [
+        "email",
+        "phone",
+        "identity",
+        "verification",
+        "kyc"
+      ]
+    },
+    {
+      "name": "mds_il_hero_verify_sign",
+      "category": "hero",
+      "light": "illustrations/hero/light/verify_sign.svg",
+      "dark": "illustrations/hero/dark/verify_sign.svg",
+      "tags": [
+        "verify",
+        "sign",
+        "esign",
+        "signature"
+      ]
+    },
+    {
+      "name": "mds_il_hero_selfie_verification",
+      "category": "hero",
+      "light": "illustrations/hero/light/selfie_verification.svg",
+      "dark": "illustrations/hero/dark/selfie_verification.svg",
+      "tags": [
+        "selfie",
+        "verification",
+        "face",
+        "kyc"
+      ]
+    }
+  ]
+}

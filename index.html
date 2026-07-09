@@ -66,7 +66,19 @@
     --contentOnWarningSubtle:         #A16B00;
   }
 </style>
-<link rel="stylesheet" href="styles.css">
+<script>
+  (() => {
+    try {
+      const normalize = value => (value === 'dark' || value === 'light') ? value : null;
+      const stored = normalize(localStorage.getItem('rive-theme'));
+      const legacy = normalize(localStorage.getItem('gh.illuMode'));
+      const theme = stored || legacy || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.classList.toggle('dark', theme === 'dark');
+      document.documentElement.dataset.theme = theme;
+    } catch (_) {}
+  })();
+</script>
+<link rel="stylesheet" href="styles.css?v=phase-b-animation-insights-1">
 </head>
 <body data-section="icons">
 
@@ -74,7 +86,7 @@
   <div class="brand-wrap">
     <button class="brand brand-btn" id="brand-btn" aria-haspopup="listbox" aria-expanded="false">
       <span class="brand-mark" id="brand-mark" style="background:transparent;border-radius:0">
-        <svg width="28" height="28" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24.5943 39.4589C35.342 36.9217 41.9978 26.1522 39.4606 15.405C36.9233 4.65784 26.1533 -1.99773 15.4057 0.539424C4.65804 3.07658 -1.99782 13.8461 0.539447 24.5933C3.07671 35.3404 13.8467 41.996 24.5943 39.4589Z" fill="#5367FF"/><path d="M39.4606 15.405C39.0987 13.8684 38.567 12.4172 37.8925 11.0593L37.888 11.0637L25.2955 22.7043C24.5093 23.4324 23.339 23.5574 22.4143 23.0169L17.0628 19.8812C16.1962 19.3765 15.1107 19.4524 14.3245 20.0733C11.01 22.6953 2.52268 29.409 2.40207 29.5072C6.58766 37.2706 15.5978 41.5851 24.5943 39.4589C35.342 36.9217 41.9978 26.1522 39.4606 15.405Z" fill="#00F3BB"/></svg>
+        <svg width="28" height="28" viewBox="0 0 40 40" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M24.5943 39.4589C35.342 36.9217 41.9978 26.1522 39.4606 15.405C36.9233 4.65784 26.1533 -1.99773 15.4057 0.539424C4.65804 3.07658 -1.99782 13.8461 0.539447 24.5933C3.07671 35.3404 13.8467 41.996 24.5943 39.4589Z" fill="#5367FF"/><path d="M39.4606 15.405C39.0987 13.8684 38.567 12.4172 37.8925 11.0593L37.888 11.0637L25.2955 22.7043C24.5093 23.4324 23.339 23.5574 22.4143 23.0169L17.0628 19.8812C16.1962 19.3765 15.1107 19.4524 14.3245 20.0733C11.01 22.6953 2.52268 29.409 2.40207 29.5072C6.58766 37.2706 15.5978 41.5851 24.5943 39.4589C35.342 36.9217 41.9978 26.1522 39.4606 15.405Z" fill="#00F3BB"/></svg>
       </span>
       <div>
         <div class="brand-title" id="brand-title">Groww · Visual Assets</div>
@@ -85,17 +97,17 @@
       </svg>
     </button>
     <div class="brand-dropdown hidden" id="brand-dropdown" role="listbox">
-      <button class="brand-opt" data-brand="groww" role="option">
+      <button class="brand-opt" data-brand="groww" role="option" aria-selected="true">
         <span class="brand-opt-dot" style="background:#00b386"></span>
         <span class="brand-opt-label">Groww Visual Assets</span>
         <svg class="brand-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 7l3 3 6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
-      <button class="brand-opt" data-brand="wealth" role="option">
+      <button class="brand-opt" data-brand="wealth" role="option" aria-selected="false">
         <span class="brand-opt-dot" style="background:#4F8EF7"></span>
         <span class="brand-opt-label">Wealth Visual Assets</span>
         <svg class="brand-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 7l3 3 6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
-      <button class="brand-opt" data-brand="prime" role="option">
+      <button class="brand-opt" data-brand="prime" role="option" aria-selected="false">
         <span class="brand-opt-dot" style="background:#A855F7"></span>
         <span class="brand-opt-label">Prime Visual Assets</span>
         <svg class="brand-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 7l3 3 6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -115,14 +127,26 @@
     </button>
   </nav>
 
+  <div class="theme-bar" role="group" aria-label="Site theme">
+    <button class="theme-toggle-btn" id="theme-toggle" type="button" aria-pressed="false" aria-label="Switch to dark mode" title="Switch to dark mode">
+      <span class="theme-toggle-icon theme-toggle-sun" aria-hidden="true">
+        <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="3"/><path d="M8 1.5v1.5M8 13v1.5M14.5 8H13M3 8H1.5M12.6 3.4l-1.06 1.06M4.46 11.54L3.4 12.6M12.6 12.6l-1.06-1.06M4.46 4.46L3.4 3.4"/></svg>
+      </span>
+      <span class="theme-toggle-icon theme-toggle-moon" aria-hidden="true">
+        <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 9.5A5.5 5.5 0 1 1 6.5 2.5a4.5 4.5 0 0 0 7 7z"/></svg>
+      </span>
+      <span class="theme-toggle-label" id="theme-toggle-label">Light</span>
+    </button>
+  </div>
+
   <div class="search">
     <input id="search" type="search" placeholder="Search…" autocomplete="off" spellcheck="false">
     <kbd>/</kbd>
   </div>
 
-  <div class="actions" data-only-section="icons">
-    <button id="select-toggle" class="btn btn-ghost" aria-pressed="false">Select</button>
-    <button id="download-all" class="btn">Download all</button>
+  <div class="actions">
+    <button id="select-toggle" class="btn btn-ghost" aria-pressed="false" data-only-section="icons">Select</button>
+    <button id="upload-btn" class="btn">Upload</button>
   </div>
 </header>
 
@@ -148,7 +172,7 @@
     <div class="icon-subview-dropdown hidden" id="icon-subview-dropdown" role="listbox">
       <button class="icon-subview-pill" data-subview="new-huge" role="option" aria-selected="false">
         <span class="pill-check" aria-hidden="true">
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </span>
         <span class="pill-label">Huge All</span>
         <span class="icon-subview-count">—</span>
@@ -176,7 +200,7 @@
     </div>
     <div id="nh-empty-state" class="empty-state hidden">
       <div class="empty-state-art" aria-hidden="true">
-        <svg width="84" height="84" viewBox="0 0 84 84" fill="none">
+        <svg width="84" height="84" viewBox="0 0 84 84" fill="none" aria-hidden="true">
           <rect x="6" y="6" width="72" height="72" rx="14" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 6" opacity=".4"/>
           <path d="M28 42h28M42 28v28" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity=".55"/>
         </svg>
@@ -194,16 +218,15 @@
     <button class="chip" data-illu-cat="hero" aria-pressed="true">Heros<span class="count" id="illu-count-hero">0</span></button>
     <button class="chip" data-illu-cat="spot-hero" aria-pressed="false">Spot Heros<span class="count" id="illu-count-spot-hero">0</span></button>
     <button class="chip" data-illu-cat="illustrated-icons" aria-pressed="false">Illustrated Icons<span class="count" id="illu-count-illustrated-icons">0</span></button>
-    <button class="illu-mode-global-btn" id="illu-mode-global" aria-pressed="false">
-      <svg class="mode-icon-sun" viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="3"/><path d="M8 1.5v1.5M8 13v1.5M14.5 8H13M3 8H1.5M12.6 3.4l-1.06 1.06M4.46 11.54L3.4 12.6M12.6 12.6l-1.06-1.06M4.46 4.46L3.4 3.4"/></svg>
-      <svg class="mode-icon-moon" viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.5 9.5A5.5 5.5 0 1 1 6.5 2.5a4.5 4.5 0 0 0 7 7z"/></svg>
-      <span id="illu-mode-label">Light</span>
-    </button>
+    <a class="rv-pill-link" href="illustration-conventions.html" style="margin-left:auto">
+      <span class="mds-iconview mds-iconview--small rv-accent"><i class="gh-standard-file-validation"></i></span>
+      <span>Naming guidelines</span>
+    </a>
   </nav>
   <main id="illu-grid" class="grid grid-illu" aria-live="polite"><!-- illustrations render here --></main>
   <div id="illu-empty" class="empty-state">
     <div class="empty-state-art" aria-hidden="true">
-      <svg width="84" height="84" viewBox="0 0 84 84" fill="none">
+      <svg width="84" height="84" viewBox="0 0 84 84" fill="none" aria-hidden="true">
         <rect x="6" y="6" width="72" height="72" rx="14" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 6" opacity=".4"/>
         <circle cx="30" cy="34" r="6" stroke="currentColor" stroke-width="1.5" opacity=".55"/>
         <path d="M14 64 L34 44 L48 56 L60 46 L70 56" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity=".55"/>
@@ -217,18 +240,39 @@
 
 <!-- ======================================================= ANIMATION ===== -->
 <section class="panel hidden" id="panel-animation" data-section="animation">
-  <main id="anim-grid" class="grid grid-anim" aria-live="polite"><!-- animations render here --></main>
-  <div id="anim-empty" class="empty-state">
-    <div class="empty-state-art" aria-hidden="true">
-      <svg width="84" height="84" viewBox="0 0 84 84" fill="none">
-        <circle cx="42" cy="42" r="32" stroke="currentColor" stroke-width="1.5" opacity=".35"/>
-        <path d="M36 30 L56 42 L36 54 Z" fill="currentColor" opacity=".75"/>
-        <path d="M14 42 H22 M62 42 H70 M42 14 V22 M42 62 V70" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity=".5"/>
-      </svg>
+  <div class="rv-subnav">
+    <div class="rv-subnav-inner">
+      <nav class="rv-platforms" id="rv-platforms" aria-label="Platform"></nav>
+      <div class="rv-filter-wrap" id="rv-filter-wrap">
+        <button id="rv-filter-btn" class="rv-filter-pill" aria-haspopup="dialog" aria-expanded="false">
+          <span class="mds-iconview mds-iconview--small"><i class="gh-standard-filter"></i></span>
+          <span>Filters</span>
+          <span class="rv-filter-count hidden" id="rv-filter-count">0</span>
+        </button>
+      </div>
+      <a class="rv-pill-link" href="conventions.html">
+        <span class="mds-iconview mds-iconview--small rv-accent"><i class="gh-standard-file-validation"></i></span>
+        <span>Naming guidelines</span>
+      </a>
     </div>
-    <h2>Animation is coming.</h2>
-    <p>Rive (<code>.riv</code>) and Lottie animations live here. Drop files into <code>animations/</code> and list them in <code>animations.json</code> — they'll preview right on the card and open in a full player.</p>
-    <div class="empty-meta mono">animations.json</div>
+    <div class="rv-active-pills" id="rv-active-pills"></div>
+  </div>
+
+  <div class="rv-main" id="rv-main">
+    <div class="rv-grid" id="rv-grid" aria-live="polite"></div>
+    <div class="rv-grid hidden" id="rv-skeleton" aria-hidden="true"></div>
+    <div class="rv-empty hidden" id="rv-empty-library">
+      <div class="rv-empty-badge rv-empty-badge--accent"><span class="mds-iconview mds-iconview--xlarge"><i class="gh-standard-cloud-upload"></i></span></div>
+      <h2 class="display-small">No animations yet</h2>
+      <p class="body-large">Upload a .riv file or a ZIP bundle with animations and assets.</p>
+      <button class="rv-btn rv-btn-accent" id="rv-empty-upload">Upload your first animation</button>
+    </div>
+    <div class="rv-empty hidden" id="rv-empty-filter">
+      <div class="rv-empty-badge"><span class="mds-iconview mds-iconview--large"><i class="gh-standard-global-search"></i></span></div>
+      <h2 class="heading-large">No matches</h2>
+      <p class="body-base">Try a different search term, category, or filter.</p>
+      <button class="rv-btn rv-btn-ghost hidden" id="rv-clear-filters">Clear filters</button>
+    </div>
   </div>
 </section>
 
@@ -299,30 +343,6 @@
   </div>
 </div>
 
-<!-- Bulk-format picker for "Download all" -->
-<dialog id="all-dialog" class="all-dialog">
-  <div class="all-dialog-inner">
-    <h3>Download the entire library</h3>
-    <p>Pick what to bundle into the zip — 452 icons.</p>
-    <fieldset class="dialog-fieldset">
-      <legend>Variants</legend>
-      <label><input type="checkbox" name="all-variant" value="rounded" checked> Rounded</label>
-      <label><input type="checkbox" name="all-variant" value="standard" checked> Standard</label>
-    </fieldset>
-    <fieldset class="dialog-fieldset">
-      <legend>Formats</legend>
-      <label><input type="checkbox" name="all-format" value="svg" checked> Individual SVGs</label>
-      <label><input type="checkbox" name="all-format" value="json" checked> manifest.json</label>
-      <label><input type="checkbox" name="all-format" value="font" checked> Font files (TTF/OTF/WOFF/WOFF2)</label>
-      <label><input type="checkbox" name="all-format" value="css"> CSS files</label>
-    </fieldset>
-    <div class="dialog-actions">
-      <button class="btn btn-ghost" id="all-cancel">Cancel</button>
-      <button class="btn" id="all-go">Download zip</button>
-    </div>
-  </div>
-</dialog>
-
 <!-- Illustration viewer — large light/dark side-by-side preview + downloads -->
 <div id="illu-viewer" class="illu-viewer hidden" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="illu-viewer-name">
   <button class="illu-viewer-close" id="illu-viewer-close" aria-label="Close viewer">×</button>
@@ -338,7 +358,7 @@
       <figure class="illu-viewer-figure illu-viewer-figure-light">
         <div class="illu-viewer-canvas">
           <img id="illu-viewer-img-light" alt="">
-          <button class="illu-viewer-copy-pill" data-illu-viewer-copy="light" title="Copy light-mode SVG markup">
+          <button class="illu-viewer-copy-pill" data-illu-viewer-copy="light" title="Copy light-mode SVG markup" aria-label="Copy light-mode SVG markup">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
             <span>Copy SVG</span>
           </button>
@@ -348,7 +368,7 @@
       <figure class="illu-viewer-figure illu-viewer-figure-dark">
         <div class="illu-viewer-canvas">
           <img id="illu-viewer-img-dark" alt="">
-          <button class="illu-viewer-copy-pill" data-illu-viewer-copy="dark" title="Copy dark-mode SVG markup">
+          <button class="illu-viewer-copy-pill" data-illu-viewer-copy="dark" title="Copy dark-mode SVG markup" aria-label="Copy dark-mode SVG markup">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
             <span>Copy SVG</span>
           </button>
@@ -365,66 +385,56 @@
   </div>
 </div>
 
-<!-- Animation viewer — large Rive stage + playback controls + detected metadata -->
-<div id="anim-viewer" class="anim-viewer hidden" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="anim-viewer-name">
-  <button class="anim-viewer-close" id="anim-viewer-close" aria-label="Close viewer">×</button>
-  <div class="anim-viewer-inner" role="document">
-    <div class="anim-viewer-head">
-      <div>
-        <div class="anim-viewer-eyebrow" id="anim-viewer-eyebrow">Rive animation</div>
-        <h2 id="anim-viewer-name"></h2>
-        <div class="anim-viewer-sub" id="anim-viewer-sub"></div>
+<!-- Rive animation viewer + upload (Animation tab) -->
+<div id="rv-viewer" class="rv-viewer hidden" role="dialog" aria-modal="true" aria-hidden="true">
+  <button class="rv-viewer-close" id="rv-viewer-close" aria-label="Close viewer">
+    <span class="mds-iconview mds-iconview--small"><i class="gh-standard-cancel-01"></i></span>
+  </button>
+  <div class="rv-viewer-body">
+    <div class="rv-viewer-stagecol">
+      <div class="rv-viewer-stage checker-bg">
+        <canvas id="rv-viewer-canvas" class="rv-viewer-canvas"></canvas>
       </div>
-      <div class="anim-viewer-tags" id="anim-viewer-tags"></div>
-    </div>
-
-    <div class="anim-viewer-body">
-      <div class="anim-viewer-stage-col">
-        <div class="anim-viewer-stage" id="anim-viewer-stage">
-          <canvas id="anim-viewer-canvas" class="anim-viewer-canvas"></canvas>
-        </div>
-        <div class="anim-viewer-controls">
-          <button class="anim-ctrl-btn anim-play-btn is-playing" id="anim-play" aria-label="Play / pause">
-            <svg class="ic-play" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-            <svg class="ic-pause" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
-          </button>
-          <button class="anim-ctrl-btn" id="anim-restart" aria-label="Restart">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9 9 0 0 0-6.4 2.6L3 8"/><path d="M3 3v5h5"/></svg>
-          </button>
-          <span class="anim-time mono" id="anim-time">0:00 / 0:00</span>
-          <input type="range" id="anim-scrub" class="anim-scrub" min="0" max="1" step="0.001" value="0" aria-label="Seek">
-          <button class="anim-ctrl-btn anim-loop-btn" id="anim-loop" aria-pressed="true" aria-label="Toggle loop" title="Loop">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
-          </button>
-          <select id="anim-speed" class="anim-speed" aria-label="Playback speed">
-            <option value="0.5">0.5×</option>
-            <option value="1" selected>1×</option>
-            <option value="1.5">1.5×</option>
-            <option value="2">2×</option>
-          </select>
-        </div>
+      <div class="rv-viewer-controls">
+        <button class="rv-ctrl rv-ctrl-primary" id="rv-play" aria-label="Play/pause"><span class="mds-iconview mds-iconview--small"><i class="gh-standard-pause-circle" id="rv-play-ico"></i></span></button>
+        <button class="rv-ctrl" id="rv-restart" aria-label="Restart"><span class="mds-iconview mds-iconview--small"><i class="gh-standard-reload"></i></span></button>
+        <span class="body-small rv-time mono" id="rv-time">0:00 / 0:00</span>
+        <input type="range" id="rv-scrub" class="timeline" min="0" max="1" step="0.001" value="0" aria-label="Seek">
+        <button class="rv-ctrl rv-ctrl-toggle" id="rv-loop" aria-pressed="true" aria-label="Toggle loop"><span class="mds-iconview mds-iconview--small" aria-hidden="true"><svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></span></button>
+        <span id="rv-theme-switch-slot"></span>
+        <select id="rv-speed" class="rv-speed" aria-label="Playback speed">
+          <option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="1.5">1.5×</option><option value="2">2×</option>
+        </select>
       </div>
-
-      <aside class="anim-viewer-meta" id="anim-viewer-meta" aria-live="polite">
-        <div class="anim-meta-status" id="anim-meta-status">Inspecting…</div>
-      </aside>
     </div>
-
-    <div class="anim-viewer-foot">
-      <span class="anim-viewer-fmt-label">Download source</span>
-      <a class="btn btn-soft" id="anim-viewer-dl" download>.riv</a>
-    </div>
+    <aside class="rv-viewer-side" id="rv-viewer-side"></aside>
   </div>
 </div>
 
-<div id="toast" class="toast hidden"></div>
+<div id="rv-upload" class="rv-modal hidden" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="rv-modal-card">
+    <div class="rv-modal-head">
+      <h2 class="heading-small" id="rv-upload-title">Upload animations</h2>
+      <button class="rv-icon-btn" id="rv-upload-close" aria-label="Close"><span class="mds-iconview mds-iconview--small"><i class="gh-standard-cancel-01"></i></span></button>
+    </div>
+    <div class="rv-modal-body" id="rv-upload-body"></div>
+    <div class="rv-modal-foot" id="rv-upload-foot"></div>
+  </div>
+  <input id="rv-file-input" type="file" accept=".riv,.zip,application/zip" multiple hidden>
+</div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/7.0.0/fuse.min.js"></script>
+<div id="rv-toast" class="rv-toast hidden" role="status" aria-live="polite"></div>
+
+<div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" integrity="sha384-+mbV2IY1Zk/X1p/nWllGySJSUN8uMs+gUAN10Or95UBH0fpj6GfKgPmgC5EXieXG" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/7.0.0/fuse.min.js" integrity="sha384-PCSoOZTpbkikBEtd/+uV3WNdc676i9KUf01KOA8CnJotvlx8rRrETbDuwdjqTYvt" crossorigin="anonymous"></script>
 <!-- dotLottie player — handles both .json (Lottie) and .lottie (dotLottie) -->
-<script type="module" src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs"></script>
+<script type="module" src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" integrity="sha384-ypAFdIpmPhrhuVLN9fmIZaqZHGUVSzHiiplL/kPO2+gJ4Na4yRVbVt0YhyvWdbwn" crossorigin="anonymous"></script>
 <!-- Rive web runtime — handles .riv files -->
-<script src="https://unpkg.com/@rive-app/canvas@2.21.6/rive.js"></script>
-<script src="app.js"></script>
+<script src="https://unpkg.com/@rive-app/canvas@2.38.1/rive.js" integrity="sha384-CaxSWGjKQEpgP0KzCDnmkBy8Mb46utEYzsqjK/RZ4WNV06RgW4p7vldT4Lk5750f" crossorigin="anonymous"></script>
+<script type="module" src="lib/auth.js?v=1"></script>
+<script type="module" src="lib/uploads.js?v=1"></script>
+<script src="app.js?v=phase-b-animation-insights-1"></script>
 </body>
 </html>

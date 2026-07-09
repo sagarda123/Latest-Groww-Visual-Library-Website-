@@ -1,49 +1,53 @@
-# Animation section — native integration
+# Animation section — native integration (Phase B)
 
-Adds the Rive animation library to the **Animation** tab of Groww Visual Assets,
-built natively in the site's own vanilla HTML/CSS/JS (no iframe, no React).
+The **Animation** tab is now the full Rive animation library from `latest rive repo/`,
+mounted natively into Groww Visual Library (no iframe).
 
-## What changed
+Icons and Illustrations remain sourced from the original Groww Visual Library data:
+- Icons: deployed `manifest.json` restored exactly (`488` Mint icon entries; names remain `mds_ic_huge_*`).
+- Illustrations: deployed `illustrations.json` restored exactly (`148` entries) plus all `296` light/dark SVG assets.
+- Figma source anchors checked:
+  - Mint Icon library: `CJJaQtz4CTxkwEQ4fzecTe`, node `9221:256` (`mds_ic_huge_id`).
+  - Mint Illustrations Library: `RconsMlkjX3frOjBDfvFKQ`, node `9503:4606` (`Images` canvas with light/dark symbol pairs).
 
-| File | Change |
-|------|--------|
-| `animations.json` | **NEW** — manifest the site already fetches at root. `{ items: [{ name, src, tags }] }`. 8 entries. |
-| `animations/` | **NEW** — 8 real Groww `.riv` files referenced by the manifest. |
-| `index.html` | Added the `#anim-viewer` modal (stage + transport controls + metadata panel); updated the Animation empty-state copy. |
-| `styles.css` | Added `.anim-viewer*` styles + card "↗ View" affordance. All via existing MDS tokens; no new colors. |
-| `app.js` | Added the animation viewer module: play/pause, restart, scrubber, loop, speed, live metadata inspection (artboards / state machines / animations / view models / inputs), card-click + keyboard wiring, Escape-to-close. The existing `renderAnimations()`/`initRiveCanvases()` gallery is reused as-is (one line: cards now carry `data-anim-name` + are focusable). |
+## Architecture
 
-Nothing else in the site was touched — Icons and Illustrations are unchanged.
+| File | Role |
+|------|------|
+| `rive-section.js` | Animation tab engine (grid, viewer, upload, filters, search) — lazy-loaded |
+| `lib/rive/*` | IndexedDB, seed, Rive helpers, filter engine |
+| `conventions.html` | Naming guidelines page |
+| `animations/` + `animations.json` | Sample `.riv` library |
+| `wealth/*.json`, `prime/*.json` | Explicit empty secondary-brand manifests for clean no-asset states |
+| `index.html` | `#panel-animation` markup + viewer/upload modals |
+| `styles.css` | Appended `rv-*` component styles |
+| `app.js` | Wires topbar search + tab switching; calls `initRiveSection()` on first Animation visit |
 
-## How it works (reuses the site's existing machinery)
-- The Animation tab was already wired to fetch `animations.json` and render `.riv`
-  via the global `@rive-app/canvas` runtime. It only showed 0 because the manifest
-  was missing. We added the manifest + assets, then layered a click-to-open viewer
-  on top — exactly mirroring the existing `illu-viewer` pattern.
+Reference folders retained intentionally:
+- `latest rive repo/` — source snapshot used to port the native Rive experience.
+- `rive-animation-repo/` — React/source reference and Puppeteer dependency anchor.
 
-## Verified
-- `node --check app.js` clean; `animations.json` valid; all 8 `src` paths resolve.
-- Headless (Puppeteer) end-to-end: tab count = 8, 8 cards render, grid Rive canvas
-  paints, viewer opens on click, metadata panel populates (5 sections from the live
-  instance), viewer canvas paints, Escape closes. All checks passed.
+## Run locally
 
-## Adding more animations later
-1. Drop the `.riv` (or `.lottie`/`.json`) into `animations/`.
-2. Add an entry to `animations.json`: `{ "name": "...", "src": "animations/<file>", "tags": ["..."] }`.
-That's it — the gallery + viewer pick it up automatically.
-
-## Getting this onto the live site (repo: anishsoni258-svg/Visual_Library)
-The repo is owned by `anishsoni258-svg`, so:
-- **If you have write access:** push these changed files to a branch and open a PR to `main` (Vercel auto-deploys on merge).
-- **If not:** fork the repo, commit these files to your fork, open a PR.
-- **No-git fallback:** upload the changed files via the GitHub web UI
-  ("Add file → Upload files") on a branch, then open the PR.
-
-Changed/added paths to include:
+```bash
+cd "/Users/sagarda/Documents/new visual repo"
+python3 -m http.server 8080
+# → http://localhost:8080/ then open the Animation tab
 ```
-index.html
-styles.css
-app.js
-animations.json
-animations/   (all 8 .riv)
+
+Rive runtime: `@rive-app/canvas@2.38.1` (bumped from 2.21.6 for ViewModel metadata APIs).
+
+## Verification
+
+```bash
+BASE_URL=http://localhost:8081 node scripts/verify-phase-b.mjs
+BASE_URL=http://localhost:8081 node scripts/audit-site-deep.mjs
 ```
+
+Checks:
+- Icons tab: 488 original icon cards.
+- Illustrations tab: 148 original illustration records, non-empty hero grid.
+- Animation tab: 8 Rive tiles, search/filter/upload/viewer/conventions path.
+- Viewer: opens with detected metadata.
+- Conventions page: 10 sections.
+- Deep audit: traverses primary flows, responsive layouts, accessibility basics, runtime errors, dependency observations, and conservative cleanup signals.

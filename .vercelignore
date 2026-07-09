@@ -1,0 +1,9 @@
+# Local-only / reference material — not part of the deployed site
+latest rive repo
+rive-animation-repo
+scripts
+server.mjs
+auth.config.json
+.cursor
+.DS_Store
+INTEGRATION_NOTES.md

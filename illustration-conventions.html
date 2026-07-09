@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Naming conventions · Illustrations</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="stylesheet" href="fonts/standard/groww-huge-standard.css">
+<style>
+  @font-face{font-family:'Sohne';src:url('fonts/mint-ds/Sohne-Kraftig.otf') format('opentype');font-weight:500;font-display:swap;}
+  @font-face{font-family:'GrowwSans';src:url('fonts/mint-ds/GrowwSans-Regular.otf') format('opentype');font-weight:400;font-display:swap;}
+  @font-face{font-family:'GrowwSans';src:url('fonts/mint-ds/GrowwSans-Medium.otf') format('opentype');font-weight:500;font-display:swap;}
+</style>
+<link rel="stylesheet" href="styles.css">
+<script>(function(){try{var t=localStorage.getItem('rive-theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme: dark)').matches))document.documentElement.classList.add('dark');}catch(e){}})();</script>
+<style>
+  .cv-wrap{min-height:100vh;background:var(--backgroundPrimary);}
+  .cv-header{position:sticky;top:0;z-index:30;border-bottom:1px solid var(--borderPrimary);background:color-mix(in srgb,var(--backgroundPrimary) 90%,transparent);backdrop-filter:blur(8px);}
+  .cv-header-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:14px 24px;}
+  .cv-back{display:inline-flex;align-items:center;gap:8px;color:var(--contentSecondary);font-weight:500;font-size:13px;}
+  .cv-back:hover{color:var(--contentPrimary);}
+  .cv-main{max-width:1080px;margin:0 auto;padding:48px 24px 96px;}
+  .cv-section{scroll-margin-top:96px;}
+  .cv-section + .cv-section{margin-top:72px;}
+  .cv-eyebrow{color:var(--contentAccent);}
+  .cv-lead{color:var(--contentSecondary);margin-top:8px;max-width:680px;}
+  .cv-pageh{margin-bottom:56px;}
+  .cv-card{border:1px solid var(--borderPrimary);border-radius:16px;background:var(--backgroundSurfaceZ1);padding:20px;}
+  .cv-grid{display:grid;gap:16px;margin-top:20px;}
+  .cv-grid-3{grid-template-columns:1fr;}
+  @media(min-width:720px){.cv-grid-3{grid-template-columns:repeat(3,1fr);}}
+  .cv-anatomy{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-end;border:1px solid var(--borderPrimary);border-radius:12px;background:var(--backgroundSurfaceZ2);padding:16px;margin-top:16px;}
+  .cv-part{display:flex;flex-direction:column;gap:4px;align-items:flex-start;}
+  .cv-chip{font-family:ui-monospace,monospace;font-size:13px;padding:4px 10px;border-radius:8px;background:var(--backgroundSecondary);color:var(--contentPrimary);border:1px solid var(--borderPrimary);}
+  .cv-part-label{font-size:10px;color:var(--contentTertiary);text-transform:uppercase;letter-spacing:.08em;}
+  .cv-req{font-size:9px;padding:1px 6px;border-radius:999px;background:var(--backgroundAccentSubtle);color:var(--contentOnAccentSubtle);text-transform:uppercase;}
+  .cv-ex{display:flex;flex-direction:column;gap:4px;border:1px solid var(--borderPrimary);border-radius:12px;padding:14px;background:var(--backgroundSurfaceZ1);transition:border-color .15s;}
+  .cv-ex:hover{border-color:var(--borderAccent);}
+  .cv-ex code{font-family:ui-monospace,monospace;font-size:13px;color:var(--contentPrimary);overflow-wrap:anywhere;}
+  .cv-ex .meaning{font-size:12px;color:var(--contentSecondary);overflow-wrap:anywhere;}
+  .cv-type-count{font-size:11px;color:var(--contentTertiary);margin-top:2px;}
+  .cv-table{width:100%;border-collapse:collapse;margin-top:16px;font-size:13px;}
+  .cv-table th,.cv-table td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--borderPrimary);vertical-align:top;}
+  .cv-table th{color:var(--contentTertiary);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:.06em;}
+  .cv-table code{font-family:ui-monospace,monospace;font-size:12px;}
+  .cv-good{color:var(--contentPositive,#0b9a68);font-weight:500;}
+  .cv-bad{color:var(--contentNegative,#eb5b3c);font-weight:500;}
+  .cv-h2{font-size:20px;font-weight:600;color:var(--contentPrimary);}
+  .cv-h1{font-size:32px;font-weight:600;color:var(--contentPrimary);line-height:1.2;}
+</style>
+</head>
+<body>
+<div class="cv-wrap">
+  <header class="cv-header">
+    <div class="cv-header-inner">
+      <a class="cv-back" href="index.html">← Back to Visual Assets</a>
+      <span class="body-small" style="color:var(--contentTertiary)">Illustration naming conventions</span>
+    </div>
+  </header>
+
+  <main class="cv-main">
+    <div class="cv-pageh">
+      <div class="cv-eyebrow heading-eyebrow">Groww Visual Library</div>
+      <h1 class="cv-h1">Illustration naming conventions</h1>
+      <p class="cv-lead">Every illustration in the library follows one predictable pattern so designers and engineers can find, reference, and validate assets without guesswork. The library flags any name that breaks these rules.</p>
+    </div>
+
+    <section class="cv-section" id="pattern">
+      <h2 class="cv-h2">1 · The pattern</h2>
+      <p class="cv-lead">Lowercase snake_case, three parts, in this order:</p>
+      <div class="cv-anatomy" aria-label="Name anatomy">
+        <div class="cv-part">
+          <span class="cv-chip">mds_il</span>
+          <span class="cv-part-label">Prefix</span>
+          <span class="cv-req">Required</span>
+        </div>
+        <div class="cv-part">
+          <span class="cv-chip">hero | spot_hero | illustrated_icon</span>
+          <span class="cv-part-label">Illustration type</span>
+          <span class="cv-req">Required</span>
+        </div>
+        <div class="cv-part">
+          <span class="cv-chip">risk_fno</span>
+          <span class="cv-part-label">Illustration name</span>
+          <span class="cv-req">Required</span>
+        </div>
+      </div>
+      <p class="cv-lead" style="margin-top:16px">Validation regex: <code class="cv-chip" style="font-size:12px">^mds_il_(hero|spot_hero|illustrated_icon)_[a-z0-9_]+$</code></p>
+    </section>
+
+    <section class="cv-section" id="types">
+      <h2 class="cv-h2">2 · Illustration types</h2>
+      <div class="cv-grid cv-grid-3">
+        <div class="cv-card">
+          <code class="cv-chip">mds_il_hero_*</code>
+          <p class="cv-lead" style="margin-top:12px;font-size:13px">Full-bleed hero artwork for empty states, errors, and feature intros. The biggest, most detailed pieces.</p>
+          <div class="cv-type-count">50 assets in the library</div>
+        </div>
+        <div class="cv-card">
+          <code class="cv-chip">mds_il_spot_hero_*</code>
+          <p class="cv-lead" style="margin-top:12px;font-size:13px">Mid-size spot artwork used inline in cards, sheets, and banners — lighter than a hero, richer than an icon.</p>
+          <div class="cv-type-count">55 assets in the library</div>
+        </div>
+        <div class="cv-card">
+          <code class="cv-chip">mds_il_illustrated_icon_*</code>
+          <p class="cv-lead" style="margin-top:12px;font-size:13px">Small illustrated icons (native 64&nbsp;px) for lists, categories, and product entry points.</p>
+          <div class="cv-type-count">43 assets in the library</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cv-section" id="examples">
+      <h2 class="cv-h2">3 · Worked examples</h2>
+      <div class="cv-grid cv-grid-3">
+        <div class="cv-ex"><code>mds_il_hero_risk_fno</code><span class="meaning">Hero · F&amp;O risk disclosure</span></div>
+        <div class="cv-ex"><code>mds_il_hero_error_refresh</code><span class="meaning">Hero · generic error, retry state</span></div>
+        <div class="cv-ex"><code>mds_il_spot_hero_calendar</code><span class="meaning">Spot hero · calendar / schedule</span></div>
+        <div class="cv-ex"><code>mds_il_spot_hero_document_folder</code><span class="meaning">Spot hero · documents folder</span></div>
+        <div class="cv-ex"><code>mds_il_illustrated_icon_mf_nfo</code><span class="meaning">Illustrated icon · mutual fund NFO</span></div>
+        <div class="cv-ex"><code>mds_il_illustrated_icon_mf_top_companies</code><span class="meaning">Illustrated icon · MF top companies</span></div>
+      </div>
+    </section>
+
+    <section class="cv-section" id="rules">
+      <h2 class="cv-h2">4 · Do &amp; don't</h2>
+      <table class="cv-table">
+        <thead><tr><th>Rule</th><th><span class="cv-good">Do</span></th><th><span class="cv-bad">Don't</span></th></tr></thead>
+        <tbody>
+          <tr><td>Lowercase snake_case only</td><td><code>mds_il_hero_stocks_sip</code></td><td><code>mds_il_hero_Stocks_SIP</code></td></tr>
+          <tr><td>Type token comes from the three fixed values</td><td><code>mds_il_spot_hero_calendar</code></td><td><code>mds_il_banner_calendar</code></td></tr>
+          <tr><td>Name describes the content, not the screen it's used on</td><td><code>mds_il_hero_empty_watchlist</code></td><td><code>mds_il_hero_homepage_v2_final</code></td></tr>
+          <tr><td>No brand or theme tokens — light/dark are file variants, not names</td><td><code>mds_il_hero_win_trophy</code></td><td><code>mds_il_hero_win_trophy_dark_groww</code></td></tr>
+          <tr><td>No spaces, hyphens, or special characters</td><td><code>mds_il_illustrated_icon_mf_nfo</code></td><td><code>mds-il illustrated (icon) NFO!</code></td></tr>
+        </tbody>
+      </table>
+      <p class="cv-lead" style="margin-top:20px">Rules are enforced in <code>lib/rive/namingRules.js</code> — the library shows a red ⛔ badge beside any name that fails, and the upload dialog validates before anything is added.</p>
+    </section>
+  </main>
+</div>
+</body>
+</html>

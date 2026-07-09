@@ -11,7 +11,7 @@
     filters:     $('#filters'),
     empty:       $('#empty'),
     selectToggle:$('#select-toggle'),
-    downloadAll: $('#download-all'),
+    uploadBtn:   $('#upload-btn'),
     drawer:      $('#drawer'),
     drawerClose: $('#drawer-close'),
     drawerName:  $('#drawer-name'),
@@ -26,12 +26,11 @@
     selCount:    $('#sel-count'),
     selClear:    $('#sel-clear'),
     selAll:      $('#sel-all'),
-    allDialog:   $('#all-dialog'),
-    allCancel:   $('#all-cancel'),
-    allGo:       $('#all-go'),
     toast:       $('#toast'),
     variantWrap: $('.variant'),
     sectionsNav: $('.sections'),
+    themeToggle: $('#theme-toggle'),
+    themeToggleLabel: $('#theme-toggle-label'),
     panels: {
       icons:         $('#panel-icons'),
       illustrations: $('#panel-illustrations'),
@@ -44,8 +43,6 @@
     },
     illuGrid: $('#illu-grid'),
     illuEmpty: $('#illu-empty'),
-    animGrid: $('#anim-grid'),
-    animEmpty: $('#anim-empty'),
     nhGrid:   $('#nh-grid'),
     nhEmpty:  $('#nh-empty'),
     nhEmptyState: $('#nh-empty-state'),
@@ -89,18 +86,68 @@
   let section = VALID_SECTIONS.includes(localStorage.getItem(SECTION_KEY))
     ? localStorage.getItem(SECTION_KEY) : 'icons';
 
+  // Site theme state. `rive-theme` is the canonical key because the animation
+  // library already uses it; `gh.illuMode` is retained as a migration fallback.
+  const THEME_KEY = 'rive-theme';
+  const ILLU_MODE_KEY = 'gh.illuMode';
+  const THEME_EVENT = 'groww-theme-change';
+  const normalizeTheme = value => (value === 'dark' || value === 'light') ? value : null;
+  const readStorage = key => {
+    try { return localStorage.getItem(key); } catch (_) { return null; }
+  };
+  const writeStorage = (key, value) => {
+    try { localStorage.setItem(key, value); } catch (_) {}
+  };
+  const getSystemTheme = () => {
+    try { return window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; }
+    catch (_) { return 'light'; }
+  };
+  const storedTheme = normalizeTheme(readStorage(THEME_KEY));
+  const legacyIlluTheme = normalizeTheme(readStorage(ILLU_MODE_KEY));
+  let themeHasExplicitPreference = Boolean(storedTheme || legacyIlluTheme);
+  let themeMode = storedTheme || legacyIlluTheme || getSystemTheme();
+  let illuMode = themeMode;
+
   let illustrations = [];
-  let animations = [];
+  let animationCount = 0;
+  let riveSection = null;
+  let riveSectionReady = null;
   let activeIlluCat = 'hero';
   let nhIcons = [];
   let nhFiltered = [];
   let fuseNH = null;
   let nhCategory = 'All';
-  const riveInstances = new Map(); // canvas-id → Rive instance
 
   const FONT_PATH = v => `fonts/${v}/groww-huge-${v}`;
   const FONT_FILES = ['.ttf', '.otf', '.woff', '.woff2', '.css'];
   const cap = s => s[0].toUpperCase() + s.slice(1);
+  const fetchJson = path => fetch(path, { cache: 'no-store' }).then(r => r.ok ? r.json() : null);
+  const escapeHtml = s => String(s ?? '').replace(/[&<>"']/g, c => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+  }[c]));
+  const safeAssetPath = value => {
+    const raw = String(value ?? '').trim();
+    // Same-origin blob URLs are created by this app for uploaded assets
+    // (URL.createObjectURL) — the only scheme allowed through.
+    if (raw.startsWith(`blob:${location.origin}/`)) return escapeHtml(raw);
+    let decoded = raw;
+    try { decoded = decodeURIComponent(raw); } catch (_) {}
+    const pathPart = decoded.split(/[?#]/)[0];
+    if (
+      !raw ||
+      raw.startsWith('/') ||
+      raw.startsWith('//') ||
+      pathPart.includes('\\') ||
+      pathPart.split('/').includes('..') ||
+      /^[a-z][a-z0-9+.-]*:/i.test(raw) ||
+      /[\u0000-\u001f\u007f]/.test(raw)
+    ) return '';
+    return escapeHtml(raw);
+  };
 
   // ---------- bootstrap --------------------------------------------------
   let keysWired = false;
@@ -146,7 +193,8 @@
     // Reset icon/illustration/animation state
     icons = []; filtered = []; selected.clear();
     if (selectMode) els.selectToggle.click();
-    illustrations = []; animations = [];
+    illustrations = []; animationCount = 0;
+    riveSection = null; riveSectionReady = null;
     searchQuery = ''; els.search.value = '';
     activeCategory = 'All'; activeIlluCat = 'hero';
     els.counts.icons.textContent = '—';
@@ -162,24 +210,10 @@
     }
 
     // Fetch icon manifest (brand.manifest allows wealth to reuse root manifest.json)
-    fetch(brand.manifest)
-      .then(r => r.json())
+    fetchJson(brand.manifest)
       .then(data => {
         manifest = data;
-        icons = data.icons || [];
-        fuseIcons = new Fuse(icons, {
-          keys: [
-            { name: 'name',     weight: 2   },
-            { name: 'mintName', weight: 1.5 },
-            { name: 'tags',     weight: 1   },
-            { name: 'category', weight: 0.5 },
-          ],
-          threshold: 0.4,
-          includeScore: true,
-          minMatchCharLength: 2,
-          ignoreLocation: true,
-        });
-        els.counts.icons.textContent = icons.length;
+        rebuildIconIndex();
         applyVariantToDom();
         buildFilters();
         applyFilters();
@@ -192,8 +226,7 @@
       })
       .catch(err => {
         manifest = { icons: [], categories: [], fontFamilies: {}, classNamePrefixes: {} };
-        icons = []; filtered = [];
-        els.counts.icons.textContent = 0;
+        rebuildIconIndex(); filtered = [];
         if (!keysWired) { bindKeys(); keysWired = true; }
         buildFilters(); applyFilters();
         applySectionToDom(); updateCounter(); updateSearchPlaceholder();
@@ -201,30 +234,26 @@
       });
 
     // Fetch illustrations manifest
-    fetch(`${p}illustrations.json`).then(r => r.ok ? r.json() : null).then(data => {
-      illustrations = (data && Array.isArray(data.items)) ? data.items : [];
-      els.counts.illustrations.textContent = illustrations.length || 0;
-      buildIlluCatCounts();
-      renderIllustrations();
+    fetchJson(`${p}illustrations.json`).then(data => {
+      illusBase = (data && Array.isArray(data.items)) ? data.items : [];
+      rebuildIllustrations();
     }).catch(() => {
-      illustrations = [];
-      els.counts.illustrations.textContent = 0;
-      renderIllustrations();
+      illusBase = [];
+      rebuildIllustrations();
     });
 
-    // Fetch animations manifest
-    fetch(`${p}animations.json`).then(r => r.ok ? r.json() : null).then(data => {
-      animations = (data && Array.isArray(data.items)) ? data.items : [];
-      els.counts.animation.textContent = animations.length || 0;
-      renderAnimations();
+    // Seed animation tab badge from manifest; full Rive library loads on first visit.
+    fetchJson(`${p}animations.json`).then(data => {
+      animationCount = (data && Array.isArray(data.items)) ? data.items.length : 0;
+      els.counts.animation.textContent = animationCount || 0;
+      if (section === 'animation') updateCounter();
     }).catch(() => {
-      animations = [];
+      animationCount = 0;
       els.counts.animation.textContent = 0;
-      renderAnimations();
     });
 
     // Fetch New Huge manifest
-    fetch(`${p}new-huge.json`).then(r => r.ok ? r.json() : null).then(data => {
+    fetchJson(`${p}new-huge.json`).then(data => {
       nhIcons = (data && Array.isArray(data.icons)) ? data.icons : [];
       fuseNH = nhIcons.length ? new Fuse(nhIcons, {
         keys: [{ name: 'name', weight: 2 }, { name: 'mintName', weight: 1.5 }, { name: 'tags', weight: 1 }, { name: 'category', weight: 0.5 }],
@@ -264,8 +293,101 @@
     });
   }
 
+  function updateThemeToggle() {
+    const isDark = themeMode === 'dark';
+    if (els.themeToggle) {
+      els.themeToggle.setAttribute('aria-pressed', String(isDark));
+      els.themeToggle.setAttribute('aria-label', `Switch to ${isDark ? 'light' : 'dark'} mode`);
+      els.themeToggle.setAttribute('title', `Switch to ${isDark ? 'light' : 'dark'} mode`);
+    }
+    if (els.themeToggleLabel) els.themeToggleLabel.textContent = isDark ? 'Dark' : 'Light';
+  }
+
+  function applyIlluModeToDom() {
+    if (els.illuGrid) els.illuGrid.dataset.mode = illuMode;
+    const legacyBtn = document.getElementById('illu-mode-global');
+    const legacyLabel = document.getElementById('illu-mode-label');
+    if (legacyBtn) legacyBtn.setAttribute('aria-pressed', String(illuMode === 'dark'));
+    if (legacyLabel) legacyLabel.textContent = illuMode === 'dark' ? 'Dark' : 'Light';
+  }
+
+  function applyThemeToDom(nextTheme = themeMode, options = {}) {
+    const normalized = normalizeTheme(nextTheme) || 'light';
+    const persist = options.persist !== false;
+    const emit = options.emit !== false;
+    themeMode = normalized;
+    illuMode = normalized;
+    document.documentElement.classList.toggle('dark', themeMode === 'dark');
+    document.documentElement.dataset.theme = themeMode;
+    updateThemeToggle();
+    applyIlluModeToDom();
+    if (persist) {
+      themeHasExplicitPreference = true;
+      writeStorage(THEME_KEY, themeMode);
+      writeStorage(ILLU_MODE_KEY, themeMode);
+    }
+    if (emit) {
+      window.dispatchEvent(new CustomEvent(THEME_EVENT, { detail: { theme: themeMode } }));
+    }
+    return themeMode;
+  }
+
+  function toggleTheme() {
+    return applyThemeToDom(themeMode === 'dark' ? 'light' : 'dark');
+  }
+
+  els.themeToggle?.addEventListener('click', toggleTheme);
+  window.GrowwVisualTheme = {
+    get: () => themeMode,
+    set: (value, options = {}) => applyThemeToDom(value, options),
+    toggle: () => toggleTheme(),
+  };
+  try {
+    const systemThemeQuery = window.matchMedia?.('(prefers-color-scheme: dark)');
+    systemThemeQuery?.addEventListener?.('change', event => {
+      if (themeHasExplicitPreference || normalizeTheme(readStorage(THEME_KEY))) return;
+      applyThemeToDom(event.matches ? 'dark' : 'light', { persist: false });
+    });
+  } catch (_) {}
+
+  applyThemeToDom(themeMode, { persist: themeHasExplicitPreference, emit: false });
+
   // Initial load
   loadBrand(activeBrand);
+
+  // ---------- Rive animation section (lazy) ------------------------------
+  async function ensureRiveSection() {
+    if (riveSection) return riveSection;
+    if (riveSectionReady) return riveSectionReady;
+    if (typeof rive === 'undefined') {
+      toast('Animation library unavailable');
+      return null;
+    }
+    riveSectionReady = import('./rive-section.js?v=phase-b-animation-insights-1').then(async (mod) => {
+      riveSection = await mod.initRiveSection({
+        onCountChange(n) {
+          animationCount = n;
+          els.counts.animation.textContent = n;
+          if (section === 'animation') {
+            updateCounter();
+            updateSearchPlaceholder();
+          }
+        },
+        onSearchClear() {
+          searchQuery = '';
+          els.search.value = '';
+        },
+      });
+      if (searchQuery) mod.setRiveSearchQuery(searchQuery);
+      return riveSection;
+    }).catch((err) => {
+      riveSectionReady = null;
+      console.warn('Could not load animation library:', err);
+      toast('Could not load animation library');
+      return null;
+    });
+    return riveSectionReady;
+  }
 
   // ---------- section switching -----------------------------------------
   function applySectionToDom() {
@@ -279,6 +401,7 @@
     }
     updateCounter();
     updateSearchPlaceholder();
+    if (section === 'animation') ensureRiveSection();
   }
 
   function updateCounter() {
@@ -290,8 +413,9 @@
         ? `${illustrations.length} illustrations`
         : 'no illustrations yet';
     } else {
-      els.counter.textContent = animations.length
-        ? `${animations.length} animations`
+      const n = riveSection ? (Number(els.counts.animation.textContent) || animationCount) : animationCount;
+      els.counter.textContent = n
+        ? `${n} animations`
         : 'no animations yet';
     }
   }
@@ -308,13 +432,14 @@
         ? `Search ${illustrations.length} illustrations…`
         : 'Search illustrations…';
     } else {
-      els.search.placeholder = animations.length
-        ? `Search ${animations.length} animations…`
+      const n = riveSection ? (Number(els.counts.animation.textContent) || animationCount) : animationCount;
+      els.search.placeholder = n
+        ? `Search ${n} animations…`
         : 'Search animations…';
     }
   }
 
-  els.sectionsNav.addEventListener('click', e => {
+  els.sectionsNav.addEventListener('click', async e => {
     const btn = e.target.closest('.section-tab');
     if (!btn || btn.dataset.section === section) return;
     section = btn.dataset.section;
@@ -325,8 +450,34 @@
     applySectionToDom();
     if (section === 'icons') { applyFilters(); applyNHFilters(); }
     else if (section === 'illustrations') renderIllustrations();
-    else renderAnimations();
+    else {
+      const api = await ensureRiveSection();
+      if (api && searchQuery) api.setRiveSearchQuery(searchQuery);
+    }
   });
+
+  // ---------- deep links: #/animation/<id> --------------------------------
+  // All hash parsing lives here; the lazy rive-section module consumes the
+  // pending id (window.__riveDeepLink) once its store is initialized.
+  function consumeAnimationHash() {
+    const m = location.hash.match(/^#\/animation\/(.+)$/);
+    if (!m) return false;
+    const id = decodeURIComponent(m[1]);
+    if (section !== 'animation') {
+      section = 'animation';
+      localStorage.setItem(SECTION_KEY, section);
+      applySectionToDom();
+    }
+    if (riveSection?.openAnimationById) {
+      riveSection.openAnimationById(id);
+    } else {
+      window.__riveDeepLink = id;
+      ensureRiveSection();
+    }
+    return true;
+  }
+  window.addEventListener('hashchange', consumeAnimationHash);
+  consumeAnimationHash();
 
   // Sub-view switcher (Icons ↔ New Huge inside the icons panel)
   // ── Pill helper: builds the structured inner HTML for the pill ──────────
@@ -447,30 +598,73 @@
     });
   }
 
-  // Global illustration preview mode — single value, persisted in localStorage.
-  const ILLU_MODE_KEY = 'gh.illuMode';
-  let illuMode = localStorage.getItem(ILLU_MODE_KEY) === 'dark' ? 'dark' : 'light';
-
-  function applyIlluModeToDom() {
-    els.illuGrid.dataset.mode = illuMode;
-    const btn   = document.getElementById('illu-mode-global');
-    const label = document.getElementById('illu-mode-label');
-    if (btn)   btn.setAttribute('aria-pressed', String(illuMode === 'dark'));
-    if (label) label.textContent = illuMode === 'dark' ? 'Dark' : 'Light';
-  }
-
-  // Wire global mode toggle
-  const illuModeGlobalBtn = document.getElementById('illu-mode-global');
-  if (illuModeGlobalBtn) {
-    illuModeGlobalBtn.addEventListener('click', () => {
-      illuMode = illuMode === 'light' ? 'dark' : 'light';
-      localStorage.setItem(ILLU_MODE_KEY, illuMode);
-      applyIlluModeToDom();
-    });
-  }
+  // Illustration previews follow the universal site theme.
 
   // For light/dark/svg illustrations, support both legacy { src } entries and
   // the new { light, dark } shape. Returns { light, dark } URL strings.
+  // ---------- uploaded assets (IndexedDB, via lib/uploads.js) -----------
+  // Static manifests stay read-only; maintainer uploads merge in on top.
+  let uploadedIconEntries = [];
+  let uploadedIllus = [];
+  let illusBase = [];
+
+  function rebuildIconIndex() {
+    icons = (manifest?.icons || []).concat(uploadedIconEntries);
+    fuseIcons = new Fuse(icons, {
+      keys: [
+        { name: 'name',     weight: 2   },
+        { name: 'mintName', weight: 1.5 },
+        { name: 'tags',     weight: 1   },
+        { name: 'category', weight: 0.5 },
+      ],
+      threshold: 0.4,
+      includeScore: true,
+      minMatchCharLength: 2,
+      ignoreLocation: true,
+    });
+    els.counts.icons.textContent = icons.length;
+  }
+
+  function rebuildIllustrations() {
+    illustrations = illusBase.concat(uploadedIllus);
+    els.counts.illustrations.textContent = illustrations.length || 0;
+    buildIlluCatCounts();
+    renderIllustrations();
+  }
+
+  async function refreshUploadedAssets() {
+    const ups = window.GVLUploads;
+    if (!ups) return;
+    try {
+      const [icRecs, ilRecs] = await Promise.all([ups.getUploadedIcons(), ups.getUploadedIllustrations()]);
+      uploadedIconEntries = icRecs.map(r => ({
+        name: r.name, category: 'Uploaded', tags: ['uploaded'], source: 'user-upload',
+        uploaded: true, _uid: r.id,
+        rounded:  { svg: r.svg, className: '', unicode: { hex: '' } },
+        standard: { svg: r.svg, className: '', unicode: { hex: '' } },
+      }));
+      uploadedIllus.forEach(u => { try { URL.revokeObjectURL(u.light); URL.revokeObjectURL(u.dark); } catch (_) {} });
+      uploadedIllus = ilRecs.map(r => ({
+        name: r.name, category: 'hero', tags: ['uploaded'], uploaded: true, _uid: r.id,
+        light: URL.createObjectURL(r.lightBlob), dark: URL.createObjectURL(r.darkBlob),
+      }));
+      rebuildIconIndex();
+      buildFilters(); applyFilters();
+      rebuildIllustrations();
+      updateCounter(); updateSearchPlaceholder();
+    } catch (e) { console.warn('Uploaded-assets load failed:', e); }
+  }
+
+  // ES modules (auth/uploads) execute after this classic script — hook load.
+  window.addEventListener('load', async () => {
+    refreshUploadedAssets();
+    const auth = window.GVLAuth;
+    if (auth && els.uploadBtn) {
+      const s = await auth.getSession();
+      if (!s.available) { els.uploadBtn.disabled = true; els.uploadBtn.title = 'Requires the library server'; }
+    }
+  });
+
   function illuSources(item) {
     if (item.light && item.dark) return { light: item.light, dark: item.dark };
     const fallback = item.src || item.preview;
@@ -496,15 +690,15 @@
     for (const e of nhIcons) counts[e.category] = (counts[e.category] || 0) + 1;
     const order = ['All', ...Array.from(new Set(nhIcons.map(e => e.category))).sort()];
     els.nhFilters.innerHTML = order.map(c =>
-      `<button class="chip" data-nh-cat="${c}" aria-pressed="${c === 'All'}">${c}<span class="count">${counts[c] ?? 0}</span></button>`
+      `<button class="chip" data-nh-cat="${escapeHtml(c)}" aria-pressed="${c === 'All'}">${escapeHtml(c)}<span class="count">${counts[c] ?? 0}</span></button>`
     ).join('');
-    els.nhFilters.addEventListener('click', e => {
+    els.nhFilters.onclick = e => {
       const chip = e.target.closest('[data-nh-cat]');
       if (!chip) return;
       nhCategory = chip.dataset.nhCat;
       $$('[data-nh-cat]', els.nhFilters).forEach(c => c.setAttribute('aria-pressed', c === chip));
       applyNHFilters();
-    });
+    };
   }
 
   function applyNHFilters() {
@@ -546,12 +740,14 @@
     }
     els.nhEmpty?.classList.add('hidden');
     els.nhGrid.innerHTML = nhFiltered.map(e => {
-      return `<div class="card" data-nh-name="${e.name}" tabindex="0" role="button" aria-label="${e.name}">
-        <span class="card-copy" role="button" data-card-copy aria-label="Copy icon name" title="Copy icon name" tabindex="0">
+      const name = escapeHtml(e.name);
+      const svgPath = safeAssetPath(e.svgPath);
+      return `<div class="card" data-nh-name="${name}" tabindex="0" role="button" aria-label="${name}">
+        <button class="card-copy" type="button" data-card-copy aria-label="Copy icon name" title="Copy icon name">
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-        </span>
-        <div class="card-icon"><img src="${e.svgPath}" alt="${e.name}" width="24" height="24" loading="lazy" style="display:block"></div>
-        <div class="card-name">${e.name}</div>
+        </button>
+        <div class="card-icon"><img src="${svgPath}" alt="${name}" width="24" height="24" loading="lazy" style="display:block"></div>
+        <div class="card-name">${name}</div>
       </div>`;
     }).join('');
   }
@@ -576,21 +772,26 @@
     els.illuEmpty.classList.toggle('hidden', list.length > 0);
     els.illuGrid.innerHTML = list.map(i => {
       const { light, dark } = illuSources(i);
+      const name = escapeHtml(i.name);
+      const category = escapeHtml(i.category || 'hero');
+      const lightSrc = safeAssetPath(light);
+      const darkSrc = safeAssetPath(dark);
       return `
-        <div class="card card-illu" data-illu-name="${i.name}" data-illu-cat="${i.category || 'hero'}">
-          <div class="illu-thumb-wrap">
-            <img class="illu-thumb illu-thumb-light" src="${light}" alt="${i.name} light" loading="lazy">
-            <img class="illu-thumb illu-thumb-dark" src="${dark}" alt="${i.name} dark" loading="lazy">
-          </div>
+        <div class="card card-illu" data-illu-name="${name}" data-illu-cat="${category}">
+          <button class="illu-thumb-wrap" type="button" aria-label="Preview ${name}">
+            <img class="illu-thumb illu-thumb-light" src="${lightSrc}" alt="${name} light" loading="lazy">
+            <img class="illu-thumb illu-thumb-dark" src="${darkSrc}" alt="${name} dark" loading="lazy">
+          </button>
           <div class="illu-card-foot">
-            <span class="name" title="${i.name}">${i.name}</span>
+            <span class="name" title="${name}">${name}</span>
             <div class="illu-dl-group" role="group" aria-label="Download formats">
-              <button class="illu-dl-btn illu-copy-btn" data-illu-copy title="Copy SVG markup">
+              <button class="illu-dl-btn illu-copy-btn" type="button" data-illu-copy aria-label="Copy SVG markup" title="Copy SVG markup">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
               </button>
-              <button class="illu-dl-btn" data-illu-dl="svg"  title="Download light + dark as SVG zip">SVG</button>
-              <button class="illu-dl-btn" data-illu-dl="webp" title="Download light + dark as WEBP zip">WEBP</button>
-              <button class="illu-dl-btn" data-illu-dl="png"  title="Download light + dark as PNG zip">PNG</button>
+              <button class="illu-dl-btn" type="button" data-illu-dl="svg"  title="Download light + dark as SVG zip">SVG</button>
+              <button class="illu-dl-btn" type="button" data-illu-dl="webp" title="Download light + dark as WEBP zip">WEBP</button>
+              <button class="illu-dl-btn" type="button" data-illu-dl="png"  title="Download light + dark as PNG zip">PNG</button>
+              ${i.uploaded ? `<button class="illu-dl-btn" type="button" data-illu-del title="Delete uploaded illustration (maintainers)">Delete</button>` : ''}
             </div>
           </div>
         </div>
@@ -608,6 +809,20 @@
       const name = card.dataset.illuName;
       const item = illustrations.find(i => i.name === name);
       if (!item) return;
+
+      // Delete uploaded illustration (maintainer-gated)
+      const illuDelBtn = e.target.closest('[data-illu-del]');
+      if (illuDelBtn) {
+        e.preventDefault();
+        if (!item._uid || !window.GVLAuth || !window.GVLUploads) return;
+        window.GVLAuth.requireAuth(async () => {
+          if (!confirm(`Delete uploaded illustration "${item.name}"?`)) return;
+          await window.GVLUploads.removeUploadedIllustration(item._uid);
+          toast('Illustration deleted');
+          refreshUploadedAssets();
+        }, { toast });
+        return;
+      }
 
       const dlBtn = e.target.closest('[data-illu-dl]');
       if (dlBtn) {
@@ -658,7 +873,7 @@
     illuViewer.dark.src = dark;
     illuViewer.dark.alt = `${item.name} — dark`;
     const tags = [item.category, ...illuTagsFor(item)].filter(Boolean);
-    illuViewer.tags.innerHTML = tags.map(t => `<span class="tag">${t}</span>`).join('');
+    illuViewer.tags.innerHTML = tags.map(t => `<span class="tag">${escapeHtml(t)}</span>`).join('');
     illuViewer.root.classList.remove('hidden');
     illuViewer.root.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
@@ -867,350 +1082,6 @@
     return { vbW: w ? parseFloat(w[1]) : 411, vbH: h ? parseFloat(h[1]) : 300 };
   }
 
-  function animType(src) {
-    const ext = src.split('?')[0].split('.').pop().toLowerCase();
-    if (ext === 'riv') return 'rive';
-    if (ext === 'lottie') return 'dotlottie';
-    return 'lottie'; // .json
-  }
-
-  function animTypeLabel(type) {
-    return { rive: 'Rive', dotlottie: 'dotLottie', lottie: 'Lottie' }[type] ?? type;
-  }
-
-  function animPreviewHtml(a, idx) {
-    const type = animType(a.src);
-    if (type === 'rive') {
-      return `<canvas class="anim-canvas rive-canvas" id="rive-${idx}" data-src="${a.src}"></canvas>`;
-    }
-    // dotlottie-player handles both .lottie and .json
-    return `<dotlottie-player class="anim-canvas" src="${a.src}" autoplay loop background="transparent"></dotlottie-player>`;
-  }
-
-  function destroyRiveInstances() {
-    riveInstances.forEach(r => { try { r.cleanup(); } catch (_) {} });
-    riveInstances.clear();
-  }
-
-  function initRiveCanvases() {
-    if (typeof rive === 'undefined') return;
-    document.querySelectorAll('.rive-canvas[data-src]').forEach(canvas => {
-      if (riveInstances.has(canvas.id)) return;
-      const r = new rive.Rive({
-        src: canvas.dataset.src,
-        canvas,
-        autoplay: true,
-        onLoad() { r.resizeDrawingSurfaceToCanvas(); },
-      });
-      riveInstances.set(canvas.id, r);
-    });
-  }
-
-  function renderAnimations() {
-    destroyRiveInstances();
-    if (!animations.length) {
-      els.animGrid.innerHTML = '';
-      els.animEmpty.classList.remove('hidden');
-      return;
-    }
-    const q = searchQuery.trim().toLowerCase();
-    const list = animations.filter(a => {
-      if (!q) return true;
-      return a.name.toLowerCase().includes(q) ||
-        (a.tags || []).some(t => t.toLowerCase().includes(q));
-    });
-    els.animEmpty.classList.toggle('hidden', list.length > 0);
-    els.animGrid.innerHTML = list.map((a, idx) => {
-      const type = animType(a.src);
-      return `
-        <div class="card card-anim" data-anim-name="${a.name}" title="${a.name}" tabindex="0" role="button" aria-label="Open ${a.name}">
-          <div class="anim-preview-wrap">
-            ${animPreviewHtml(a, idx)}
-          </div>
-          <div class="anim-card-foot">
-            <span class="name">${a.name}</span>
-            <span class="tag anim-type-tag">${animTypeLabel(type)}</span>
-          </div>
-          <a class="anim-dl" href="${a.src}" download="${a.name}" title="Download" aria-label="Download ${a.name}">↓</a>
-        </div>
-      `;
-    }).join('');
-    initRiveCanvases();
-  }
-
-  // ---------- animation viewer (Rive lightbox) --------------------------
-  // Mirrors the illustration viewer: a modal that plays the .riv large with
-  // transport controls (play/pause, restart, scrubber, loop, speed) and a
-  // best-effort "detected metadata" panel inspected from the live instance.
-  const animViewer = {
-    root:    $('#anim-viewer'),
-    close:   $('#anim-viewer-close'),
-    name:    $('#anim-viewer-name'),
-    eyebrow: $('#anim-viewer-eyebrow'),
-    sub:     $('#anim-viewer-sub'),
-    tags:    $('#anim-viewer-tags'),
-    stage:   $('#anim-viewer-stage'),
-    canvas:  $('#anim-viewer-canvas'),
-    meta:    $('#anim-viewer-meta'),
-    play:    $('#anim-play'),
-    restart: $('#anim-restart'),
-    loop:    $('#anim-loop'),
-    speed:   $('#anim-speed'),
-    scrub:   $('#anim-scrub'),
-    time:    $('#anim-time'),
-    dl:      $('#anim-viewer-dl'),
-  };
-  let viewerRive = null;
-  let viewerRaf = 0;
-  const vstate = { playing: true, loop: true, speed: 1, duration: 0, progress: 0, startTs: 0 };
-
-  function fmtTime(sec) {
-    if (!sec || !isFinite(sec)) return '0:00';
-    const s = Math.floor(sec % 60), m = Math.floor(sec / 60);
-    return `${m}:${String(s).padStart(2, '0')}`;
-  }
-
-  function setMetaStatus(msg) {
-    if (animViewer.meta) animViewer.meta.innerHTML = `<div class="anim-meta-status">${msg}</div>`;
-  }
-
-  function getViewerDuration(r) {
-    try {
-      const d = r.durations;
-      if (Array.isArray(d)) {
-        const valid = d.filter(x => typeof x === 'number' && x > 0 && isFinite(x));
-        if (valid.length) return Math.max(...valid);
-      }
-    } catch (_) {}
-    return 0;
-  }
-
-  function inspectViewerRive(r) {
-    const meta = { artboards: [], stateMachines: [], animations: [], inputs: [], viewModels: [] };
-    try {
-      const arts = r.contents?.artboards;
-      if (Array.isArray(arts)) meta.artboards = arts.map(a => a.name).filter(Boolean);
-    } catch (_) {}
-    try { meta.stateMachines = (r.stateMachineNames || []).slice(); } catch (_) {}
-    try { meta.animations = (r.animationNames || []).slice(); } catch (_) {}
-    try {
-      for (const sm of (r.stateMachineNames || [])) {
-        let inputs = [];
-        try { inputs = r.stateMachineInputs(sm) || []; } catch (_) {}
-        for (const inp of inputs) meta.inputs.push({ name: inp.name, sm });
-      }
-    } catch (_) {}
-    // View models exist only on newer runtimes — guarded, silently empty otherwise.
-    try {
-      const count = r.viewModelCount ?? 0;
-      for (let i = 0; i < count; i++) {
-        const vm = r.viewModelByIndex?.(i);
-        if (vm?.name) meta.viewModels.push(vm.name);
-      }
-    } catch (_) {}
-    return meta;
-  }
-
-  function metaCard(label, items, fmt) {
-    const n = items.length;
-    if (!n) {
-      return `<details class="anim-meta-card"><summary>${label}<span class="anim-meta-count">0</span></summary>` +
-             `<div class="anim-meta-empty">None detected</div></details>`;
-    }
-    const lis = items.map(it => `<li>${fmt ? fmt(it) : it}</li>`).join('');
-    return `<details class="anim-meta-card" open><summary>${label}<span class="anim-meta-count">${n}</span></summary>` +
-           `<ul class="anim-meta-list">${lis}</ul></details>`;
-  }
-
-  function renderViewerMeta(meta) {
-    if (!animViewer.meta) return;
-    const total = meta.artboards.length + meta.stateMachines.length +
-      meta.animations.length + meta.inputs.length + meta.viewModels.length;
-    if (!total) { setMetaStatus('No metadata detected for this file.'); return; }
-    animViewer.meta.innerHTML =
-      metaCard('Artboards', meta.artboards) +
-      metaCard('State Machines', meta.stateMachines) +
-      metaCard('Animations / Timelines', meta.animations) +
-      metaCard('View Models', meta.viewModels) +
-      metaCard('Inputs', meta.inputs, i => `${i.name}<span class="anim-meta-hint">${i.sm}</span>`);
-  }
-
-  function applyViewerSpeed() {
-    if (!viewerRive) return;
-    try {
-      const anims = viewerRive.animator?.animations;
-      if (Array.isArray(anims)) anims.forEach(a => { if (typeof a?.speed !== 'undefined') a.speed = vstate.speed; });
-    } catch (_) {}
-  }
-
-  function scrubViewer(value) {
-    if (!viewerRive || !vstate.duration) return;
-    const t = value * vstate.duration;
-    try {
-      const sms = viewerRive.stateMachineNames, anims = viewerRive.animationNames;
-      if (sms?.length) viewerRive.scrub(sms[0], t);
-      else if (anims?.length) viewerRive.scrub(anims[0], t);
-    } catch (_) {}
-  }
-
-  function stopViewerRaf() { if (viewerRaf) { cancelAnimationFrame(viewerRaf); viewerRaf = 0; } }
-
-  function startViewerRaf() {
-    stopViewerRaf();
-    vstate.startTs = performance.now();
-    const tick = (now) => {
-      if (vstate.playing && vstate.duration > 0) {
-        const dt = (now - vstate.startTs) / 1000;
-        let p = vstate.progress + (dt * vstate.speed) / vstate.duration;
-        if (vstate.loop) { p = p % 1; }
-        else if (p >= 1) { p = 1; vstate.playing = false; try { viewerRive.pause(); } catch (_) {} syncPlayBtn(); }
-        vstate.progress = p;
-        animViewer.scrub.value = String(p);
-        animViewer.time.textContent = `${fmtTime(p * vstate.duration)} / ${fmtTime(vstate.duration)}`;
-      }
-      vstate.startTs = now;
-      viewerRaf = requestAnimationFrame(tick);
-    };
-    viewerRaf = requestAnimationFrame(tick);
-  }
-
-  function syncPlayBtn() { animViewer.play?.classList.toggle('is-playing', vstate.playing); }
-
-  function cleanupViewerRive() {
-    stopViewerRaf();
-    if (viewerRive) { try { viewerRive.cleanup(); } catch (_) {} viewerRive = null; }
-    animViewer.stage?.querySelector('.anim-fallback')?.remove();
-  }
-
-  function startViewerRive(item) {
-    cleanupViewerRive();
-    setMetaStatus('Inspecting…');
-    if (animViewer.canvas) animViewer.canvas.style.display = '';
-    if (typeof rive === 'undefined') { setMetaStatus('Rive runtime unavailable.'); return; }
-    try {
-      viewerRive = new rive.Rive({
-        src: item.src,
-        canvas: animViewer.canvas,
-        autoplay: true,
-        onLoad() {
-          try { viewerRive.resizeDrawingSurfaceToCanvas(); } catch (_) {}
-          vstate.duration = getViewerDuration(viewerRive);
-          vstate.progress = 0; vstate.playing = true;
-          const hasTimeline = vstate.duration > 0;
-          animViewer.scrub.disabled = !hasTimeline;
-          animViewer.time.textContent = hasTimeline
-            ? `0:00 / ${fmtTime(vstate.duration)}` : '—';
-          syncPlayBtn();
-          applyViewerSpeed();
-          startViewerRaf();
-          renderViewerMeta(inspectViewerRive(viewerRive));
-        },
-        onLoadError() { setMetaStatus('Could not load this animation.'); },
-      });
-    } catch (_) { setMetaStatus('Could not load this animation.'); }
-  }
-
-  function startViewerLottie(item) {
-    cleanupViewerRive();
-    if (animViewer.canvas) animViewer.canvas.style.display = 'none';
-    let fb = animViewer.stage.querySelector('.anim-fallback');
-    if (!fb) {
-      fb = document.createElement('dotlottie-player');
-      fb.className = 'anim-fallback anim-viewer-canvas';
-      animViewer.stage.appendChild(fb);
-    }
-    fb.setAttribute('src', item.src);
-    fb.setAttribute('autoplay', '');
-    fb.setAttribute('loop', '');
-    fb.setAttribute('background', 'transparent');
-    animViewer.scrub.disabled = true;
-    animViewer.time.textContent = '—';
-    setMetaStatus('Detailed metadata inspection is available for Rive (.riv) files.');
-  }
-
-  function openAnimViewer(item) {
-    if (!animViewer.root) return;
-    const type = animType(item.src);
-    animViewer.name.textContent = item.name;
-    animViewer.eyebrow.textContent = `${animTypeLabel(type)} animation`;
-    animViewer.sub.textContent = item.src.split('/').pop();
-    animViewer.tags.innerHTML = (item.tags || []).map(t => `<span class="tag">${t}</span>`).join('');
-    animViewer.dl.href = item.src;
-    animViewer.dl.setAttribute('download', item.name);
-
-    // Reset transport UI to defaults.
-    vstate.playing = true; vstate.loop = true; vstate.speed = 1; vstate.progress = 0; vstate.duration = 0;
-    animViewer.loop.setAttribute('aria-pressed', 'true');
-    animViewer.speed.value = '1';
-    animViewer.scrub.value = '0';
-    syncPlayBtn();
-
-    animViewer.root.classList.remove('hidden');
-    animViewer.root.setAttribute('aria-hidden', 'false');
-    document.body.style.overflow = 'hidden';
-
-    if (type === 'rive') startViewerRive(item);
-    else startViewerLottie(item);
-  }
-
-  function closeAnimViewer() {
-    if (!animViewer.root) return;
-    cleanupViewerRive();
-    animViewer.root.classList.add('hidden');
-    animViewer.root.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
-  }
-
-  // Open the viewer from a card click (but let the corner download link work).
-  els.animGrid?.addEventListener('click', e => {
-    if (e.target.closest('.anim-dl')) return;
-    const card = e.target.closest('.card-anim');
-    if (!card) return;
-    const item = animations.find(a => a.name === card.dataset.animName);
-    if (item) openAnimViewer(item);
-  });
-  els.animGrid?.addEventListener('keydown', e => {
-    if (e.key !== 'Enter' && e.key !== ' ') return;
-    const card = e.target.closest('.card-anim');
-    if (!card) return;
-    e.preventDefault();
-    const item = animations.find(a => a.name === card.dataset.animName);
-    if (item) openAnimViewer(item);
-  });
-
-  if (animViewer.root) {
-    animViewer.close.addEventListener('click', closeAnimViewer);
-    animViewer.root.addEventListener('click', e => { if (e.target === animViewer.root) closeAnimViewer(); });
-
-    animViewer.play.addEventListener('click', () => {
-      if (!viewerRive) return;
-      vstate.playing = !vstate.playing;
-      try { vstate.playing ? viewerRive.play() : viewerRive.pause(); } catch (_) {}
-      vstate.startTs = performance.now();
-      syncPlayBtn();
-    });
-    animViewer.restart.addEventListener('click', () => {
-      if (!viewerRive) return;
-      try { viewerRive.reset({ autoplay: true }); } catch (_) { try { viewerRive.play(); } catch (_) {} }
-      vstate.progress = 0; vstate.playing = true; vstate.startTs = performance.now();
-      applyViewerSpeed(); syncPlayBtn();
-    });
-    animViewer.loop.addEventListener('click', () => {
-      vstate.loop = !vstate.loop;
-      animViewer.loop.setAttribute('aria-pressed', String(vstate.loop));
-    });
-    animViewer.speed.addEventListener('change', () => {
-      vstate.speed = parseFloat(animViewer.speed.value) || 1;
-      applyViewerSpeed();
-    });
-    animViewer.scrub.addEventListener('input', () => {
-      const v = parseFloat(animViewer.scrub.value);
-      vstate.progress = v; vstate.startTs = performance.now();
-      animViewer.time.textContent = `${fmtTime(v * vstate.duration)} / ${fmtTime(vstate.duration)}`;
-      scrubViewer(v);
-    });
-  }
-
   // ---------- variant ----------------------------------------------------
   function applyVariantToDom() {
     document.body.dataset.variant = variant;
@@ -1304,15 +1175,15 @@
     for (const e of icons) counts[e.category]++;
     const order = ['All', ...manifest.categories];
     els.filters.innerHTML = order.map(c => `
-      <button class="chip" data-cat="${c}" aria-pressed="${c === 'All'}">${c}<span class="count">${counts[c] ?? 0}</span></button>
+      <button class="chip" data-cat="${escapeHtml(c)}" aria-pressed="${c === 'All'}">${escapeHtml(c)}<span class="count">${counts[c] ?? 0}</span></button>
     `).join('');
-    els.filters.addEventListener('click', e => {
+    els.filters.onclick = e => {
       const chip = e.target.closest('.chip');
       if (!chip) return;
       activeCategory = chip.dataset.cat;
       $$('.chip', els.filters).forEach(c => c.setAttribute('aria-pressed', c === chip));
       applyFilters();
-    });
+    };
   }
 
   // ---------- search + filter -------------------------------------------
@@ -1402,7 +1273,8 @@
       if (iconSubView === 'new-huge') applyNHFilters();
       else applyFilters();
     } else if (section === 'illustrations') renderIllustrations();
-    else renderAnimations();
+    else if (riveSection) riveSection.setRiveSearchQuery(searchQuery);
+    else ensureRiveSection().then((api) => { if (api) api.setRiveSearchQuery(searchQuery); });
   });
 
   // ---------- render -----------------------------------------------------
@@ -1413,23 +1285,52 @@
       return;
     }
     els.empty.classList.add('hidden');
-    els.grid.innerHTML = filtered.map(e => `
-      <button class="card${selected.has(e.name) ? ' selected' : ''}${e.source === 'groww-custom' ? ' custom' : ''}" data-name="${e.name}" title="${e.name}">
+    els.grid.innerHTML = filtered.map(e => {
+      const name = escapeHtml(e.name);
+      return `
+      <div class="card${selected.has(e.name) ? ' selected' : ''}${e.source === 'groww-custom' ? ' custom' : ''}" data-name="${name}" title="${name}" role="button" tabindex="0" aria-label="${name}">
         <span class="check" aria-hidden="true"></span>
         <span class="icon">${getSvg(e)}</span>
-        <span class="name">${e.name}</span>
-        <span class="card-copy card-copy-svg" role="button" data-card-copy-svg aria-label="Copy SVG markup" title="Copy SVG markup" tabindex="0">
+        <span class="name">${name}</span>
+        <button class="card-copy card-copy-svg" type="button" data-card-copy-svg aria-label="Copy SVG markup" title="Copy SVG markup">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-        </span>
-        <span class="card-copy" role="button" data-card-copy aria-label="Copy icon name" title="Copy icon name" tabindex="0">
+        </button>
+        <button class="card-copy" type="button" data-card-copy aria-label="Copy icon name" title="Copy icon name">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-        </span>
-      </button>
-    `).join('');
+        </button>
+        ${e.uploaded ? `<button class="card-copy card-del" type="button" data-card-del aria-label="Delete uploaded icon" title="Delete uploaded icon (maintainers)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+        </button>` : ''}
+      </div>
+    `;
+    }).join('');
     if (selectMode) updateSelbar();
   }
 
+  els.grid.addEventListener('keydown', e => {
+    if ((e.key !== 'Enter' && e.key !== ' ') || e.target.closest('.card-copy')) return;
+    const card = e.target.closest('.card');
+    if (!card) return;
+    e.preventDefault();
+    card.click();
+  });
+
   els.grid.addEventListener('click', async e => {
+    // Delete uploaded icon (maintainer-gated)
+    const delBtn = e.target.closest('[data-card-del]');
+    if (delBtn) {
+      e.stopPropagation();
+      const card = delBtn.closest('.card');
+      const entry = icons.find(i => i.name === card?.dataset.name);
+      if (!entry?._uid || !window.GVLAuth || !window.GVLUploads) return;
+      window.GVLAuth.requireAuth(async () => {
+        if (!confirm(`Delete uploaded icon "${entry.name}"?`)) return;
+        await window.GVLUploads.removeUploadedIcon(entry._uid);
+        toast('Icon deleted');
+        refreshUploadedAssets();
+      }, { toast });
+      return;
+    }
     // Copy SVG markup button
     const copySvgSpan = e.target.closest('[data-card-copy-svg]');
     if (copySvgSpan) {
@@ -1511,6 +1412,9 @@
   function refreshDrawer() {
     if (!currentDetail) return;
     const e = currentDetail;
+    // The New Huge drawer path hides this section (not applicable there) —
+    // restore it for regular icons or it stays hidden after viewing a NH icon.
+    document.getElementById('font-links')?.closest('.drawer-section')?.classList.remove('hidden');
     els.drawerName.textContent = e.name;
     els.drawerCat.textContent = e.category;
     els.drawerSrc.textContent = e.source === 'groww-custom' ? 'Groww custom' : 'Hugeicons';
@@ -1527,7 +1431,7 @@
       if (kws.length) {
         const shapes = ['■', '▲', '●'];
         kwEl.innerHTML = kws.map((t, i) =>
-          `<span class="kw-tag" role="button" tabindex="0" data-kw="${t}" title="Copy keyword"><span class="kw-shape" aria-hidden="true">${shapes[i % 3]}</span>${t}</span>`
+          `<span class="kw-tag" role="button" tabindex="0" data-kw="${escapeHtml(t)}" title="Copy keyword"><span class="kw-shape" aria-hidden="true">${shapes[i % 3]}</span>${escapeHtml(t)}</span>`
         ).join('');
         if (kwSec) kwSec.classList.remove('hidden');
         // Reset to collapsed whenever a new icon opens
@@ -1581,7 +1485,7 @@
     els.drawerUni.textContent = '';
     if (els.drawerSingleVariant) els.drawerSingleVariant.classList.add('hidden');
     // Show icon via img
-    els.drawerIcon.innerHTML = `<img src="${entry.svgPath}" alt="${entry.name}" width="80" height="80" style="display:block;margin:auto">`;
+    els.drawerIcon.innerHTML = `<img src="${safeAssetPath(entry.svgPath)}" alt="${escapeHtml(entry.name)}" width="80" height="80" style="display:block;margin:auto">`;
     // Keywords
     const kwEl  = document.getElementById('drawer-keywords');
     const kwSec = document.getElementById('drawer-kw-section');
@@ -1589,7 +1493,7 @@
     if (kwEl && entry.tags?.length) {
       const shapes = ['■','▲','●'];
       kwEl.innerHTML = entry.tags.map((t,i) =>
-        `<span class="kw-tag" role="button" tabindex="0" data-kw="${t}" title="Copy keyword"><span class="kw-shape" aria-hidden="true">${shapes[i%3]}</span>${t}</span>`
+        `<span class="kw-tag" role="button" tabindex="0" data-kw="${escapeHtml(t)}" title="Copy keyword"><span class="kw-shape" aria-hidden="true">${shapes[i%3]}</span>${escapeHtml(t)}</span>`
       ).join('');
       kwSec?.classList.remove('hidden');
       kwToggle?.setAttribute('aria-expanded','false');
@@ -1599,6 +1503,14 @@
     document.getElementById('font-links')?.closest('.drawer-section')?.classList.add('hidden');
     els.drawer.classList.remove('hidden');
     els.drawer.setAttribute('aria-hidden','false');
+  });
+
+  els.nhGrid?.addEventListener('keydown', e => {
+    if ((e.key !== 'Enter' && e.key !== ' ') || e.target.closest('.card-copy')) return;
+    const card = e.target.closest('[data-nh-name]');
+    if (!card) return;
+    e.preventDefault();
+    card.click();
   });
 
   els.drawer.addEventListener('click', async e => {
@@ -1681,60 +1593,21 @@ ${chosen.map(c => '  ' + c.name).join('\n')}
     toast(`Downloaded ${chosen.length} icons`);
   }
 
-  // ---------- download all ----------------------------------------------
-  els.downloadAll.addEventListener('click', () => els.allDialog.showModal());
-  els.allCancel.addEventListener('click', () => els.allDialog.close());
-  els.allGo.addEventListener('click', async () => {
-    const variants = $$('input[name="all-variant"]:checked').map(i => i.value);
-    const formats  = $$('input[name="all-format"]:checked').map(i => i.value);
-    els.allDialog.close();
-    if (!variants.length || !formats.length) { toast('Pick at least one variant and format'); return; }
-    toast('Building zip…');
-    const zip = new JSZip();
-
-    if (formats.includes('svg')) {
-      for (const v of variants) {
-        const folder = zip.folder(`svg/${v}`);
-        for (const e of icons) folder.file(`${e.name}.svg`, e[v].svg);
+  // ---------- upload (all sections; maintainer-gated) --------------------
+  // Dispatches to the section-appropriate upload flow. Credentials are
+  // verified by the server (lib/auth.js); modules load lazily as ES modules,
+  // so access window.GVLAuth/GVLUploads at click time, not boot time.
+  els.uploadBtn?.addEventListener('click', () => {
+    const auth = window.GVLAuth, ups = window.GVLUploads;
+    if (!auth || !ups) { toast('Upload tools are still loading\u2026'); return; }
+    auth.requireAuth(async () => {
+      if (section === 'icons') ups.openIconUpload({ toast, onDone: refreshUploadedAssets });
+      else if (section === 'illustrations') ups.openIllustrationUpload({ toast, onDone: refreshUploadedAssets });
+      else {
+        const api = await ensureRiveSection();
+        api?.openUpload?.();
       }
-    }
-    if (formats.includes('json')) {
-      // Trim manifest to selected variants if user unchecked one
-      const trimmed = JSON.parse(JSON.stringify(manifest));
-      if (variants.length === 1) {
-        trimmed.icons = trimmed.icons.map(e => {
-          const out = { name: e.name, category: e.category, tags: e.tags, source: e.source };
-          out[variants[0]] = e[variants[0]];
-          return out;
-        });
-      }
-      zip.file('manifest.json', JSON.stringify(trimmed, null, 2));
-    }
-    // For font/CSS downloads, use the brand's fixed variant if it has one
-    // (Groww → standard, Wealth → rounded), otherwise use selected variants.
-    const fontVariants = BRANDS[activeBrand].variant
-      ? [BRANDS[activeBrand].variant]
-      : variants;
-    if (formats.includes('font')) {
-      for (const v of fontVariants) {
-        const folder = zip.folder(`font/${v}`);
-        for (const ext of FONT_FILES.filter(x => x !== '.css')) {
-          const buf = await fetch(`${FONT_PATH(v)}${ext}`).then(r => r.arrayBuffer());
-          folder.file(`groww-huge-${v}${ext}`, buf);
-        }
-      }
-    }
-    if (formats.includes('css')) {
-      for (const v of fontVariants) {
-        const css = await fetch(`${FONT_PATH(v)}.css`).then(r => r.text());
-        zip.file(`groww-huge-${v}.css`, css);
-      }
-    }
-
-    const blob = await zip.generateAsync({ type: 'blob' });
-    const tag = variants.length === 2 ? 'both-variants' : variants[0];
-    downloadBlob(`groww-huge-icons-v${manifest.version}-full-${tag}.zip`, blob);
-    toast(`Downloaded full library (${manifest.total} icons, ${tag})`);
+    }, { toast });
   });
 
   // ---------- helpers ---------------------------------------------------
@@ -1776,15 +1649,16 @@ ${chosen.map(c => '  ' + c.name).join('\n')}
   }
 
   function bindKeys() {
-    document.addEventListener('keydown', e => {
+    document.addEventListener('keydown', async e => {
       if (e.key === '/' && document.activeElement !== els.search) {
         e.preventDefault(); els.search.focus();
       } else if (e.key === 'Escape') {
-        if (animViewer.root && !animViewer.root.classList.contains('hidden')) closeAnimViewer();
-        else if (illuViewer.root && !illuViewer.root.classList.contains('hidden')) closeIlluViewer();
+        if (section === 'animation' && riveSection?.handleRiveKeydown?.(e)) return;
+        if (illuViewer.root && !illuViewer.root.classList.contains('hidden')) closeIlluViewer();
         else if (!els.drawer.classList.contains('hidden')) closeDrawer();
-        else if (els.allDialog.open) els.allDialog.close();
         else if (selectMode) els.selectToggle.click();
+      } else if (section === 'animation' && riveSection?.handleRiveKeydown?.(e)) {
+        return;
       }
     });
   }

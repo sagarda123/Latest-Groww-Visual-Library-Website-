@@ -1,1 +1,7 @@
 .vercel
+
+auth.config.json
+.DS_Store
+.cursor/
+latest rive repo/
+rive-animation-repo/
