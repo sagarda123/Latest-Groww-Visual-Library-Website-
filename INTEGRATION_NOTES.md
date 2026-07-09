@@ -23,18 +23,25 @@ Icons and Illustrations remain sourced from the original Groww Visual Library da
 | `styles.css` | Appended `rv-*` component styles |
 | `app.js` | Wires topbar search + tab switching; calls `initRiveSection()` on first Animation visit |
 
-Reference folders retained intentionally (one level up, outside `latest visual library/`):
-- `../latest rive repo/` — source snapshot used to port the native Rive experience.
-- `../rive-animation-repo/` — React/source reference and Puppeteer dependency anchor.
+Reference folders retained intentionally (siblings of the site, excluded from deploy via .vercelignore):
+- `latest rive repo/` — source snapshot used to port the native Rive experience.
+- `rive-animation-repo/` — React/source reference and Puppeteer dependency anchor.
 
 ## Run locally
 
 ```bash
-cd "/Users/sagarda/Documents/new visual repo/latest visual library"
+cd "/Users/sagarda/Documents/new visual repo"
 node server.mjs
 # → http://localhost:8080/ (static site + /api auth endpoints)
 # One-time credential setup: node scripts/setup-auth.mjs <username> <password>
 ```
+
+## Deploy (Vercel)
+
+The site is at the repo root, so Vercel needs **no Root Directory** override
+(leave it at the default). Serverless auth functions live in `api/`. Set the
+`AUTH_USERNAME` / `AUTH_SALT` / `AUTH_PASSWORD_HASH` / `AUTH_HMAC_SECRET`
+environment variables (Production) from `auth.config.json`.
 
 Rive runtime: `@rive-app/canvas@2.38.1` (bumped from 2.21.6 for ViewModel metadata APIs).
 
