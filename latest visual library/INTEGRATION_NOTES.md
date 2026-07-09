@@ -23,16 +23,17 @@ Icons and Illustrations remain sourced from the original Groww Visual Library da
 | `styles.css` | Appended `rv-*` component styles |
 | `app.js` | Wires topbar search + tab switching; calls `initRiveSection()` on first Animation visit |
 
-Reference folders retained intentionally:
-- `latest rive repo/` — source snapshot used to port the native Rive experience.
-- `rive-animation-repo/` — React/source reference and Puppeteer dependency anchor.
+Reference folders retained intentionally (one level up, outside `latest visual library/`):
+- `../latest rive repo/` — source snapshot used to port the native Rive experience.
+- `../rive-animation-repo/` — React/source reference and Puppeteer dependency anchor.
 
 ## Run locally
 
 ```bash
-cd "/Users/sagarda/Documents/new visual repo"
-python3 -m http.server 8080
-# → http://localhost:8080/ then open the Animation tab
+cd "/Users/sagarda/Documents/new visual repo/latest visual library"
+node server.mjs
+# → http://localhost:8080/ (static site + /api auth endpoints)
+# One-time credential setup: node scripts/setup-auth.mjs <username> <password>
 ```
 
 Rive runtime: `@rive-app/canvas@2.38.1` (bumped from 2.21.6 for ViewModel metadata APIs).
