@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import { createRequire } from 'node:module';
 
-const require = createRequire(new URL('../rive-animation-repo/package.json', import.meta.url));
+const require = createRequire(new URL('../../rive-animation-repo/package.json', import.meta.url));
 const puppeteer = require('puppeteer');
 
 const BASE = process.env.BASE_URL || 'http://localhost:8081';

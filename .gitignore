@@ -1,7 +1,10 @@
 .vercel
-
-auth.config.json
 .DS_Store
 .cursor/
+
+# Local-only auth material (never commit)
+latest visual library/auth.config.json
+
+# Reference snapshots kept locally only — big, not part of the site/deploy
 latest rive repo/
 rive-animation-repo/
